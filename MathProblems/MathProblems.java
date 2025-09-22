@@ -32,7 +32,14 @@
 		System.out.println("1) 5.6*17/3-49%11/2 = " + Format.left(prob1, 5, 2));
 		System.out.printf("1) 5.6*17/3-49%%11/2 = %-5.2f%n", prob1);
 		
-	
+		//prob2 goes here
+		
+		prob2= 16-17*(5%6/3);
+		
+		System.out.println("\n");
+		System.out.println("2) 16-17*(5%6/3) = " + Format.left(prob2, 5));
+		System.out.printf("2) 16-17*(5%%6/3) = %-5d%n", prob2);
+
 		//prob3 goes here
 		
 		prob3= (char)(56/2+17*3-9%9);
@@ -65,4 +72,5 @@
 
 		 
  
+
 
