@@ -37,19 +37,23 @@
  * print it out
  * double TaxAmount = notax*TAX
  * print it out
- * double grandtotal = subtotal + TaxAmount
+ * double grandtotal = notax + TaxAmount
  * print it out
  * print out closing statement with println
  * 
  * Testing plan:
  * input 100 200 300
  * output 
- * subtotal is 600
- * discount is 60
- * total before tax is 540
- * tax is 49.28
- * grand total is 589.28
+ * calculus books is 200
+ * english books is 2000
+ * history books is 1200
+ * subtotal is 3400
+ * discount is 340
+ * total before tax is 3060
+ * tax is 279.23
+ * grand total is 3339.23
  */
+ 
  
  import java.util.Scanner;
  
@@ -67,6 +71,9 @@ public class BookBuyers
 		double CostHist = 0.0;
 		double subtotal = 0.0;
 		double disc = 0.0;
+		double notax = 0.0;
+		double TaxAmount = 0.0;
+		double grandtotal = 0.0;
 	
 		
 		 
@@ -74,12 +81,26 @@ public class BookBuyers
 		System.out.print("This program will calculate the cost of books "
 			+"for two people. Please enter the costs for Calculus, "
 			+"English, and History for one person, seperated by tabs: ");
-		CostCalc = 2*scanner.nextInt();
-		CostEngl = 2*5*scanner.nextInt();
-		CostHist = 2*2*scanner.nextInt();
+		CostCalc = 2*scanner.nextDouble();
+		CostEngl = 2*5*scanner.nextDouble();
+		CostHist = 2*2*scanner.nextDouble();
 		subtotal = CostCalc + CostEngl + CostHist;
 		disc = subtotal*DISCOUNT;
+		notax = subtotal-disc;
+		TaxAmount = notax*TAX;
+		grandtotal = notax+TaxAmount; //when I test it, it rounds to the hundreth for grandtotal but doesn't round for TaxAmount
 		
+		System.out.printf("\n%-20s =  $ %,10.2f", "Calculus books", CostCalc);
+		System.out.printf("\n%-20s =  $ %,10.2f", "English books", CostEngl);
+		System.out.printf("\n%-20s =  $ %,10.2f", "History books", CostHist);
+		System.out.printf("\n%-20s =  $ %,10.2f", "Sub total", subtotal);
+		System.out.printf("\n%-20s =  $ %,10.2f", "Discount", disc);
+		System.out.printf("\n%-20s =  $ %,10.2f", "Total before tax", notax);
+		System.out.printf("\n%-20s =  $ %,10.2f", "Tax", TaxAmount);
+		System.out.printf("\n%-20s =  $ %,10.2f", "Grand total", grandtotal);
+		
+		System.out.print("\n\nThe total cost for 16 books is " + grandtotal+
+			". Thank you for shopping with BooksRUs.com.");
 	}
 }
 	
