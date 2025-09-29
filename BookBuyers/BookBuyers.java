@@ -55,7 +55,7 @@
  
 public class BookBuyers
 {
-	public static void main(String args [])
+	public static void main(String [] args)
 	{
 		final double TAX = 0.09125;
 		final double DISCOUNT = 0.10;
@@ -85,3 +85,4 @@ public class BookBuyers
 	
 		 
  
+
