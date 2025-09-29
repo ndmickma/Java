@@ -101,9 +101,11 @@ public class BookBuyers
 		
 		System.out.print("\n\nThe total cost for 16 books is " + grandtotal+
 			". Thank you for shopping with BooksRUs.com.");
+		System.out.println("\n\n\n");
 	}
 }
 	
 		 
  
+
 
