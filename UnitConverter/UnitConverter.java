@@ -25,37 +25,57 @@ public class UnitConverter
 		double cm = 0.0;
 		 
 		input();
-		InchesToFt();
-		FeetToYd();
-		InchesToCm();
-		print();
+		feet = InchesToFt();
+		yards = FeetToYards(feet);
+		cm = InchesToCm();
+		print(feet, yards, cm);
 	}
 	 
-	public static void input
+	public static void input()
 	{
-		 Scanner scanner = new Scanner(System.in);
+		 Scanner keyboard = new Scanner(System.in);
 		 System.out.print("\n\n\n");
-		 System.out.print("Please enter a positive integer that is less " + 
-			"than 2 billion -> ");
-		 inches = scanner.nextInt();
+		 System.out.println("Welcome to Unit Converter! This program "
+			+"will take in the number of inches and print the number "
+			+"of feet, yards, and centimeters.");
+		 System.out.print("\nPlease enter a positive integer that is less " + 
+			"than 2 billion -> "); 
+		 inches = keyboard.nextInt();
 	}
 		 
 		 
-	public static void InchesToFt
+	public static double InchesToFt()
 	{
 		final int CONVERT_INFEET = 12;
-		inches = scanner.nextInt();
-		feet = (double)inches/CONVERT_INFEET;
-		return feet;
+		double feet2 = (double)inches/CONVERT_INFEET;
+		return feet2;
 	}
 	 
-	public static void FeetToYards
+	public static double FeetToYards(double inFeet)
 	{
 		final int CONVERT_FEETYD = 3;
-		yards = feet/CONVERT_FEETYD;
-		return yards;
+		double feet = inFeet;
+		double yards2 = feet/CONVERT_FEETYD;
+		return yards2;
 	}
 	
-	public static void 
+	public static double InchesToCm()
+	{
+		final double CONVERT_INCM = 2.54;
+		double cm2 = inches*CONVERT_INCM;
+		return cm2;
+	}
+	
+	public static void print(double feet, double yards, double cm)
+	{
+		System.out.printf("\n%d is equivalent to %.2f feet, %.2f yards, "
+			+"and %.2f centimeters.", inches, feet, yards, cm);
+		System.out.println("\nThank you for using Unit Converter!");
+		System.out.print("\n\n\n");
+	}
+}
+		
 	
 	
+
+
