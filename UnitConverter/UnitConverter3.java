@@ -16,17 +16,17 @@ Ex:	100 inches = 8.33 feet = 2.78 yards = 254.00 centimeters,
 
 import java.util.Scanner;	// import Scanner
 
-public class UnitConverter   // class header
+public class UnitConverter3  // class header
 {
 	private static int inches; // declare field vars-these can be used in all methods
 	
-	public UnitConverter()	  // Constructor - used to initialize field variables.
+	public UnitConverter3()	  // Constructor - used to initialize field variables.
 	{
 		inches = -1;
 	}
 	
-	public static void main (String [] args)	// main () method header
-	{				
+	public void convertIt()
+	{		
 		double feet = -1.2;	
 		double cm = -2.0;
 		double yards = -3.0;
@@ -38,7 +38,7 @@ public class UnitConverter   // class header
 	}
 
 	// prompts the user for the number of inches and reads it in.
-	public static void getInches ()
+	public void getInches ()
 	{
 		Scanner keyboard = new Scanner (System.in);	// instantiate Scanner 
 		System.out.println ("\n\n\n");
@@ -52,7 +52,7 @@ public class UnitConverter   // class header
 	
 	// calculates number of feet using the field variable inches and returns 
 	// the # of ft
-	public static double inchesToFeet ()
+	public double inchesToFeet ()
 	{
 		final byte IN_TO_FT = 12;
 		double ft = -1.2;	
@@ -62,7 +62,7 @@ public class UnitConverter   // class header
 	
 	// calculates number of centimeters using the field variable inches then 
 	// returns the cm
-	public static double inchesToCm ()
+	public double inchesToCm ()
 	{
 		final double IN_TO_CM = 2.54;
 		double centi = -5.0;
@@ -71,7 +71,7 @@ public class UnitConverter   // class header
 	}
 	
 	// takes feet as a parameter then convert it to yards and returns the # of yds
-	public static double feetToYards (double ft2)
+	public double feetToYards (double ft2)
 	{												
 		final byte FT_YD = 3;	
 		double yds = -5.0;
@@ -81,7 +81,7 @@ public class UnitConverter   // class header
 	
 	// Takes in parameters for feet, yards and cm the prints the # of inches in 
 	// each unit
-	public static void print(double ftIn, double cmIn, double ydsIn)
+	public void print(double ftIn, double cmIn, double ydsIn)
 	{
 		System.out.printf ("%n%,d inches is equivalent to %,.2f feet, %,.2f yards" +
 			" and %,.2f centimeters.\n", inches, ftIn, ydsIn, cmIn);

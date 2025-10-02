@@ -1,6 +1,6 @@
 /*  Conlin
 10-1-24
-UnitConverter.java 
+UnitConverter1.java 
 
 The programs gets input (inches) from the user then converts it to feet, yards and 
 centimeter units.
@@ -16,11 +16,11 @@ Ex:	100 inches = 8.33 feet = 2.78 yards = 254.00 centimeters,
 
 import java.util.Scanner;	// import Scanner
 
-public class UnitConverter   // class header
+public class UnitConverter1   // class header
 {
 	private static int inches; // declare field vars-these can be used in all methods
 	
-	public UnitConverter()	  // Constructor - used to initialize field variables.
+	public UnitConverter1()	  // Constructor - used to initialize field variables.
 	{
 		inches = -1;
 	}
@@ -81,7 +81,7 @@ public class UnitConverter   // class header
 	
 	// Takes in parameters for feet, yards and cm the prints the # of inches in 
 	// each unit
-	public static void print(double ftIn, double cmIn, double ydsIn)
+	public static void print(double ftIn, double ydsIn, double cmIn)
 	{
 		System.out.printf ("%n%,d inches is equivalent to %,.2f feet, %,.2f yards" +
 			" and %,.2f centimeters.\n", inches, ftIn, ydsIn, cmIn);
