@@ -39,6 +39,8 @@ public class Stave
 	public void playGame () 
 	{
 		Scanner input - new Scanner(System.in);
+		Roll rollem = new Roll()
+		ShowStave show = new ShowStave();
 		
 		
 
