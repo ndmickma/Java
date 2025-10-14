@@ -1,7 +1,7 @@
 //Sanvitti Shah
 //10-14-25
 //Per. 2
-//ShowStave.java
+//ShowStave2.java
 /*Description of program
  * shows what player rolled
  * 
@@ -20,3 +20,4 @@ public class ShowStave
 		System.out.println((char)(rollNum));
 	}
 }
+

@@ -114,3 +114,4 @@ public class Stave
  // end class Stave
 //Be sure other two classes are written as well (both are very short).
 // Neither class uses “static” in their methods – leave it out.  :)
+
