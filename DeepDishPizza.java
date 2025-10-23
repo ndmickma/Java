@@ -9,7 +9,13 @@
  
  public class DeepDishPizza extends Pizza
  {
-	 public DeepDishPizza()
+	 protected String toppingDeepDish, name;
+	 public DeepDishPizza(String toppingDeepDishIn, String nameIn)
+	 {
+		 super(toppingDeepDishIn,nameIn);
+		 toppingDeepDish = toppingDeepDishIn;
+		 name = nameIn;
+	 }
 	 
 	 
  }

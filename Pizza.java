@@ -8,11 +8,15 @@
  
  public class Pizza extends Food
  {
-	 protected String topping;
+	// protected String topping;
 	 public Pizza(String ingredient)
 	 {
-		 topping = ingredient;
-		 super.Food("baked", topping, "pizza")
+		 super("baked", ingredient, "pizza");
+		 //topping = ingredient;
+	 }
+	 public Pizza(String ingredient, String name)
+	 {
+		 super("baked", ingredient, "deep dish pizza");
 	 }
 	 
  }
