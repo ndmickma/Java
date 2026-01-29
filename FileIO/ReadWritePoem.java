@@ -34,7 +34,7 @@ public class ReadWritePoem
 		rwp.readIt();
 	}
 	
-	/* This method called all of the other ones. Tere are no local variables */
+	/* This method called all of the other ones. There are no local variables */
 	public void readIt()
 	{
 		openIt();
@@ -58,7 +58,7 @@ public class ReadWritePoem
 		}
 	}
 	
-	/* makeIt uses a try-catch block to create a fil to write to. */
+	/* makeIt uses a try-catch block to create a file to write to. */
 	public void makeIt()
 	{
 		File outFile = new File(outFileName);
