@@ -50,28 +50,41 @@ class MyPanel extends JPanel
 {
 	public MyPanel()
 	{
-		setBackground(Color.BLUE);	//set background color
+		//setBackground(Color.BLUE);	//set background color
 	}
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
+		drawGrid(g);
 		drawPlanet(g);
 		drawConstellation(g);
 		drawRocket(g);
 		drawMoon(g);
 		drawText(g);
-		drawGrid(g);
 		
 	}
 	
 	public void drawPlanet(Graphics g)
 	{
-		g.setColor(Color.BROWN);
+		//g.setColor(Color.BROWN);
+		//g.fillArc();
 		
 	}
 	
 	public void drawConstellation(Graphics g)
 	{
+		g.setColor(Color.BLACK);	 //set color to black
+		g.drawLine(40,240,180,180);  //draw first constellation line
+		g.fillOval(34,234,11,11);    //draw dot #1
+		g.drawLine(180,180,240,200); //draw second constellation line
+		g.fillOval(174,174,11,11);	 //draw dot #2
+		g.drawLine(240,200,360,220); //draw third constellation line
+		g.fillOval(234,194,11,11);	 //draw dot #3
+		g.drawLine(360,220,540,140); //draw fourth constellation line
+		g.fillOval(354,216,11,11);   //draw dot #4
+		g.drawLine(540,140,560,240); //draw fifth constellation line
+		g.drawLine(560,240,400,300); //draw sixth contellation line
+		g.drawLine(400,300,360,220); //draw seventh constellation line
 	}
 	
 	public void drawRocket(Graphics g)
@@ -80,10 +93,19 @@ class MyPanel extends JPanel
 	
 	public void drawMoon(Graphics g)
 	{
+		g.setColor(Color.YELLOW);
+		g.fillOval(-7,-7,120,120);	//draw yellow circle for moon "base"
+		g.setColor(Color.BLUE);
+		g.fillOval(-21,-21,115,115);	//draw another circle in blue to overlap the yellow circle to make right shape
 	}
 	
 	public void drawText(Graphics g)
 	{
+		g.setColor(Color.BLACK);
+		Font writing = new Font("serif",Font.ITALIC, 46);	//custom font
+		g.setFont(writing);
+		g.drawString("The Big Dipper",150,80);
+		g.drawRect(140,35,320,65);
 	}
 	
 	public void drawGrid(Graphics g)
