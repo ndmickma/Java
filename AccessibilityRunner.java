@@ -75,6 +75,7 @@ class Accessibility extends JPanel implements MouseListener, KeyListener
 		Font font = new Font("Serif", Font.PLAIN,fontSize);
 		g.setFont(font);
 		writeDirections(g);
+		setBackground(backgroundColor);
 	}
 	
 	public void keyPressed(KeyEvent evt)
@@ -118,6 +119,7 @@ class Accessibility extends JPanel implements MouseListener, KeyListener
 				colorParameterVar = 255;
 			else
 				colorParameterVar +=3;
+			backgroundColor = new Color(colorParameterVar, colorParameterVar, colorParameterVar);
 			repaint();
 		}
 		
@@ -127,6 +129,8 @@ class Accessibility extends JPanel implements MouseListener, KeyListener
 				colorParameterVar=34;
 			else
 				colorParameterVar -=3;
+				
+			backgroundColor = new Color(colorParameterVar, colorParameterVar, colorParameterVar);
 			repaint();
 		}
 	}
