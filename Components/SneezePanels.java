@@ -20,6 +20,8 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JFrame;	
 import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.JTextField;
 
 import java.awt.Color;		
 import java.awt.Graphics;
@@ -27,6 +29,7 @@ import java.awt.Font;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 
 public class SneezePanels
 {	
@@ -99,14 +102,13 @@ class PanelHolder extends JPanel
 		private JButton nosebutton;
  		public DirectionPanel()
  		{
-			setLayout(new FlowLayout(FlowLayout.CENTER,0,50));
-			nosebutton = new JButton("Nose");
-			Button1Handler b1h = new Button1Handler();
-			nosebutton.addActionListener(bh1);
-			add(nosebutton);
-			nosePressed = false;
 			Color blueish = new Color(197,227,237);
 			setBackground(blueish);
+			setLayout(new FlowLayout(FlowLayout.CENTER,0,80));
+			nosebutton = new JButton("Nose");
+			Button1Handler b1h = new Button1Handler();
+			nosebutton.addActionListener(b1h);
+			add(nosebutton);
 		
 		}	
  		
@@ -114,8 +116,9 @@ class PanelHolder extends JPanel
  		{
 			super.paintComponent(g);
 			setFont(font);
-			g.drawString("Directions: Press button ",65,100);
-			g.drawString("to tickle the nose", 75,100);
+			g.setColor(Color.BLACK);
+			g.drawString("Directions: Press button ",40,30);
+			g.drawString("to tickle the nose", 55,55);
 			 
 		}
  	}
@@ -128,13 +131,13 @@ class PanelHolder extends JPanel
 		JTextField tf;
  		public TFPanel()
  		{
-			setLayout(new FlowLayout(FlowLayout.LEFT,0,5);
-			tf = new JTextField("Type: Bless you.",30);
+			Color greenish = new Color(222,232,201);
+			setBackground(greenish);
+			setLayout(new FlowLayout(FlowLayout.LEFT));
+			tf = new JTextField("Type: Bless you.",20);
 			TextFieldHandler tfh = new TextFieldHandler();
 			tf.addActionListener(tfh);
 			add(tf);
-			Color greenish = new Color(222,232,201);
-			setBackground(greenish);
  		}
  	}
  	
@@ -152,11 +155,14 @@ class PanelHolder extends JPanel
  		public void paintComponent(Graphics g)
  		{
 			super.paintComponent(g);
-			if(pressed)
+			if(nosePressed)
 			{
+				g.setFont(font);
 				g.setColor(Color.YELLOW);
-				g.fillOval(400,100,75,100);
-				g.drawString("Achoo!", 400,80);
+				g.fillOval(100,80,90,110);
+				
+				g.setColor(Color.BLACK);
+				g.drawString("Achoo!", 110,40);
 			}
 		}
 
@@ -169,18 +175,27 @@ class PanelHolder extends JPanel
 		public void actionPerformed(ActionEvent e) 
 		{
 			String command = e.getActionCommand();
-			if(command.equals("Nose")
+			if(command.equals("Nose"))
+			{
 				nosePressed = true;
+				rp.repaint();
+			}
 		}
 	}	// end class Button1Handler	
 
 	// When the user types in "Bless you" in the textField, the 
 	// boolean is reset	and RightPanel's paintComponent is called
-	class TextFieldHandler implements ActionListener, MouseEvent
+	class TextFieldHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e) 
 		{
-			
+			String text = e.getActionCommand();
+			if(text.equals("Bless you"))
+			{
+				nosePressed = false;
+				rp.repaint();
+			}
 		}
 	}	// end class TextFieldHandler
+}
 }
