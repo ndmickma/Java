@@ -1,201 +1,351 @@
 // Sanvitti Shah
-//Per 2.
-// 03-17-26
-// SneezePanels.java
-/*  IDEA of this program:  PanelHolder, which is added to the frame, holds two panels,
-LeftPanel and RightPanel, which are added to PanelHolder in a GridLayout. The 
-LeftHolder has a BorderLayout and has two panels-a direction panel, with a FlowLayout 
-that has a the button, and a textField panel that contains the textField.  When
-the button is pressed, Achoo and a yellow oval are drawn on the Right Panel.  
-When the user types in "Bless you" in the textField, the RightPanel is erased
-and variables are reset.
-*/
-/// Testing:  Only clicking on the button will draw on the right panel.  Only typing 
-/// in "Bless you" will clear it.
-/// Try clicking anywhere other that the button.  This should will not change anything.  
-/// Typing anything other than "Bless you" will not reset the panels.
+// Per. 2
+// 03/23/26
+// ControlPanel.java
+// This program gives an example of using several components in order to change the
+// different components and/or images.
 
-import java.awt.event.ActionListener;	
-import java.awt.event.ActionEvent;
+import java.awt.Graphics;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Dimension;
+import java.awt.Image;
+
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+
+import java.awt.GridLayout;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 
 import javax.swing.JFrame;	
 import javax.swing.JPanel;
+
 import javax.swing.JButton;
+import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
 import javax.swing.JTextField;
+import javax.swing.JTextArea;
+import javax.swing.JLabel;
+import javax.swing.JSlider;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JScrollPane;
 
-import java.awt.Color;		
-import java.awt.Graphics;
-import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-
-public class SneezePanels
-{	
-	public static void main( String[] args )
-	{
-		SneezePanels sp = new SneezePanels();
-		sp.run();
-	}
-	
-	public SneezePanels()
-	{	
-	}
-
-	public void run()
-	{
-		JFrame sneezeFrame = new JFrame ("Sneeze and Bless you.");
-		
-		sneezeFrame.setSize( 600, 400);				
-		sneezeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
-		sneezeFrame.setLocation(400,50);
-		sneezeFrame.setResizable(true);
-		PanelHolder pHolder = new PanelHolder(); 
-		sneezeFrame.add( pHolder );		
-
-		sneezeFrame.setVisible(true);	
-	}
-
-// This panel holds two panels-one on the left and one on the right, aptly named
-class PanelHolder extends JPanel
+public class ControlPanel
 {
-	private RightPanel rp;	// these are field variables so the nested classes have access to them
-	private boolean nosePressed;	// otherwise, we have to use getter-setter methods
-	private Font font;
-	
-	public PanelHolder()
+	public static void main(String[] args) 
 	{
-		setLayout( new GridLayout(1, 2) );
-		nosePressed = false;
-		font = new Font("Serif", Font.BOLD, 20);
-
-		LeftPanel lp = new LeftPanel();
-		add(lp);
-		rp = new RightPanel();
-		add( rp );
+		ControlPanel ce = new ControlPanel();
+		ce.run();
 	}
+	
+	public void run() 
+	{
+		JFrame frame = new JFrame ("Control Panel for Picture");
+		frame.setSize(800, 600);
+		frame.setLocation(10, 0);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	
+		CpPanelHolder cph = new CpPanelHolder();
+		frame.getContentPane().add(cph);
+		frame.setVisible(true);
+	}
+}
 
-	// This panel will have a BorderLayout
-	//  It will have the directions panel in the center, and the 
-	// textField panel in the south. 
-	class LeftPanel extends JPanel
-	{	
-		public LeftPanel()
-		{	
+class CpPanelHolder extends JPanel
+{
+	private int selected;  // the index for the picture selected to draw
+	private JTextArea tAComponentInfo;	// text area in the PictPanel, but changed in RightControlPanel2
+	private JLabel welcome;	// label in the PictPanel, but changed in RightControlPanel2
+	private Font font;  // most fonts are the same, so there is one
+	private PictPanel pp; // the variables in the RightControlPanel2 need access to use repaint
+	private int val; // value of the slider to change the picture size
+	private int width;
+	private int height;
+	private int [] widthOfImages;  // stores the width of each image
+	private int [] heightOfImages;  // stores the height of each image
+	
+	public CpPanelHolder()
+	{
+		setLayout(new BorderLayout());
+		
+		pp = new PictPanel();
+		RightControlPanel rcp = new RightControlPanel();
+		
+		// set the width of the right control panel to 300 (less than half of the whole screen)
+		rcp.setPreferredSize(new Dimension(300, 600));
+		
+		add(pp, BorderLayout.CENTER);
+		add(rcp, BorderLayout.EAST);
+	}
+	
+	
+	/* PictPanel, which has a border layout,  has a label and a text area, both declared above.
+	*	most of the code for loading the images is given.  add the rest for the images
+	*	plus add the code for the text area, label and font (not necessarily in that order).
+	*	the fonts, unless otherwise stated are size 20, bold and Serif.  
+	*/
+	class PictPanel extends JPanel
+	{
+		private String[] names;	// the names of the pictures
+		private Image[] images;	// array of images to be drawn
+		
+		public PictPanel()
+		{
 			setLayout(new BorderLayout());
-		
-			DirectionPanel dirP = new DirectionPanel (); //panel that has directions
-			TFPanel tfp = new TFPanel(); //text field panel
+			font = new Font("Serif", Font.BOLD, 20);
+			welcome = new JLabel("Welcome", JLabel.CENTER);
+			welcome.setFont(font);
+			add(welcome, BorderLayout.NORTH);
+			tAComponentInfo = new JTextArea("");		
+			JScrollPane scroll = new JScrollPane(tAComponentInfo);
+			scroll.setPreferredSize(new Dimension(100, 150));
+			add(scroll, BorderLayout.SOUTH);
+			names = new String[] {"mountains.jpg", "shanghai.jpg", "trees.jpg", "water.jpg"};
+			images = new Image[names.length];
+			widthOfImages = new int[names.length];
+			heightOfImages = new int[names.length]; // create the array for the heights
+			selected = 0;
 			
-			add ( dirP, BorderLayout.CENTER );
-			add ( tfp, BorderLayout.SOUTH );
-		}
-	
-	}
-	
-	// DirectionPanel will print the directions and contain the 
-	// nose button.  It has a FlowLayout.  It will use a 
-	// ButtonHandler for actionPerformed.
- 	class DirectionPanel extends JPanel
- 	{
-		private JButton nosebutton;
- 		public DirectionPanel()
- 		{
-			Color blueish = new Color(197,227,237);
-			setBackground(blueish);
-			setLayout(new FlowLayout(FlowLayout.CENTER,0,80));
-			nosebutton = new JButton("Nose");
-			Button1Handler b1h = new Button1Handler();
-			nosebutton.addActionListener(b1h);
-			add(nosebutton);
-		
-		}	
- 		
- 		public void paintComponent( Graphics g )
- 		{
-			super.paintComponent(g);
-			setFont(font);
-			g.setColor(Color.BLACK);
-			g.drawString("Directions: Press button ",40,30);
-			g.drawString("to tickle the nose", 55,55);
-			 
-		}
- 	}
-
-	// The TFPanel will have a FlowLayout and contain a text field
-	// that will be on the left.  It uses a handler class for 
-	// actionPerformed
- 	class TFPanel extends JPanel
- 	{
-		JTextField tf;
- 		public TFPanel()
- 		{
-			Color greenish = new Color(222,232,201);
-			setBackground(greenish);
-			setLayout(new FlowLayout(FlowLayout.LEFT));
-			tf = new JTextField("Type: Bless you.",20);
-			TextFieldHandler tfh = new TextFieldHandler();
-			tf.addActionListener(tfh);
-			add(tf);
- 		}
- 	}
- 	
-	// The RightPanel is used to draw "Achoo" and a yellow oval when the
-	// button is pressed and cleared when "Bless you" is typed in
-	// the textField
- 	class RightPanel extends JPanel
- 	{
- 		public RightPanel()
- 		{
-			Color pinkish = new Color(245,227,225);
-			setBackground(pinkish);
- 		}
- 		
- 		public void paintComponent(Graphics g)
- 		{
-			super.paintComponent(g);
-			if(nosePressed)
-			{
-				g.setFont(font);
-				g.setColor(Color.YELLOW);
-				g.fillOval(100,80,90,110);
+			// load all of the pictures
+			for (int i = 0; i < names.length; i++)
+			{	// since all of the images are in a directory called pictures, each file
+				// name needs the following before the file name:   "pictures/" + 
+				// e.g. it could be:  pictures/mountains.jpg
+				images[i] = getMyImage("pictures/" + names[i]);	// finish this line
 				
-				g.setColor(Color.BLACK);
-				g.drawString("Achoo!", 110,40);
+				width = widthOfImages[i] = images[i].getWidth(this)/3;   //widths of each picture
+				height = heightOfImages[i] = images[i].getHeight(this)/3; // find the heights of each picture
 			}
 		}
-
- 	}
-
-	// When the button is pressed, the method actionPerformed is 
-	// used to call paintComponent in RightPanel
- 	class Button1Handler implements ActionListener 
-	{
-		public void actionPerformed(ActionEvent e) 
+		
+		// this has been started for you
+		public Image getMyImage(String pictName) 
 		{
-			String command = e.getActionCommand();
-			if(command.equals("Nose"))
+			Image picture = null;
+			String pictNameIn = pictName;
+			try
 			{
-				nosePressed = true;
-				rp.repaint();
+				picture = ImageIO.read(new File(pictNameIn));
 			}
+			catch(IOException e)
+			{
+				System.err.println("\n\n"+ pictNameIn+ " can't be found.\n\n");
+				e.printStackTrace();
+			}
+			
+			return picture;
 		}
-	}	// end class Button1Handler	
-
-	// When the user types in "Bless you" in the textField, the 
-	// boolean is reset	and RightPanel's paintComponent is called
-	class TextFieldHandler implements ActionListener
-	{
-		public void actionPerformed(ActionEvent e) 
+		
+		// draw the image on a blank screen with the top left corner at (20,30)
+		public void paintComponent(Graphics g)
 		{
-			String text = e.getActionCommand();
-			if(text.equals("Bless you"))
+			super.paintComponent(g);
+			
+			if (images[selected] != null)
 			{
-				nosePressed = false;
-				rp.repaint();
+				width = widthOfImages[selected] + val;
+				height = heightOfImages[selected] + val;
+				
+				int maxWidth = getWidth() - 20;
+				int maxHeight = getHeight() - 250;
+				
+				if (width > maxWidth) 
+					width = maxWidth;
+				if (height > maxHeight) 
+					height = maxHeight;
+				
+				g.drawImage(images[selected], 20, 30, width, height, this);
 			}
 		}
-	}	// end class TextFieldHandler
-}
-}
+	}	
+		
+	/* Make all panels on the right be cyan.
+	* RightControlPanel has a border layout.
+	* On this panel are:  label, which font size already done, the text field, the menu,
+	* the radio buttons and the slider.
+	* You will have to determine the layouts in order to make them show up like the sample
+	* run provided.
+	*/
+	class RightControlPanel extends JPanel
+	{
+		private JTextField tfName; // text field for user to type in their name
+		private ButtonGroup bg;	// to select the color so only one is selected
+		private JRadioButton color1, color2, color3;	// color choices
+		private JSlider sSize;	// slider for changing the size of the picture
+		
+		public RightControlPanel()
+		{
+			setLayout(new BorderLayout());
+			setBackground(Color.CYAN);
+			
+		    JPanel northSection = new JPanel(new GridLayout(2, 1));
+			northSection.setBackground(Color.CYAN);
+
+			JLabel cpLabel = new JLabel("Control Panel", JLabel.CENTER);
+			cpLabel.setFont(font);
+			northSection.add(cpLabel);
+			
+			JPanel nameInput = new JPanel();
+			nameInput.setBackground(Color.CYAN);
+			nameInput.add(new JLabel("Enter your Name"));
+			tfName = new JTextField(10);
+			tfName.addActionListener(new tfHandler());
+			nameInput.add(tfName);
+			northSection.add(nameInput);
+			add(northSection, BorderLayout.NORTH);
+			
+			JPanel center = new JPanel(new GridLayout(2,1));
+			center.setBackground(Color.CYAN);
+			
+			JPanel options = new JPanel(new GridLayout(1, 2));
+			options.setBackground(Color.CYAN);
+			
+			JPanel menu = new JPanel();
+			add(menu);
+			menu.setBackground(Color.CYAN);
+			menu.add(makePictureMenuBar());
+			
+			JPanel radio = new JPanel(new GridLayout(4, 1, 0, 0)); 
+			radio.setBackground(Color.CYAN);
+			radio.add(new JLabel("Select color of label"));
+			
+			color1 = new JRadioButton("Red");
+			color2 = new JRadioButton("Blue");
+			color3 = new JRadioButton("Magenta");
+			color1.setBackground(Color.CYAN);
+			color2.setBackground(Color.CYAN);
+			color3.setBackground(Color.CYAN);
+			
+			color1.addActionListener(new redRadioHandler());
+			color2.addActionListener(new blueRadioHandler());
+			color3.addActionListener(new magentaRadioHandler());
+			
+			bg = new ButtonGroup();
+			bg.add(color1); 
+			bg.add(color2); 
+			bg.add(color3);
+			radio.add(color1); 
+			radio.add(color2); 
+			radio.add(color3);
+			
+			options.add(menu);
+			options.add(radio);
+			center.add(options);
+			
+			sSize = new JSlider(0, 200, 0);
+			sSize.setMajorTickSpacing(20);
+			sSize.setPaintTicks(true);
+			sSize.setPaintLabels(true);
+			sSize.setBackground(Color.CYAN);
+			sSize.addChangeListener(new sliderHandler());
+			
+			center.add(sSize);
+			add(center, BorderLayout.CENTER);
+		}
+	
+		// There are a some more classes that you will need here to add to RightControlPanel
+		// You will need to figure them out based on the directions/prompt and the 
+		// sample run in the prompt.  You can figure them out based on your drawing of the
+		// layout, i.e. your pseudocode for this.
+		
+		public JMenuBar makePictureMenuBar()
+		{
+			JMenuBar bar = new JMenuBar();
+			JMenu menu = new JMenu("Picture");
+			for (int i = 0; i < pp.names.length; i++)
+			{
+				String displayName = pp.names[i].replace(".jpg", "");
+				JMenuItem item = new JMenuItem(displayName);
+				item.setActionCommand("" + i);
+				item.addActionListener(new MenuHandler());
+				menu.add(item);
+			}
+			bar.add(menu);
+			return bar;
+		}
+	
+		
+		// Write the Listener/Handler class for the menu
+		class MenuHandler implements ActionListener
+		{
+			public void actionPerformed(ActionEvent evt)
+			{
+				selected = Integer.parseInt(evt.getActionCommand());
+				val = sSize.getValue();
+				pp.repaint();
+				tAComponentInfo.append("The picture \"" + pp.names[selected] + "\" was selected.\n");
+			}
+		}
+		
+	
+		// write the Listener/Handler class for the text field
+		class tfHandler implements ActionListener
+		{
+			public void actionPerformed(ActionEvent evt)
+			{
+				welcome.setText("Welcome " + tfName.getText());
+				tAComponentInfo.setText("\"" + tfName.getText() + "\" was entered in the text field.\n");
+			}
+		}
+		
+		
+
+		// write the Listener/Handler class for the slider
+		class sliderHandler implements ChangeListener
+		{
+			public void stateChanged(ChangeEvent evt)
+			{
+				val = sSize.getValue();
+				pp.repaint();
+				
+				String currentText = tAComponentInfo.getText();
+				String sliderSizeText = "The size of the picture was changed by";
+				
+				if (currentText.contains(sliderSizeText))
+				{
+					int sliderTextIndex = currentText.lastIndexOf(sliderSizeText);
+					tAComponentInfo.setText(currentText.substring(0, sliderTextIndex));
+				}
+				tAComponentInfo.setText(sliderSizeText + " " + val + ".\n");
+			}
+		}
+	
+		// write Listener/Handler class for the JRadioButtons
+		class redRadioHandler implements ActionListener
+		{
+			public void actionPerformed(ActionEvent evt)
+			{
+				welcome.setForeground(Color.RED);
+				tAComponentInfo.setText("The color of the label was changed to Red.\n");
+			}
+		}
+		
+		class blueRadioHandler implements ActionListener
+		{
+			public void actionPerformed(ActionEvent evt)
+			{
+				welcome.setForeground(Color.BLUE);
+				tAComponentInfo.setText("The color of the label was changed to Blue.\n");
+			}
+		}
+		
+		class magentaRadioHandler implements ActionListener
+		{
+			public void actionPerformed(ActionEvent evt)
+			{
+				welcome.setForeground(Color.MAGENTA);
+				tAComponentInfo.setText("The color of the label was changed to Magenta.\n");
+			}
+		}
+		
+	}
+}	// end class ControlPanel
