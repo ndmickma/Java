@@ -47,6 +47,7 @@ public class Game
 		GameHolder gh = new GameHolder(); 		
 		frame.getContentPane().add(gh);		
 		frame.setVisible(true);		
+		frame.setResizable(false);
 	}
 }
 
@@ -60,11 +61,11 @@ class GameHolder extends JPanel
 		Information info = new Information();
 		FirstPagePanel fpp = new FirstPagePanel(this, cards, info);
 		TCPanel tc = new TCPanel(this, cards, info);
-		HomePanel home = new HomePanel(this, info);
+	//	HomePanel home = new HomePanel(this, info);
 		
 		add(fpp, "First");
 		add(tc, "TC");
-		add(home, "Home");
+		//add(home, "Home");
 	}
 }
 
@@ -115,7 +116,7 @@ class FirstPagePanel extends JPanel
 		startBtn.setBounds(350, 380, 300, 80);
 		startBtn.setIcon(new ImageIcon("startbutton.jpg")); //use imageIcon library to put an image on the button
 		add(startBtn); //add button
-		validate(); //so image shows up
+		repaint(); //so image shows up
 		
 		
 		startBtn.addActionListener(new ActionListener() 
@@ -173,7 +174,7 @@ class TCPanel extends JPanel  //TCPanel is the terms and conditions panel
 		add(welcomeLabel, BorderLayout.NORTH);
 		
 		//CENTER:Text area containing terms and conditions
-		JTextArea terms = new JTextArea("hi how are you, fill this out later");
+		JTextArea terms = new JTextArea("hi how are you, this is where the terms and conditions will go, fill this out later");
 		terms.setFont(new Font("Monospaced", Font.PLAIN, 24));
 		terms.setEditable(false);
 		terms.setLineWrap(true);
