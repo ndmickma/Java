@@ -1,9 +1,7 @@
-//Sanvitti Shah
-//per 2
-//04/22/26
-//Game2.java
-//just making card layout 
-
+// Sanvitti Shah
+// 03-30-26
+// Game.java
+// Per.2
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -34,7 +32,7 @@ public class Game2
 	
 	public static void main(String [] args)
 	{
-		Game2 gam2 = new Game2();
+		Game2 gam = new Game2();
 		gam.run();
 	}
 	
@@ -46,49 +44,65 @@ public class Game2
 		frame.setLocation(200, 50); //set location of frame
 		frame.setResizable(true);
 		
-		Game2Holder gh2 = new Game2Holder(); 		
-		frame.getContentPane().add(gh2);		
-		frame.setVisible(true);	
-		frame.setResizeable(false);	
+		Game2Holder gh = new Game2Holder(); 		
+		frame.getContentPane().add(gh);		
+		frame.setVisible(true);		
 	}
 }
 
-class Game2Holder extends JPanel
-{
+class Game2Holder extends JPanel 
+{	
 	public Game2Holder()
 	{
 		CardLayout cards = new CardLayout();
 		setLayout(cards);
 		
-		GameData gamdat = new GameData(); //GameData holds information like name
-		StartPanel startpanel = new StartPanel(this, cards, gamdat);
-		TCPanel termspanel = new TCPanel(this, cards, gamdat);
-		InstructionsPanel rulespanel = new InstructionsPanel(this, cards, gamdat);
-		GameControlPanel controlspanel = new GameControlPanel(this, cards, gamdat);
-		BioBasePanel bbpanel = new BioBasePanel(this, cards, gamdat);
+		Information info = new Information();
+		FirstPagePanel fpp = new FirstPagePanel(this, cards, info);
+		TCPanel tc = new TCPanel(this, cards, info);
+		//HomePanel home = new HomePanel(this, info);
 		
-		add(startpanel, "start");
-		add(termspanel, "terms");
-		add(rulespanel, "rules");
-		add(controlspanel, "controls");
-		add(bbpanel, "biobase");
-		
+		add(fpp, "First");
+		add(tc, "TC");
+		//add(home, "Home");
 	}
 }
 
-class StartPanel extends JPanel
+class FirstPagePanel extends JPanel
 {
-	private Game2Holder holder;
+	private Game2Holder panelCards;
 	private CardLayout cards;
-	private GameData gamdat;
+	private Information info;
+	private JTextField tfName;
+	private Image backgroundImage;
 	
-	public StartPanel(Game2Holder holderIn, CardLayout cardsIn, GameData gamdatIn)
+	public FirstPagePanel(Game2Holder panelCardsIn, CardLayout cardsIn, Information infoIn)
 	{
-		holder = holderIn;
+		panelCards = panelCardsIn;
 		cards = cardsIn;
-		gamdat = gamdatIn;
+		info = infoIn;
 		
-		//Name Text Field
+		//load the background image
+		try 
+		{
+			backgroundImage = ImageIO.read(new File("frontbackground.jpg"));
+		} 
+		catch(IOException e) 
+		{
+			System.out.println("Error: 'frontbackground.jpg' not found.");
+		}
+		
+		//use null layout 
+		setLayout(null);
+		
+		//make JLabel title
+		JLabel titleLabel = new JLabel("BioBase", SwingConstants.CENTER);
+		titleLabel.setFont(new Font("Monospaced", Font.BOLD, 90));
+		titleLabel.setForeground(Color.WHITE);
+		titleLabel.setBounds(300, 80, 400, 100);
+		add(titleLabel);
+		
+		// Name Input field
 		tfName = new JTextField("enter name");
 		tfName.setFont(new Font("Monospaced", Font.PLAIN, 24));
 		tfName.setHorizontalAlignment(JTextField.CENTER);
@@ -97,72 +111,117 @@ class StartPanel extends JPanel
 		
 		// Start Button
 		JButton startBtn = new JButton("");
-		startBtn.setActionCommand("start");
 		startBtn.setFont(new Font("Monospaced", Font.BOLD, 36));
 		startBtn.setBounds(350, 380, 300, 80);
 		startBtn.setIcon(new ImageIcon("startbutton.jpg")); //use imageIcon library to put an image on the button
 		add(startBtn); //add button
 		repaint(); //so image shows up
+		
+		
+		startBtn.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				String nameInput = tfName.getText().trim();
+				// Basic check to ensure a name was entered
+				if (!nameInput.isEmpty() && !nameInput.equals("enter name")) 
+				{
+					info.setName(nameInput);
+					cards.show(panelCards, "TC");
+				}
+				else
+				{
+					tfName.setBackground(Color.PINK);
+				}
+			}
+		});
 	}
 
-	public void actionPerformed(ActionEvent evt)
+	public void paintComponent(Graphics g)
 	{
-		if(evt.getActionCommand("start") && !(evt.getText("")) && !(evt.getText(" ")))
-			cards.show(holder, "terms");
+		super.paintComponent(g);
+		if (backgroundImage != null) 
+		{
+			g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+		}
+		else
+		{
+			g.setColor(Color.LIGHT_GRAY);
+			g.fillRect(0, 0, getWidth(), getHeight());
+		}
 	}
 }
 
-class TCPanel extends JPanel
+class TCPanel extends JPanel  //TCPanel is the terms and conditions panel
 {
-	private Game2Holder holder;
+	private Game2Holder parent;
+	private Information info;
 	private CardLayout cards;
-	private GameData gamdat;
+	private JLabel welcomeLabel;
 	
-	public TCPanel(Game2Holder holderIn, CardLayout cardsIn, GameData gamdatIn)
+	public TCPanel(Game2Holder parentIn, CardLayout cardsIn, Information infoIn) 
 	{
-		holder = holderIn;
+		parent = parentIn;
+		info = infoIn;
 		cards = cardsIn;
-		gamdat = gamdatIn;
-		
-		Color turquoise = new Color(51, 187, 222):
-		Color skyblue = new Color(151, 223, 249);
-		
 		setLayout(new BorderLayout());
-		setBackground(turquoise);
+		setBackground(Color.WHITE);
 		
-		//Agree button (SOUTH)
+		//NORTH: Welcome label
+		welcomeLabel = new JLabel("Welcome!", SwingConstants.CENTER);
+		welcomeLabel.setFont(new Font("Monospaced", Font.BOLD, 48));
+		add(welcomeLabel, BorderLayout.NORTH);
+		
+		//CENTER:Text area containing terms and conditions
+		JTextArea terms = new JTextArea("hi how are you, fill this out later");
+		terms.setFont(new Font("Monospaced", Font.PLAIN, 24));
+		terms.setEditable(false);
+		terms.setLineWrap(true);
+		
+		JScrollPane scrollterms = new JScrollPane(terms);
+		add(scrollterms, BorderLayout.CENTER);
+		
+		//SOUTH: I agree button
 		JPanel iagreesouth = new JPanel();
-		iagreesouth.setBackground(skyblue);
+		iagreesouth.setBackground(Color.WHITE);
 		
 		JButton agreeBtn = new JButton("I AGREE");
 		agreeBtn.setFont(new Font("Monospaced", Font.BOLD, 36));
 		iagreesouth.add(agreeBtn);
 		add(iagreesouth, BorderLayout.SOUTH);
+		
+		
+		
 	}
 	
-	public void actionPerformed(ActionEvent evt)
+	public void paintComponent(Graphics g)
 	{
-		if(evt.getSource("I AGREE"))
-			cards.show(holder, "terms");
+		super.paintComponent(g);
+		// Update label once the name is captured from FirstPagePanel
+		if (info.getName() != null && !welcomeLabel.getText().equals("Welcome " + info.getName())) 
+		{
+			welcomeLabel.setText("Welcome " + info.getName() + "!");
+		}
 	}
 }
 
-class IntructionsPanel extends JPanel
+class Information
 {
-	private Game2Holder holder;
-	private CardLayout cards;
-	private GameData gamdat;
+	private String name;
 	
-	public TCPanel(Game2Holder holderIn, CardLayout cardsIn, GameData gamdatIn)
+	public Information()
 	{
-		holder = holderIn;
-		cards = cardsIn;
-		gamdat = gamdatIn;
-		
-		Color lightblue = new Color(181, 233, 245);
-		
-		setLayout(new GridLayout(3,1));
-		setBackground(lightblue);
+		name = "";
 	}
-		
+	
+	public String getName()
+	{
+		return name;
+	}
+	
+	public void setName(String nameIn)
+	{
+		name = nameIn;
+	}
 }
+
