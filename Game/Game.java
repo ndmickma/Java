@@ -258,6 +258,9 @@ class InstructionsPanel extends JPanel implements ActionListener
 		//Instructions label (NORTH)
 		JLabel howtoplay = new JLabel("How to Play:", SwingConstants.CENTER);
 		howtoplay.setFont(labelfont);
+		howtoplay.setBackground(darkblue);
+		howtoplay.setForeground(Color.WHITE);
+		howtoplay.setOpaque(true); //so label background is visible
 		col1.add(howtoplay, BorderLayout.NORTH);
 		
 		//Instructions TextArea (CENTER)
@@ -286,6 +289,9 @@ class InstructionsPanel extends JPanel implements ActionListener
 		//Rules Label (NORTH)
 		JLabel ruleslabel = new JLabel("Rules:", SwingConstants.CENTER);
 		ruleslabel.setFont(labelfont);
+		ruleslabel.setBackground(darkblue);
+		ruleslabel.setForeground(Color.WHITE);
+		ruleslabel.setOpaque(true); //so label background is visible
 		col3.add(ruleslabel, BorderLayout.NORTH);
 		
 		//Rules TextArea (CENTER)
@@ -296,7 +302,7 @@ class InstructionsPanel extends JPanel implements ActionListener
 		col3.add(rules, BorderLayout.CENTER);
 		
 		//Next button (SOUTH)
-		JButton next = new JButton("NEXT"); //might make this an image...?
+		JButton next = new JButton("NEXT");
 		next.setBackground(darkblue);
 		next.setForeground(Color.WHITE);
 		next.setFont(nextfont);
