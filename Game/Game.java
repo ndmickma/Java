@@ -16,6 +16,8 @@ import java.awt.Image;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import java.io.File;
 import javax.imageio.ImageIO;
@@ -84,7 +86,7 @@ class GameHolder extends JPanel
 	}
 }
 
-class StartPanel extends JPanel implements ActionListener
+class StartPanel extends JPanel implements ActionListener, MouseListener
 {
 	private GameHolder holder;
 	private CardLayout cards;
@@ -101,6 +103,7 @@ class StartPanel extends JPanel implements ActionListener
 		setLayout(null);
 		
 		Font namefont = new Font("Monospaced", Font.PLAIN, 24);
+		Font titlefont = new Font("Monospaced", Font.BOLD, 90);
 		
 		//Background Image
 		try 
@@ -114,17 +117,20 @@ class StartPanel extends JPanel implements ActionListener
 		}
 		
 		//make JLabel title
-		JLabel titleLabel = new JLabel("BioBase", SwingConstants.CENTER);
-		titleLabel.setFont(new Font("Monospaced", Font.BOLD, 90));
+		JPanel title = new JPanel();
+		JLabel titleLabel = new JLabel("<html><center> BioBase </center> </html>" );
+		titleLabel.setFont(titlefont);
 		titleLabel.setForeground(Color.WHITE);
 		titleLabel.setBounds(300, 80, 400, 100);
 		add(titleLabel);
+		add(title);
 		
 		//Name Text Field
 		tfName = new JTextField("enter name");
 		tfName.setFont(namefont);
 		tfName.setHorizontalAlignment(JTextField.CENTER);
 		tfName.setBounds(350, 250, 300, 50);
+		tfName.addMouseListener(this);
 		add(tfName);
 		
 		// Start Button
@@ -161,6 +167,18 @@ class StartPanel extends JPanel implements ActionListener
 			System.out.println("background image not found"); //if not found print error message to terminal
 		}
 	}
+	public void mouseClicked(MouseEvent mousevt)
+	{
+		String entered = tfName.getText();
+		
+		if(entered.equals("enter name"))
+			tfName.setText("");
+	}
+	
+	public void mousePressed(MouseEvent mousevt){}
+	public void mouseReleased(MouseEvent mousevt){}
+	public void mouseEntered(MouseEvent mousevt){}
+	public void mouseExited(MouseEvent mousevt){}
 }
 
 class TCPanel extends JPanel implements ActionListener
@@ -185,12 +203,14 @@ class TCPanel extends JPanel implements ActionListener
 		Color brightblue = new Color(56, 174, 220);
 		
 		setLayout(new BorderLayout());
-		setBackground(skyblue);
 		
 		//NORTH: Welcome label
-		welcomelabel = new JLabel("Welcome!", SwingConstants.CENTER);
+		JPanel welcome = new JPanel();
+		welcome.setBackground(skyblue);
+		welcomelabel = new JLabel("<html> <center> Welcome! </center> </html>");
 		welcomelabel.setFont(welcomefont);
-		add(welcomelabel, BorderLayout.NORTH);
+		welcome.add(welcomelabel);
+		add(welcome, BorderLayout.NORTH);
 		
 		//Agree button (SOUTH)
 		JPanel iagreesouth = new JPanel();
@@ -256,12 +276,15 @@ class InstructionsPanel extends JPanel implements ActionListener
 		col1.setLayout(new BorderLayout());
 		
 		//Instructions label (NORTH)
-		JLabel howtoplay = new JLabel("How to Play:", SwingConstants.CENTER);
+		JPanel how = new JPanel();
+		how.setBackground(darkblue);
+		JLabel howtoplay = new JLabel("<html> <center> How to Play: </center> </html>");
 		howtoplay.setFont(labelfont);
 		howtoplay.setBackground(darkblue);
 		howtoplay.setForeground(Color.WHITE);
 		howtoplay.setOpaque(true); //so label background is visible
-		col1.add(howtoplay, BorderLayout.NORTH);
+		how.add(howtoplay);
+		col1.add(how, BorderLayout.NORTH);
 		
 		//Instructions TextArea (CENTER)
 		JTextArea instructions = new JTextArea("fill this with simple instructions on how to play");
@@ -287,12 +310,15 @@ class InstructionsPanel extends JPanel implements ActionListener
 		col3.setLayout(new BorderLayout());
 		
 		//Rules Label (NORTH)
-		JLabel ruleslabel = new JLabel("Rules:", SwingConstants.CENTER);
+		JPanel rulespan = new JPanel();
+		rulespan.setBackground(darkblue);
+		JLabel ruleslabel = new JLabel("<html> <center> Rules: </center> </html>");
 		ruleslabel.setFont(labelfont);
 		ruleslabel.setBackground(darkblue);
 		ruleslabel.setForeground(Color.WHITE);
 		ruleslabel.setOpaque(true); //so label background is visible
-		col3.add(ruleslabel, BorderLayout.NORTH);
+		rulespan.add(ruleslabel);
+		col3.add(rulespan, BorderLayout.NORTH);
 		
 		//Rules TextArea (CENTER)
 		JTextArea rules = new JTextArea("put in rules here");
@@ -354,8 +380,10 @@ class GameControlPanel extends JPanel implements ActionListener
 		Font controlfont = new Font("Monospaced", Font.BOLD, 38);
 		
 		//Controls label (NORTH)
-		JLabel controls = new JLabel("Controls", SwingConstants.CENTER);
-		controls.setFont(controlfont);
+		JPanel controls = new JPanel();
+		JLabel controlslabel = new JLabel("<html> <center> Controls </center> </html>");
+		controlslabel.setFont(controlfont);
+		controls.add(controlslabel);
 		add(controls, BorderLayout.NORTH);
 		
 		//Menu Bar (WEST)
