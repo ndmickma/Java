@@ -194,8 +194,29 @@ class TCPanel extends JPanel implements ActionListener
 		cards = cardsIn;
 		gamdat = gamdatIn;
 		
+		String termsandconditions = new String("Welcome to BioBase. Before you continue "
+		+ "please read through these terms and \nclick the agree button to move on.\n\n"
+        + "1. OWNERSHIP OF INTELLECTUAL PROPERTY\n"
+        + "The Software, including all original source code and designs, "
+        + "is the property of the Developer (Sanvitti Shah). This Software is protected by copyright laws.\n\n"
+        + "2. GRANT OF LICENSE\n"
+        + "The Developer grants you personal, non-exclusive, non-transferable license to use the "
+        + "Software for educational purposes. Commercial distribution is prohibited.\n\n"
+        + "3. THIRD-PARTY CONTENT & ATTRIBUTIONS\n"
+        + "BioBase contains mechanics inspired by Google Doodle Champion Island. All "
+        + "rights to third-party IP belong to their respective owners. This "
+        + "project uses standard Java libraries.\n\n"
+        + "4. RESTRICTIONS ON USE\n"
+        + "The User agrees not to reverse engineer the Software or use automated "
+        + "scripts to interfere with the gameplay experience.\n\n"
+        + "5. LIMITATION OF LIABILITY\n"
+        + "The Developer is not responsible for any damages or data loss "
+        + "resulting from the use of this Software.\n\n"
+        + "By clicking 'I AGREE', you acknowledge these terms as well as "
+        + "the contributions of original creators.");
+		
 		Font agreefont = new Font("Monospaced", Font.BOLD, 36);
-		Font termsfont = new Font("Monospaced", Font.PLAIN, 24);
+		Font termsfont = new Font("Monospaced", Font.PLAIN, 20);
 		Font welcomefont = new Font("Monospaced", Font.BOLD, 48);
 		
 		Color turquoise = new Color(51, 187, 222);
@@ -224,7 +245,7 @@ class TCPanel extends JPanel implements ActionListener
 		add(iagreesouth, BorderLayout.SOUTH);
 		
 		//Terms TextArea (CENTER)
-		JTextArea terms = new JTextArea("hi how are you, fill this out later");
+		JTextArea terms = new JTextArea(termsandconditions);
 		terms.setFont(termsfont);
 		terms.setBackground(brightblue);
 		terms.setEditable(false);
@@ -387,6 +408,7 @@ class GameControlPanel extends JPanel implements ActionListener
 		add(controls, BorderLayout.NORTH);
 		
 		//Menu Bar (WEST)
+		JPanel menu = new JPanel();
 		JMenuItem dnadna, dnarna, rnadna, rnarna;
 		JMenu sequences;
 		JMenuBar menuBar;
@@ -404,7 +426,8 @@ class GameControlPanel extends JPanel implements ActionListener
 		sequences.add(rnarna);
 		menuBar.add(sequences);
 		
-		add(menuBar, BorderLayout.WEST);
+		menu.add(menuBar);
+		add(menu, BorderLayout.WEST);
 		
 		//Play Button (SOUTH)
 		JButton play = new JButton("PLAY"); //make this an image but for now keep it as text
