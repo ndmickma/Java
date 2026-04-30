@@ -18,6 +18,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import java.io.File;
 import javax.imageio.ImageIO;
@@ -35,6 +37,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.Timer;
+import javax.swing.JSlider;
 
 public class Game
 {	
@@ -198,20 +202,20 @@ class TCPanel extends JPanel implements ActionListener
 		+ "please read through these terms and \nclick the agree button to move on.\n\n"
         + "1. OWNERSHIP OF INTELLECTUAL PROPERTY\n"
         + "The Software, including all original source code and designs, "
-        + "is the property of the Developer (Sanvitti Shah). This Software is protected by copyright laws.\n\n"
+        + "is the property ofthe Developer (Sanvitti Shah). This Software is protected by copyright laws.\n\n"
         + "2. GRANT OF LICENSE\n"
-        + "The Developer grants you personal, non-exclusive, non-transferable license to use the "
+        + "The Developer grants you personal, non-exclusive, non-transferable license to\nuse the "
         + "Software for educational purposes. Commercial distribution is prohibited.\n\n"
         + "3. THIRD-PARTY CONTENT & ATTRIBUTIONS\n"
         + "BioBase contains mechanics inspired by Google Doodle Champion Island. All "
-        + "rights to third-party IP belong to their respective owners. This "
-        + "project uses standard Java libraries.\n\n"
+        + "rights\nto third-party IP belong to their respective owners. This "
+        + "project uses standard\nJava libraries.\n\n"
         + "4. RESTRICTIONS ON USE\n"
         + "The User agrees not to reverse engineer the Software or use automated "
         + "scripts to interfere with the gameplay experience.\n\n"
         + "5. LIMITATION OF LIABILITY\n"
         + "The Developer is not responsible for any damages or data loss "
-        + "resulting from the use of this Software.\n\n"
+        + "resulting from the\nuse of this Software.\n\n"
         + "By clicking 'I AGREE', you acknowledge these terms as well as "
         + "the contributions of original creators.");
 		
@@ -383,7 +387,7 @@ class InstructionsPanel extends JPanel implements ActionListener
 		
 }
 
-class GameControlPanel extends JPanel implements ActionListener
+class GameControlPanel extends JPanel implements ActionListener, ChangeListener
 {
 	private GameHolder holder;
 	private CardLayout cards;
@@ -400,12 +404,42 @@ class GameControlPanel extends JPanel implements ActionListener
 		Font playfont = new Font("Monospaced", Font.BOLD, 36);
 		Font controlfont = new Font("Monospaced", Font.BOLD, 38);
 		
+		Color slidercolor = new Color(39 ,150, 212);
+		Color controllabelcolor = new Color(93, 137, 255);
+		
+		
 		//Controls label (NORTH)
 		JPanel controls = new JPanel();
 		JLabel controlslabel = new JLabel("<html> <center> Controls </center> </html>");
 		controlslabel.setFont(controlfont);
+		controlslabel.setBackground(controllabelcolor);
 		controls.add(controlslabel);
 		add(controls, BorderLayout.NORTH);
+		
+		//Speed panel (EAST);
+		JPanel speedpanel = new JPanel();
+		speedpanel.setLayout(new GridLayout(3,1));
+		
+		//The first row has the JLabel "Speed"
+		JPanel row1 = new JPanel();
+		//JPanel centerspeed = new JPanel(); //so JLabel is centered
+		JLabel speedLabel = new JLabel("Speed");
+		//centerspeed.add(speedLabel); //add label to centerd 
+		row1.add(speedLabel);
+		add(row1);
+		
+		//The second row has the JSlider to change the speed
+		JPanel row2 = new JPanel();
+		JSlider speedslider = new JSlider( 1, 3, 1);
+		speedslider.setMajorTickSpacing(1);
+		speedslider.setPaintTicks(true);
+		speedslider.setPaintLabels(true);
+		speedslider.setBackground(slidercolor);
+		speedslider.addChangeListener(this);
+		row2.add(speedslider);
+		add(row2);
+		
+		
 		
 		//Menu Bar (WEST)
 		JPanel menu = new JPanel();
@@ -413,17 +447,21 @@ class GameControlPanel extends JPanel implements ActionListener
 		JMenu sequences;
 		JMenuBar menuBar;
 		
-		dnadna = new JMenuItem("DNA -> DNA");
+		//make all the JMenuItems
+		dnadna = new JMenuItem("DNA -> DNA"); 
 		dnarna = new JMenuItem("DNA -> RNA");
 		rnadna = new JMenuItem("RNA -> DNA");
 		rnarna = new JMenuItem("RNA -> RNA");
+		// make the JMenu and JMenuBar
 		sequences = new JMenu("Sequences");
 		menuBar = new JMenuBar();
 		
+		//add all the items to the menu
 		sequences.add(dnadna);
 		sequences.add(dnarna);
 		sequences.add(rnadna);
 		sequences.add(rnarna);
+		//add the menu to the menubar
 		menuBar.add(sequences);
 		
 		menu.add(menuBar);
@@ -444,29 +482,57 @@ class GameControlPanel extends JPanel implements ActionListener
 		if(command.equals("play"))
 			cards.show(holder, "biobase");
 	}	
+	
+	
+	public void stateChanged(ChangeEvent changevt)
+	{
+		
+	}
 }
 
-class BioBasePanel extends JPanel
+class BioBasePanel extends JPanel implements ActionListener
 {
 	private GameHolder holder;
 	private CardLayout cards;
 	private GameData gamdat;
+	private Timer timer;
+	private JLabel timerlabel;
+	private int count;
 	
 	public BioBasePanel(GameHolder holderIn, CardLayout cardsIn, GameData gamdatIn)
 	{
+		Font timerfont = new Font("Monospaced", Font.BOLD, 34);
 		holder = holderIn;
 		cards = cardsIn;
 		gamdat = gamdatIn;
+		timer = new Timer(1000,this);
+		//timer.addActionListener(this);
+		timerlabel = new JLabel("idk");
+		timerlabel.setFont(timerfont);
+		timer.start();
+		count = 30;
+		add(timerlabel);
 		
-		//This will be finished later 	
 	}
 	
 	public void paintComponent(Graphics g)
+	{
+			
+	}
+	
+	public void actionPerformed(ActionEvent evt)
+	{
+		if (count > 0)
 		{
-			Font font = new Font("Monospaced", Font.BOLD, 36);
-			g.setFont(font);
-			g.drawString("THIS IS WHERE THE GAME WILL BE PLAYED!", 40,50);
+			count -=1;
+			timerlabel.setText(""+count);
+			repaint();
+		} 
+		else
+		{
+			timer.stop();
 		}
+	}
 }
 
 class GameData
