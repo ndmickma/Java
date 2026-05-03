@@ -13,6 +13,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Dimension;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,6 +40,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.Timer;
 import javax.swing.JSlider;
+
 
 public class Game
 {	
@@ -198,29 +200,30 @@ class TCPanel extends JPanel implements ActionListener
 		cards = cardsIn;
 		gamdat = gamdatIn;
 		
-		String termsandconditions = new String("Welcome to BioBase. Before you continue "
-		+ "please read through these terms and \nclick the agree button to move on.\n\n"
-        + "1. OWNERSHIP OF INTELLECTUAL PROPERTY\n"
-        + "The Software, including all original source code and designs, "
-        + "is the property ofthe Developer (Sanvitti Shah). This Software is protected by copyright laws.\n\n"
-        + "2. GRANT OF LICENSE\n"
-        + "The Developer grants you personal, non-exclusive, non-transferable license to\nuse the "
-        + "Software for educational purposes. Commercial distribution is prohibited.\n\n"
-        + "3. THIRD-PARTY CONTENT & ATTRIBUTIONS\n"
-        + "BioBase contains mechanics inspired by Google Doodle Champion Island. All "
-        + "rights\nto third-party IP belong to their respective owners. This "
-        + "project uses standard\nJava libraries.\n\n"
-        + "4. RESTRICTIONS ON USE\n"
-        + "The User agrees not to reverse engineer the Software or use automated "
-        + "scripts to interfere with the gameplay experience.\n\n"
-        + "5. LIMITATION OF LIABILITY\n"
-        + "The Developer is not responsible for any damages or data loss "
-        + "resulting from the\nuse of this Software.\n\n"
-        + "By clicking 'I AGREE', you acknowledge these terms as well as "
+		//make string variable for terms and conditions
+		String termsandconditions = new String(" Welcome to BioBase. Before you continue "
+		+ "please read through these terms and \n click the agree button to move on.\n\n"
+        + " 1. OWNERSHIP OF INTELLECTUAL PROPERTY\n"
+        + " The Software, including all original source code and designs, "
+        + "is the property\n of the Developer (Sanvitti Shah). This Software is protected by copyright laws.\n\n"
+        + " 2. GRANT OF LICENSE\n"
+        + " The Developer grants you personal, non-exclusive, non-transferable license to\n use the "
+        + "Software for educational purposes. Commercial use is prohibited.\n\n"
+        + " 3. THIRD-PARTY CONTENT & ATTRIBUTIONS\n"
+        + " BioBase contains mechanics inspired by Google Doodle Champion Island. All\n "
+        + "rights to third-party IP belong to their respective owners. This "
+        + "project uses\n standard Java libraries.\n\n"
+        + " 4. RESTRICTIONS ON USE\n"
+        + " The User agrees not to reverse engineer the Software or use automated "
+        + "scripts\n to interfere with the gameplay experience.\n\n"
+        + " 5. LIMITATION OF LIABILITY\n"
+        + " The Developer is not responsible for any damages or data loss "
+        + "resulting from\n the use of this Software.\n\n"
+        + " By clicking 'I AGREE', you acknowledge these terms as well as "
         + "the contributions of original creators.");
 		
 		Font agreefont = new Font("Monospaced", Font.BOLD, 36);
-		Font termsfont = new Font("Monospaced", Font.PLAIN, 20);
+		Font termsfont = new Font("Monospaced", Font.BOLD, 20);
 		Font welcomefont = new Font("Monospaced", Font.BOLD, 48);
 		
 		Color turquoise = new Color(51, 187, 222);
@@ -229,34 +232,39 @@ class TCPanel extends JPanel implements ActionListener
 		
 		setLayout(new BorderLayout());
 		
-		//NORTH: Welcome label
+		//Welcome label (NORTH)
 		JPanel welcome = new JPanel();
 		welcome.setBackground(skyblue);
 		welcomelabel = new JLabel("<html> <center> Welcome! </center> </html>");
 		welcomelabel.setFont(welcomefont);
+		welcomelabel.setForeground(Color.WHITE); 
 		welcome.add(welcomelabel);
 		add(welcome, BorderLayout.NORTH);
 		
-		//Agree button (SOUTH)
-		JPanel iagreesouth = new JPanel();
-		iagreesouth.setBackground(skyblue);
-		
-		JButton agreeBtn = new JButton("I AGREE");
-		agreeBtn.setFont(agreefont);
-		agreeBtn.setBackground(turquoise);
-		agreeBtn.addActionListener(this);
-		iagreesouth.add(agreeBtn);
-		add(iagreesouth, BorderLayout.SOUTH);
 		
 		//Terms TextArea (CENTER)
 		JTextArea terms = new JTextArea(termsandconditions);
 		terms.setFont(termsfont);
+		terms.setForeground(Color.WHITE);
 		terms.setBackground(brightblue);
 		terms.setEditable(false);
 		terms.setLineWrap(true);
 		
 		JScrollPane scrollterms = new JScrollPane(terms);
 		add(scrollterms, BorderLayout.CENTER);
+
+		//Agree button (SOUTH)
+		JPanel iagreesouth = new JPanel();
+		iagreesouth.setBackground(skyblue);
+		
+		JButton agreeBtn = new JButton("I AGREE");
+		agreeBtn.setFont(agreefont);
+		agreeBtn.setForeground(Color.WHITE);
+		agreeBtn.setBackground(turquoise);
+		agreeBtn.addActionListener(this);
+		iagreesouth.add(agreeBtn);
+		add(iagreesouth, BorderLayout.SOUTH);
+		
 	}
 	
 	public void actionPerformed(ActionEvent evt)
@@ -279,6 +287,7 @@ class InstructionsPanel extends JPanel implements ActionListener
 	private CardLayout cards;
 	private GameData gamdat;
 	private Image instructionsImage;
+	private JPanel col2;
 	
 	public InstructionsPanel(GameHolder holderIn, CardLayout cardsIn, GameData gamdatIn)
 	{
@@ -286,9 +295,9 @@ class InstructionsPanel extends JPanel implements ActionListener
 		cards = cardsIn;
 		gamdat = gamdatIn;
 		
-		Font instructionsrulesfont = new Font("Monospaced", Font.PLAIN, 24);
+		Font textareasfont = new Font("Monospaced", Font.BOLD, 25);
 		Font nextfont = new Font("Monospaced", Font.BOLD, 36);
-		Font labelfont = new Font("Monospaced", Font.BOLD, 26);
+		Font labelfont = new Font("Monospaced", Font.BOLD, 28);
 		
 		Color lightblue = new Color(181, 233, 245);
 		Color medblue = new Color(111, 167, 240);
@@ -312,21 +321,28 @@ class InstructionsPanel extends JPanel implements ActionListener
 		col1.add(how, BorderLayout.NORTH);
 		
 		//Instructions TextArea (CENTER)
-		JTextArea instructions = new JTextArea("fill this with simple instructions on how to play");
+		JPanel instructionspanel = new JPanel();
+		JTextArea instructions = new JTextArea("\n Match the moving \n genetic "
+		+ "sequences\n by typing in the\n correct base pair\n before they "
+		+ "leave\n the box to earn a\n high score! If you  miss one or get it\n wrong "
+		+ "you will have to answer a\n genetics question.");
 		instructions.setBackground(medblue);
 		instructions.setLineWrap(true);
-		instructions.setFont(instructionsrulesfont);
+		instructions.setEditable(false);
+		instructions.setFont(textareasfont);
+		instructions.setForeground(Color.WHITE); //make text white
 		col1.add(instructions, BorderLayout.CENTER);
 		add(col1);
 		
-		JPanel col2 = new JPanel(); //this is the panel in the the second column 
+		col2 = new JPanel(); //this is the panel in the the second column 
+		col2.setOpaque(false); //make panel transparent so image is seen
 		try 
 		{
-			instructionsImage = ImageIO.read(new File("instructionsimage.png"));
+			instructionsImage = ImageIO.read(new File("instructionsimage.jpg"));
 		} 
 		catch(IOException except) 
 		{
-			System.out.println("Error: 'instructionsimage.png' not found.");
+			System.out.println("Error: 'instructionsimage.jpg' not found.");
 			except.printStackTrace();
 		}
 		add(col2);
@@ -346,20 +362,26 @@ class InstructionsPanel extends JPanel implements ActionListener
 		col3.add(rulespan, BorderLayout.NORTH);
 		
 		//Rules TextArea (CENTER)
-		JTextArea rules = new JTextArea("put in rules here");
-		rules.setFont(instructionsrulesfont);
+		JTextArea rules = new JTextArea("\n Don't Break the\n Chain: Missing "
+		+ "a\n base or typing the  wrong one will\n lower your score. "
+		+ "\n\n High Score: Get as  many correct\n pairings as you can in 75 "
+		+ "seconds to\n climb up the\n leaderboard!");
+		
+		rules.setFont(textareasfont);
+		rules.setForeground(Color.WHITE);
 		rules.setBackground(medblue);
 		rules.setLineWrap(true);
+		rules.setEditable(false);
 		col3.add(rules, BorderLayout.CENTER);
 		
 		//Next button (SOUTH)
 		JButton next = new JButton("NEXT");
 		next.setBackground(darkblue);
-		next.setForeground(Color.WHITE);
+		next.setForeground(Color.WHITE); //so that text is white
 		next.setFont(nextfont);
 		next.addActionListener(this);
 		col3.add(next, BorderLayout.SOUTH);
-		add(col3);
+		add(col3); //this will add the col3 panel to the third column
 		
 		
 	}
@@ -377,7 +399,12 @@ class InstructionsPanel extends JPanel implements ActionListener
 		super.paintComponent(g);
 		if (instructionsImage != null) //only draw image if there is actually an image 
 		{
-			g.drawImage(instructionsImage, 20, 353, 293, 560, this);
+			int x = col2.getX();
+			int y = col2.getY();
+			int width = col2.getWidth();
+			int height = col2.getHeight();
+			
+			g.drawImage(instructionsImage, x, y, width, height, this);
 		}
 		else
 		{
@@ -395,54 +422,117 @@ class GameControlPanel extends JPanel implements ActionListener, ChangeListener
 	
 	public GameControlPanel(GameHolder holderIn, CardLayout cardsIn, GameData gamdatIn)
 	{
+		//set FV equal to the parameters
 		holder = holderIn;
 		cards = cardsIn;
 		gamdat = gamdatIn;
 		
+		//set layout to BorderLayout
 		setLayout(new BorderLayout());
 		
-		Font playfont = new Font("Monospaced", Font.BOLD, 36);
-		Font controlfont = new Font("Monospaced", Font.BOLD, 38);
+		//make all fonts needed
+		Font playfont = new Font("Monospaced", Font.BOLD, 60);
+		Font controlfont = new Font("Monospaced", Font.BOLD, 70);
+		Font labelFont = new Font("Monospaced", Font.BOLD, 30);
+		Font itemfont = new Font("Monospaced", Font.BOLD, 32);
+		Font menufont = new Font("Monospaced", Font.BOLD, 45);
+		Font speedlabelfont = new Font("Monospaced", Font.BOLD, 50);
 		
-		Color slidercolor = new Color(39 ,150, 212);
-		Color controllabelcolor = new Color(93, 137, 255);
+		//make all colors needed
+		Color slidercolor = new Color(67, 93, 222);
+		Color controllabelcolor = new Color(25, 0, 110);
+		Color row3color = new Color(103, 115, 224);
+		Color menucolor = new Color(83, 57, 196);
+		Color menuitemcolor = new Color(53, 33, 133);
+		Color sequencescolor = new Color(91, 70, 170);
+		Color speedlabelcolor = new Color(47, 62, 186);
+		
+		//Make all the dimensions needed for setPreferredSize
+		Dimension speedsize = new Dimension(500, 0);
+		Dimension slidersize = new Dimension(400, 100);
+		Dimension menupanelsize = new Dimension(500, 80);
+		Dimension menusize = new Dimension(500, 80);
 		
 		
 		//Controls label (NORTH)
 		JPanel controls = new JPanel();
+		controls.setBackground(controllabelcolor);
 		JLabel controlslabel = new JLabel("<html> <center> Controls </center> </html>");
 		controlslabel.setFont(controlfont);
-		controlslabel.setBackground(controllabelcolor);
+		controlslabel.setForeground(Color.WHITE);
 		controls.add(controlslabel);
 		add(controls, BorderLayout.NORTH);
 		
 		//Speed panel (EAST);
-		JPanel speedpanel = new JPanel();
+		JPanel speedpanel = new JPanel(); //panel with grid layout for all the speed changing
 		speedpanel.setLayout(new GridLayout(3,1));
+		speedpanel.setBackground(speedlabelcolor);
+		speedpanel.setPreferredSize(speedsize); //setPreferredSize so that is takes up half the panel
 		
 		//The first row has the JLabel "Speed"
 		JPanel row1 = new JPanel();
-		//JPanel centerspeed = new JPanel(); //so JLabel is centered
+		row1.setBackground(speedlabelcolor);
+		
+		//make the speed label
 		JLabel speedLabel = new JLabel("Speed");
-		//centerspeed.add(speedLabel); //add label to centerd 
-		row1.add(speedLabel);
-		add(row1);
+		speedLabel.setFont(speedlabelfont);
+		speedLabel.setForeground(Color.WHITE); //make the text white
+		speedLabel.setBackground(speedlabelcolor);
+		speedLabel.setOpaque(true); //so background is visible
+		row1.add(speedLabel); //add the label to row1
+		speedpanel.add(row1); //add row1 to the speed panel
 		
 		//The second row has the JSlider to change the speed
 		JPanel row2 = new JPanel();
-		JSlider speedslider = new JSlider( 1, 3, 1);
+		row2.setBackground(slidercolor);
+		JSlider speedslider = new JSlider( 1, 3, 1); //min is 1, max is 3, starting point is 1
+		speedslider.setPreferredSize(slidersize); //set size so that it fills the width of the panel
 		speedslider.setMajorTickSpacing(1);
 		speedslider.setPaintTicks(true);
 		speedslider.setPaintLabels(true);
+		speedslider.setFont(labelFont);
+		speedslider.setForeground(Color.WHITE); //so that the numbers are white
 		speedslider.setBackground(slidercolor);
 		speedslider.addChangeListener(this);
 		row2.add(speedslider);
-		add(row2);
+		speedpanel.add(row2); //add row2 to the speed panel
 		
+		//The third row has the JLabels that indicate what 1, 2, and 3 mean
+		JPanel row3 = new JPanel();
+		row3.setBackground(row3color); 
+		row3.setLayout(new GridLayout(1,3)); //row3 has a grid layout of 1 row and 3 cols
 		
+		//make the three labels
+		JLabel one = new JLabel("1 = slow ", SwingConstants.CENTER);
+		JLabel two = new JLabel("2 = med ", SwingConstants.CENTER);
+		JLabel three = new JLabel("3 = fast", SwingConstants.CENTER);
 		
-		//Menu Bar (WEST)
+		//set font of each label
+		one.setFont(labelFont);
+		two.setFont(labelFont);
+		three.setFont(labelFont);
+		
+		//set foreground of each label to white
+		one.setForeground(Color.WHITE);
+		two.setForeground(Color.WHITE);
+		three.setForeground(Color.WHITE);
+		
+		//add the labels to row 3 in the correct order
+		row3.add(one);
+		row3.add(two);
+		row3.add(three);
+		
+		speedpanel.add(row3); //add row3 to speed panel
+		add(speedpanel, BorderLayout.EAST); //add speed panel to east
+
+		//Menu panel (WEST)
 		JPanel menu = new JPanel();
+		menu.setLayout(new BorderLayout());
+		menu.setBackground(menucolor);
+		menu.setPreferredSize(menupanelsize); //use setPreferred size to make it so that it takes up half the panel
+		menu.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0)); //to center bar in panel
+		
+		//Menu Bar (CENTER)
 		JMenuItem dnadna, dnarna, rnadna, rnarna;
 		JMenu sequences;
 		JMenuBar menuBar;
@@ -452,28 +542,64 @@ class GameControlPanel extends JPanel implements ActionListener, ChangeListener
 		dnarna = new JMenuItem("DNA -> RNA");
 		rnadna = new JMenuItem("RNA -> DNA");
 		rnarna = new JMenuItem("RNA -> RNA");
-		// make the JMenu and JMenuBar
+		
+		//set the background of all the menuitems to the menucolor
+		dnadna.setBackground(menuitemcolor);
+		dnarna.setBackground(menuitemcolor);
+		rnadna.setBackground(menuitemcolor);
+		rnarna.setBackground(menuitemcolor);
+		
+		//set the font of all the JMenuItems
+		dnadna.setFont(itemfont);
+		dnarna.setFont(itemfont);
+		rnadna.setFont(itemfont);
+		rnarna.setFont(itemfont);
+		
+		//set the foreground of all the JMenuItems to white
+		dnadna.setForeground(Color.WHITE);
+		dnarna.setForeground(Color.WHITE);
+		rnadna.setForeground(Color.WHITE);
+		rnarna.setForeground(Color.WHITE);
+		
+		//make the JMenu and JMenuBar
 		sequences = new JMenu("Sequences");
-		menuBar = new JMenuBar();
+		sequences.setFont(menufont);
+		sequences.setForeground(Color.WHITE); //make text white
+		
+		menuBar = new JMenuBar(); 
+		menuBar.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0)); 
+						//makes the bar center it's own content
+						//no horizontal or vertical gap
+		menuBar.setPreferredSize(menusize); //set preferred size of bar
+		menuBar.setBackground(sequencescolor);
 		
 		//add all the items to the menu
 		sequences.add(dnadna);
 		sequences.add(dnarna);
 		sequences.add(rnadna);
 		sequences.add(rnarna);
+		
 		//add the menu to the menubar
 		menuBar.add(sequences);
 		
-		menu.add(menuBar);
+		//add the menubar to the menu panel
+		menu.add(menuBar, BorderLayout.CENTER); //this is in center for now because something will be added later
+		
+		//THIS WHOLE PART WILL BE FIXED LATER 
+		//Make label that says which sequence the user picked (SOUTH)
+		//JLabel whatsequence = new JLabel("The Sequence Picked is: ");
+		//menu.add(whatsequence, BorderLayout.SOUTH); 
+		
+		//add the menu panel to WEST
 		add(menu, BorderLayout.WEST);
 		
 		//Play Button (SOUTH)
-		JButton play = new JButton("PLAY"); //make this an image but for now keep it as text
+		JButton play = new JButton(""); //make this an image but for now keep it as text
 		play.setActionCommand("play");
-		play.setFont(playfont);
 		play.addActionListener(this);
-		add(play, BorderLayout.SOUTH);
-		
+		play.setIcon(new ImageIcon("playbutton.jpg")); //use imageIcon library to put an image on the button
+		repaint(); //so image shows up
+		add(play, BorderLayout.SOUTH); //add button to south
 	}
 	
 	public void actionPerformed(ActionEvent evt)
@@ -487,6 +613,11 @@ class GameControlPanel extends JPanel implements ActionListener, ChangeListener
 	public void stateChanged(ChangeEvent changevt)
 	{
 		
+	}
+	
+	public void paintComponent(Graphics g)
+	{
+		super.paintComponent(g);
 	}
 }
 
@@ -506,11 +637,11 @@ class BioBasePanel extends JPanel implements ActionListener
 		cards = cardsIn;
 		gamdat = gamdatIn;
 		timer = new Timer(1000,this);
-		//timer.addActionListener(this);
-		timerlabel = new JLabel("idk");
+		timer.addActionListener(this);
+		timerlabel = new JLabel("holder");
 		timerlabel.setFont(timerfont);
 		timer.start();
-		count = 30;
+		count = 75;
 		add(timerlabel);
 		
 	}
@@ -525,7 +656,7 @@ class BioBasePanel extends JPanel implements ActionListener
 		if (count > 0)
 		{
 			count -=1;
-			timerlabel.setText(""+count);
+			timerlabel.setText("Time Left: "+count);
 			repaint();
 		} 
 		else
