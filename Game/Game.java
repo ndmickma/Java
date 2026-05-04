@@ -73,9 +73,10 @@ class GameHolder extends JPanel
 {
 	public GameHolder()
 	{
-		CardLayout cards = new CardLayout();
-		setLayout(cards);
+		CardLayout cards = new CardLayout(); //make card layout instance
+		setLayout(cards); //set the layout to that instance
 		
+		//make all the panels in this CardLayout and pass in the parameters needed (holder instance, cardlayout instance, game data instance)
 		GameData gamdat = new GameData(); //GameData holds information like name
 		StartPanel startpanel = new StartPanel(this, cards, gamdat);
 		TCPanel termspanel = new TCPanel(this, cards, gamdat);
@@ -83,6 +84,7 @@ class GameHolder extends JPanel
 		GameControlPanel controlspanel = new GameControlPanel(this, cards, gamdat);
 		BioBasePanel bbpanel = new BioBasePanel(this, cards, gamdat);
 		
+		//add all the panels with their string identifiers
 		add(startpanel, "start");
 		add(termspanel, "terms");
 		add(rulespanel, "rules");
@@ -94,24 +96,27 @@ class GameHolder extends JPanel
 
 class StartPanel extends JPanel implements ActionListener, MouseListener
 {
+	//make field variables 
 	private GameHolder holder;
 	private CardLayout cards;
 	private GameData gamdat;
-	private Image backgroundImage;
-	private JTextField tfName;
+	private Image backgroundImage; //used in paint component
+	private JTextField tfName; //used in paint component
 	
 	public StartPanel(GameHolder holderIn, CardLayout cardsIn, GameData gamdatIn)
 	{
+		//set FV equal to parameters
 		holder = holderIn;
 		cards = cardsIn;
 		gamdat = gamdatIn;
 		
-		setLayout(null);
+		setLayout(null); //this panel has a null layout
 		
+		//make fonts needed
 		Font namefont = new Font("Monospaced", Font.PLAIN, 24);
 		Font titlefont = new Font("Monospaced", Font.BOLD, 90);
 		
-		//Background Image
+		//load background image with try-catch
 		try 
 		{
 			backgroundImage = ImageIO.read(new File("frontbackground.jpg"));
@@ -123,13 +128,11 @@ class StartPanel extends JPanel implements ActionListener, MouseListener
 		}
 		
 		//make JLabel title
-		JPanel title = new JPanel();
 		JLabel titleLabel = new JLabel("<html><center> BioBase </center> </html>" );
 		titleLabel.setFont(titlefont);
-		titleLabel.setForeground(Color.WHITE);
+		titleLabel.setForeground(Color.WHITE); //so text is white
 		titleLabel.setBounds(300, 80, 400, 100);
-		add(titleLabel);
-		add(title);
+		add(titleLabel); //add title label
 		
 		//Name Text Field
 		tfName = new JTextField("enter name");
@@ -140,8 +143,8 @@ class StartPanel extends JPanel implements ActionListener, MouseListener
 		add(tfName);
 		
 		// Start Button
-		JButton startBtn = new JButton("");
-		startBtn.setActionCommand("start");
+		JButton startBtn = new JButton(""); //no text because it is an image
+		startBtn.setActionCommand("start"); //set action command so we can use it in actionPerformed
 		startBtn.setFont(namefont);
 		startBtn.setBounds(350, 380, 300, 80);
 		startBtn.addActionListener(this);
@@ -154,8 +157,9 @@ class StartPanel extends JPanel implements ActionListener, MouseListener
 	{
 		String command = evt.getActionCommand();
 		String text = tfName.getText();
-		if(command.equals("start") && !(text.equals("")) && !(text.equals(" ")) && !(text.equals("enter name")))
+		if(command.equals("start") && !(text.equals("")) && !(text.equals(" "))) //if the text field isn't empty or space...
 		{
+			//...then call setName and pass in whatever the user entered and then show the next panel
 			gamdat.setName(text);
 			cards.show(holder, "terms");
 		}
@@ -166,21 +170,23 @@ class StartPanel extends JPanel implements ActionListener, MouseListener
 		super.paintComponent(g);
 		if (backgroundImage != null) //only draw image if there is actually an image 
 		{
-			g.drawImage(backgroundImage, 0, 0, 1000, 600, this);
+			g.drawImage(backgroundImage, 0, 0, 1000, 600, this); //fills the whole background
 		}
 		else
 		{
 			System.out.println("background image not found"); //if not found print error message to terminal
 		}
 	}
+	
 	public void mouseClicked(MouseEvent mousevt)
 	{
 		String entered = tfName.getText();
 		
-		if(entered.equals("enter name"))
+		if(entered.equals("enter name")) //if the text field says enter name and it is clicked then erase the text
 			tfName.setText("");
 	}
 	
+	//the rest of the mouse methods
 	public void mousePressed(MouseEvent mousevt){}
 	public void mouseReleased(MouseEvent mousevt){}
 	public void mouseEntered(MouseEvent mousevt){}
@@ -189,13 +195,15 @@ class StartPanel extends JPanel implements ActionListener, MouseListener
 
 class TCPanel extends JPanel implements ActionListener
 {
+	//make field variables (FV)
 	private GameHolder holder;
 	private CardLayout cards;
 	private GameData gamdat;
-	private JLabel welcomelabel;
+	private JLabel welcomelabel; //so it can be used in paintComponent()
 	
 	public TCPanel(GameHolder holderIn, CardLayout cardsIn, GameData gamdatIn)
 	{
+		//set FV equal to the parameters
 		holder = holderIn;
 		cards = cardsIn;
 		gamdat = gamdatIn;
@@ -222,15 +230,17 @@ class TCPanel extends JPanel implements ActionListener
         + " By clicking 'I AGREE', you acknowledge these terms as well as "
         + "the contributions of original creators.");
 		
+		//make all fonts needed
 		Font agreefont = new Font("Monospaced", Font.BOLD, 36);
 		Font termsfont = new Font("Monospaced", Font.BOLD, 20);
 		Font welcomefont = new Font("Monospaced", Font.BOLD, 48);
 		
+		//make all colors needed
 		Color turquoise = new Color(51, 187, 222);
 		Color skyblue = new Color(151, 223, 249);
 		Color brightblue = new Color(56, 174, 220);
 		
-		setLayout(new BorderLayout());
+		setLayout(new BorderLayout()); //set layout to border
 		
 		//Welcome label (NORTH)
 		JPanel welcome = new JPanel();
@@ -250,8 +260,8 @@ class TCPanel extends JPanel implements ActionListener
 		terms.setEditable(false);
 		terms.setLineWrap(true);
 		
-		JScrollPane scrollterms = new JScrollPane(terms);
-		add(scrollterms, BorderLayout.CENTER);
+		JScrollPane scrollterms = new JScrollPane(terms); //make scroll pane and pass in text area terms
+		add(scrollterms, BorderLayout.CENTER); //add scroll pane to center
 
 		//Agree button (SOUTH)
 		JPanel iagreesouth = new JPanel();
@@ -262,8 +272,8 @@ class TCPanel extends JPanel implements ActionListener
 		agreeBtn.setForeground(Color.WHITE);
 		agreeBtn.setBackground(turquoise);
 		agreeBtn.addActionListener(this);
-		iagreesouth.add(agreeBtn);
-		add(iagreesouth, BorderLayout.SOUTH);
+		iagreesouth.add(agreeBtn); //add button to panel
+		add(iagreesouth, BorderLayout.SOUTH); //add agree panel to south
 		
 	}
 	
@@ -277,32 +287,38 @@ class TCPanel extends JPanel implements ActionListener
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
-		welcomelabel.setText("Welcome " + gamdat.getName() + "!");
+		welcomelabel.setText("Welcome " + gamdat.getName() + "!"); 
+		//so welcome label says Welcome WHATEVER USER ENTERED !
 	}
 }
 
 class InstructionsPanel extends JPanel implements ActionListener
 {
+	//make field variables
 	private GameHolder holder;
 	private CardLayout cards;
 	private GameData gamdat;
-	private Image instructionsImage;
-	private JPanel col2;
+	private Image instructionsImage; //this is used in paint component
+	private JPanel col2; //this is a field variable so we can use it in paint component
 	
 	public InstructionsPanel(GameHolder holderIn, CardLayout cardsIn, GameData gamdatIn)
 	{
+		//set FV equal to the parameters
 		holder = holderIn;
 		cards = cardsIn;
 		gamdat = gamdatIn;
 		
+		//make all fonts needed
 		Font textareasfont = new Font("Monospaced", Font.BOLD, 25);
 		Font nextfont = new Font("Monospaced", Font.BOLD, 36);
 		Font labelfont = new Font("Monospaced", Font.BOLD, 28);
 		
+		//make all colors needed
 		Color lightblue = new Color(181, 233, 245);
 		Color medblue = new Color(111, 167, 240);
 		Color darkblue = new Color(17, 44, 128);
 		
+		//Grid layout 1 row 3 cols
 		setLayout(new GridLayout(1, 3, 20, 20));
 		setBackground(lightblue);
 		
@@ -317,8 +333,8 @@ class InstructionsPanel extends JPanel implements ActionListener
 		howtoplay.setBackground(darkblue);
 		howtoplay.setForeground(Color.WHITE);
 		howtoplay.setOpaque(true); //so label background is visible
-		how.add(howtoplay);
-		col1.add(how, BorderLayout.NORTH);
+		how.add(howtoplay); //add label to panel
+		col1.add(how, BorderLayout.NORTH); //add how to play panel to col1 north
 		
 		//Instructions TextArea (CENTER)
 		JPanel instructionspanel = new JPanel();
@@ -327,8 +343,8 @@ class InstructionsPanel extends JPanel implements ActionListener
 		+ "leave\n the box to earn a\n high score! If you  miss one or get it\n wrong "
 		+ "you will have to answer a\n genetics question.");
 		instructions.setBackground(medblue);
-		instructions.setLineWrap(true);
-		instructions.setEditable(false);
+		instructions.setLineWrap(true); //so text wraps
+		instructions.setEditable(false); //so user can't edit the text
 		instructions.setFont(textareasfont);
 		instructions.setForeground(Color.WHITE); //make text white
 		col1.add(instructions, BorderLayout.CENTER);
@@ -358,20 +374,20 @@ class InstructionsPanel extends JPanel implements ActionListener
 		ruleslabel.setBackground(darkblue);
 		ruleslabel.setForeground(Color.WHITE);
 		ruleslabel.setOpaque(true); //so label background is visible
-		rulespan.add(ruleslabel);
-		col3.add(rulespan, BorderLayout.NORTH);
+		rulespan.add(ruleslabel); //add label to panel
+		col3.add(rulespan, BorderLayout.NORTH); //add rules panel to col3 north
 		
 		//Rules TextArea (CENTER)
 		JTextArea rules = new JTextArea("\n Don't Break the\n Chain: Missing "
 		+ "a\n base or typing the  wrong one will\n lower your score. "
-		+ "\n\n High Score: Get as  many correct\n pairings as you can in 75 "
+		+ "\n\n High Score: Get as  many correct\n pairings as you can in 60 "
 		+ "seconds to\n climb up the\n leaderboard!");
 		
-		rules.setFont(textareasfont);
-		rules.setForeground(Color.WHITE);
-		rules.setBackground(medblue);
+		rules.setFont(textareasfont); //set font
+		rules.setForeground(Color.WHITE); //so text is white
+		rules.setBackground(medblue); //make bakcground blue
 		rules.setLineWrap(true);
-		rules.setEditable(false);
+		rules.setEditable(false); //so user can't edit the text
 		col3.add(rules, BorderLayout.CENTER);
 		
 		//Next button (SOUTH)
@@ -416,6 +432,7 @@ class InstructionsPanel extends JPanel implements ActionListener
 
 class GameControlPanel extends JPanel implements ActionListener, ChangeListener
 {
+	//make field variables (FV) that will be needed
 	private GameHolder holder;
 	private CardLayout cards;
 	private GameData gamdat;
@@ -503,9 +520,9 @@ class GameControlPanel extends JPanel implements ActionListener, ChangeListener
 		row3.setLayout(new GridLayout(1,3)); //row3 has a grid layout of 1 row and 3 cols
 		
 		//make the three labels
-		JLabel one = new JLabel("1 = slow ", SwingConstants.CENTER);
-		JLabel two = new JLabel("2 = med ", SwingConstants.CENTER);
-		JLabel three = new JLabel("3 = fast", SwingConstants.CENTER);
+		JLabel one = new JLabel("1 = slow ");
+		JLabel two = new JLabel("2 = med ");
+		JLabel three = new JLabel("3 = fast");
 		
 		//set font of each label
 		one.setFont(labelFont);
@@ -612,7 +629,7 @@ class GameControlPanel extends JPanel implements ActionListener, ChangeListener
 	
 	public void stateChanged(ChangeEvent changevt)
 	{
-		
+		//this is where what the user picked on the slider will affect the speed of the game
 	}
 	
 	public void paintComponent(Graphics g)
@@ -623,45 +640,275 @@ class GameControlPanel extends JPanel implements ActionListener, ChangeListener
 
 class BioBasePanel extends JPanel implements ActionListener
 {
+	//Make field variables
 	private GameHolder holder;
 	private CardLayout cards;
 	private GameData gamdat;
-	private Timer timer;
-	private JLabel timerlabel;
-	private int count;
 	
+	private Timer timer; //for the visible countdown (goes down every second)
+	private Timer animationTimer; //updates the screen for smooth animation
+	private JLabel timerlabel; //shows time left used in action performed
+	private JLabel scorelabel; //shows score used in action performed
+	private JTextField inputField; //this is where user can enter the base
+	
+	private int count; //keeps track of seconds remaining
+	private int score; //keeps track of score
+	private int strandPosX; //the x coordinate of the entire DNA/RNA strand
+	private String currentStrand; //string with the randomly generated bases
+	private boolean[] activebases; //boolean array that makes sure that base is active
+	private boolean isRunning; //boolean to make sure game is only played once
+
 	public BioBasePanel(GameHolder holderIn, CardLayout cardsIn, GameData gamdatIn)
 	{
-		Font timerfont = new Font("Monospaced", Font.BOLD, 34);
+		//make parameters equal to FV
 		holder = holderIn;
 		cards = cardsIn;
 		gamdat = gamdatIn;
-		timer = new Timer(1000,this);
-		timer.addActionListener(this);
-		timerlabel = new JLabel("holder");
-		timerlabel.setFont(timerfont);
-		timer.start();
-		count = 75;
-		add(timerlabel);
 		
+		//make all colors needed
+		Color lightBlue = new Color(181, 233, 245);
+		Color darkBlue = new Color(17, 44, 128);
+		Color medBlue = new Color(111, 167, 240);
+		
+		//make all fonts needed
+		Font timerFont = new Font("Monospaced", Font.BOLD, 34);
+		Font scoreFont = new Font("Monospaced", Font.BOLD, 30);
+		Font promptFont = new Font("Monospaced", Font.BOLD, 24);
+		Font inputFont = new Font("Monospaced", Font.BOLD, 50);
+		
+		//make all dimensions needed for setPreferredSize
+		Dimension inputareasize = new Dimension(1000, 120);
+		
+		//set layout to border
+		setLayout(new BorderLayout());
+		setBackground(lightBlue); //set background to light blue
+
+		count = 60; //count starts at 60 
+		score = 0; //score starts at 0
+		strandPosX = -14000; //so that strand doesn't just appear
+		isRunning = false; //so that game doesn't start when code is run
+
+
+		//Timer and Score Labels (NORTH)
+		JPanel toppanel = new JPanel();
+		toppanel.setLayout(new GridLayout(1,2)); //so that the label panels are centered
+		
+		//make timer label
+		JPanel timerlabelpanel = new JPanel(); //so that label is centered
+		timerlabelpanel.setBackground(lightBlue); //set panel background
+		timerlabel = new JLabel("Time Left: 60"); //initial time is 60
+		timerlabel.setFont(timerFont);
+		timerlabel.setBackground(lightBlue); //set label background
+		timerlabel.setOpaque(true); //so background is visible
+		timerlabel.setForeground(darkBlue); //so text is dark blue
+		timerlabelpanel.add(timerlabel);
+		
+		//make score label
+		JPanel scorelabelpanel = new JPanel();
+		scorelabelpanel.setBackground(lightBlue); //set panel background
+		scorelabel = new JLabel("Score: 0"); //initial score is 0
+		scorelabel.setFont(scoreFont);
+		scorelabel.setBackground(lightBlue); //set label background
+		scorelabel.setOpaque(true); //so background is visible
+		scorelabel.setForeground(darkBlue);  //so text is dark blue
+		scorelabelpanel.add(scorelabel);
+		
+		
+		toppanel.add(timerlabelpanel); //add timer label panel to top panel
+		toppanel.add(scorelabelpanel); //add score label panel to top panel
+		add(toppanel, BorderLayout.NORTH); //add top panel to NORTH
+
+		//inputArea (SOUTH)
+		JPanel inputArea = new JPanel();
+		inputArea.setBackground(medBlue); 
+		inputArea.setPreferredSize(inputareasize);
+		inputArea.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 30));
+		
+		JLabel prompt = new JLabel("Match the Base:");
+		prompt.setFont(promptFont);
+		prompt.setForeground(Color.WHITE);
+		
+		inputField = new JTextField(2); //text field that's 2 characters wide
+		inputField.setFont(inputFont);
+		inputField.addActionListener(this); //add action listener
+		
+		inputArea.add(prompt); //add prompt label to inputArea panel
+		inputArea.add(inputField); //add the actual text field to the inputArea panel
+		add(inputArea, BorderLayout.SOUTH); //add inputArea to SOUTH
+
+		
+		timer = new Timer(1000, this); //increments every 1000 ms (1 second)
+		timer.setActionCommand("countdown");
+		
+		animationTimer = new Timer(20, this); //inscrements every 20ms
+		animationTimer.setActionCommand("animation");
+		
+		generateStrand(); //call generate strand method here so that the strand is set up
+	}
+
+	public void actionPerformed(ActionEvent evt)
+	{
+		String command = evt.getActionCommand(); //get action command 
+		
+		//Countdown 
+		if (command.equals("countdown"))
+		{
+			if (count > 0) //if time remaining, subtract 1 second and update time label
+			{
+				count--;
+				timerlabel.setText("Time Left: " + count);
+			} 
+			else //if no time left stop the countdown and animations
+			{
+				timer.stop();
+				animationTimer.stop();
+			}
+		}
+		
+		//Animation
+		else if (command.equals("animation"))
+		{
+			strandPosX += 3; //moves the strand 3px to the right
+
+			for (int i = 0; i < 100; i++) //goes through 100 bases
+			{
+				int charX = strandPosX + (i * 140); //add the strand position to (i*140)
+					//since each base is 140px and i is the number of bases passed apart adding i*140 to strand position
+					//this gives us the x position of the current character (base)
+				
+				if (charX > 530 && activebases[i] == false) //if the base is "active"...
+				{			//...(the base can be interacted with) after 530 (outside of box -> user missed it or typed wrong)), the user loses points	
+					activebases[i] = true; //then make it active so it disappears
+					score = score - 4; //subtract from the score
+					if (score < 0) //if the score is less than 0 the score just stays 0
+						score = 0;
+					scorelabel.setText("Score: " + score); //update score label
+				}
+			}
+		}
+		
+		//Input Field
+		else
+		{
+			//set the text from the text field to upper case since all bases are uppercase
+			String input = inputField.getText().toUpperCase(); 
+			inputField.setText(""); //once text is stored make text field empty
+			
+			int targetIndex = -1; //targetIndex is the index of the base that is inside the target box
+			for (int i = 0; i < 100; i++) //goes through all 100 bases searching for one that is in the target box and active
+			{
+				int charX = strandPosX + (i * 140);  //get the x position of the current base
+				if (charX >= 450 && charX <= 530 && activebases[i] == false) //if in the target box and the base can be interacted with
+				{
+					targetIndex = i; //then the target index is whatever i is
+					i = 100; //since one base has been found stop the loop because only go one letter at a time
+				}
+			}
+			
+			if (targetIndex != -1) //if the targetIndex has a valid value 
+			{
+				//get the actual base at the targetIndex
+				char targetChar = currentStrand.charAt(targetIndex);
+				boolean correct = false; //start with correct as false
+				
+				//if base is A and input is T, correct is true
+				if (targetChar == 'A' && input.equals("T")) 
+					correct = true;
+				//if base is T and input is A, correct is true
+				else if (targetChar == 'T' && input.equals("A")) 
+					correct = true;
+				//if base is C and input is G, correct is true
+				else if (targetChar == 'C' && input.equals("G")) 
+					correct = true;
+				//if base is G and input is C, correct is true
+				else if (targetChar == 'G' && input.equals("C")) 
+					correct = true;
+				
+				activebases[targetIndex] = true; //set the base at targetIndex to active
+				if (correct) //if correct add 4 to the score
+					score = score + 4; 
+				else //if wrong subtract 4
+				{
+					score = score - 4;
+					if (score < 0) //if less than 0 score is just 0
+						score = 0;
+				}
+				
+				scorelabel.setText("Score: " + score); //update scorelabel
+			}
+		}
+		repaint(); //call repaint() so changes are seen
+	}
+
+	private void generateStrand()
+	{
+		String bases = "ATCG";
+		currentStrand = "";
+		activebases = new boolean[100]; //it is 100 long because 100 bases in a strand
+		for(int i = 0; i < 100; i++) //goes through all 100 bases 
+		{
+			int index = (int)(Math.random() * 4); //random number from 0 to 3
+			
+			//add the base at the random index generated (use charAt()) onto current strand
+			currentStrand = currentStrand + bases.charAt(index); 
+			activebases[i] = false; //every base is active because game hasn't started
+		}
 	}
 	
 	public void paintComponent(Graphics g)
 	{
-			
-	}
-	
-	public void actionPerformed(ActionEvent evt)
-	{
-		if (count > 0)
+		super.paintComponent(g);
+		
+		//make all colors needed
+		Color darkBlue = new Color(17, 44, 128);
+		Color colorA = new Color(25, 25, 112);
+		Color colorT = new Color(0, 100, 0);
+		Color colorC = new Color(128, 0, 128);
+		Color colorG = new Color(255, 105, 180);
+		
+		//make strand font
+		Font strandFont = new Font("Monospaced", Font.BOLD, 60);
+
+		//since paintComponent is triggered when the panel is visible start the animations and timer here
+		if (isRunning == false) //if game not started:
 		{
-			count -=1;
-			timerlabel.setText("Time Left: "+count);
-			repaint();
-		} 
-		else
+			timer.start(); //start the game
+			animationTimer.start(); //start the animation
+			isRunning = true; //set isRunning to true
+		}
+		
+		g.setColor(darkBlue); //set color to darkBlue
+		
+		// Target Box
+		g.drawRect(465, 180, 70, 90); //draw the target box
+
+		if (currentStrand != null) //white currentStrand has something in it
 		{
-			timer.stop();
+			g.setFont(strandFont); //set the font to strandFont
+			for (int i = 0; i < 100; i++) //go through 100 bases
+			{
+				int charX = strandPosX + (i * 140); //get the x position of the current base
+				if (charX > -50 && charX < 1050 && activebases[i] == false) //if base is on screen (with extra padding) and base is active
+				{
+					char b = currentStrand.charAt(i); //get the specific char at index i
+					
+					//if the base is A make the color blue
+					if (b == 'A') 
+						g.setColor(colorA); 
+					//if the base is T make the color green
+					else if (b == 'T') 
+						g.setColor(colorT);  
+					//if the base is C make the color purple 
+					else if (b == 'C') 
+						g.setColor(colorC); 
+					//if the base is G make the color pink
+					else if (b == 'G') 
+						g.setColor(colorG); 
+					
+					//draw the base at the charX position and 250 as the baseline
+					g.drawString("" + b, charX, 250); 
+				}
+			}
 		}
 	}
 }
