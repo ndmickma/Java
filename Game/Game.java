@@ -354,11 +354,11 @@ class InstructionsPanel extends JPanel implements ActionListener
 		col2.setOpaque(false); //make panel transparent so image is seen
 		try 
 		{
-			instructionsImage = ImageIO.read(new File("instructionsimage.jpg"));
+			instructionsImage = ImageIO.read(new File("instructionsimage.png"));
 		} 
 		catch(IOException except) 
 		{
-			System.out.println("Error: 'instructionsimage.jpg' not found.");
+			System.out.println("Error: 'instructionsimage.png' not found.");
 			except.printStackTrace();
 		}
 		add(col2);
@@ -790,7 +790,7 @@ class BioBasePanel extends JPanel implements ActionListener
 		//Input Field
 		else
 		{
-			//set the text from the text field to upper case since all bases are uppercase
+			//get user input and set it to uppercase
 			String input = inputField.getText().toUpperCase(); 
 			inputField.setText(""); //once text is stored make text field empty
 			
