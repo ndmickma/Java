@@ -778,7 +778,7 @@ class BioBasePanel extends JPanel implements ActionListener
 				
 				if (charX > 530 && activebases[i] == false) //if the base is "active"...
 				{			//...(the base can be interacted with) after 530 (outside of box -> user missed it or typed wrong)), the user loses points	
-					activebases[i] = true; //then make it active so it disappears
+					activebases[i] = true; //then make it inactive so it disappears
 					score = score - 4; //subtract from the score
 					if (score < 0) //if the score is less than 0 the score just stays 0
 						score = 0;
