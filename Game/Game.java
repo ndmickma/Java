@@ -52,6 +52,7 @@ public class Game
 	{
 		Game gam = new Game();
 		gam.run();
+		//gam.startMusic();
 	}
 	
 	public void run()
@@ -66,6 +67,12 @@ public class Game
 		frame.getContentPane().add(gh);		
 		frame.setVisible(true);	
 		frame.setResizable(false);	
+
+	}
+	
+	public void startMusic()
+	{
+		//this is where the music will be put in
 	}
 }
 
@@ -83,6 +90,8 @@ class GameHolder extends JPanel
 		InstructionsPanel rulespanel = new InstructionsPanel(this, cards, gamdat);
 		GameControlPanel controlspanel = new GameControlPanel(this, cards, gamdat);
 		BioBasePanel bbpanel = new BioBasePanel(this, cards, gamdat);
+		QuestionPanel qpanel = new QuestionPanel(this, cards, gamdat);
+		LeaderboardPanel leadpanel = new LeaderboardPanel(this, cards, gamdat);
 		
 		//add all the panels with their string identifiers
 		add(startpanel, "start");
@@ -90,6 +99,8 @@ class GameHolder extends JPanel
 		add(rulespanel, "rules");
 		add(controlspanel, "controls");
 		add(bbpanel, "biobase");
+		add(qpanel, "questions");
+		add(leadpanel, "leaderboard");
 		
 	}
 }
@@ -546,10 +557,16 @@ class GameControlPanel extends JPanel implements ActionListener, ChangeListener
 		JPanel menu = new JPanel();
 		menu.setLayout(new BorderLayout());
 		menu.setBackground(menucolor);
-		menu.setPreferredSize(menupanelsize); //use setPreferred size to make it so that it takes up half the panel
+		menu.setPreferredSize(menupanelsize); //use setPreferred size to make it 
+		//so that it takes up half the panel b/c there will automatically be a center spcae if no component
 		menu.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0)); //to center bar in panel
 		
-		//Menu Bar (CENTER)
+		//Make JPanel menpan so the extra JLabel can be added to south of this panel (CENTER of menu panel)
+		JPanel menpan = new JPanel(); 
+		menpan.setLayout(new BorderLayout());
+		menpan.setBackground(menucolor);
+		
+		//Menu Bar (CENTER of menpan)
 		JMenuItem dnadna, dnarna, rnadna, rnarna;
 		JMenu sequences;
 		JMenuBar menuBar;
@@ -587,7 +604,7 @@ class GameControlPanel extends JPanel implements ActionListener, ChangeListener
 		menuBar.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0)); 
 						//makes the bar center it's own content
 						//no horizontal or vertical gap
-		menuBar.setPreferredSize(menusize); //set preferred size of bar
+		//menuBar.setPreferredSize(menusize); //set preferred size of bar
 		menuBar.setBackground(sequencescolor);
 		
 		//add all the items to the menu
@@ -599,13 +616,16 @@ class GameControlPanel extends JPanel implements ActionListener, ChangeListener
 		//add the menu to the menubar
 		menuBar.add(sequences);
 		
-		//add the menubar to the menu panel
-		menu.add(menuBar, BorderLayout.CENTER); //this is in center for now because something will be added later
+		//add the menu bar to men pan (CENTER)
+		menpan.add(menuBar, BorderLayout.CENTER);
 		
-		//THIS WHOLE PART WILL BE FIXED LATER 
-		//Make label that says which sequence the user picked (SOUTH)
-		//JLabel whatsequence = new JLabel("The Sequence Picked is: ");
-		//menu.add(whatsequence, BorderLayout.SOUTH); 
+		
+		//add the menpan to the menu panel
+		menu.add(menpan, BorderLayout.CENTER); //this is in center for now because something will be added later
+
+		//Make label that says which sequence the user picked (SOUTH of menpan)
+		JLabel whatsequence = new JLabel("The Sequence Picked is: ");
+		menpan.add(whatsequence, BorderLayout.SOUTH); 
 		
 		//add the menu panel to WEST
 		add(menu, BorderLayout.WEST);
@@ -762,6 +782,7 @@ class BioBasePanel extends JPanel implements ActionListener
 			{
 				timer.stop();
 				animationTimer.stop();
+				cards.show(holder, "leaderboard");
 			}
 		}
 		
@@ -780,6 +801,7 @@ class BioBasePanel extends JPanel implements ActionListener
 				{			//...(the base can be interacted with) after 530 (outside of box -> user missed it or typed wrong)), the user loses points	
 					activebases[i] = true; //then make it inactive so it disappears
 					score = score - 4; //subtract from the score
+					cards.show(holder, "questions");
 					if (score < 0) //if the score is less than 0 the score just stays 0
 						score = 0;
 					scorelabel.setText("Score: " + score); //update score label
@@ -823,6 +845,8 @@ class BioBasePanel extends JPanel implements ActionListener
 				//if base is G and input is C, correct is true
 				else if (targetChar == 'G' && input.equals("C")) 
 					correct = true;
+				else
+					cards.show(holder, "questions");
 				
 				activebases[targetIndex] = true; //set the base at targetIndex to active
 				if (correct) //if correct add 4 to the score
@@ -910,6 +934,54 @@ class BioBasePanel extends JPanel implements ActionListener
 				}
 			}
 		}
+	}
+}
+
+class QuestionPanel extends JPanel
+{
+	//make field variables
+	private GameHolder holder;
+	private CardLayout cards;
+	private GameData gamdat; 
+	
+	public QuestionPanel(GameHolder holderIn, CardLayout cardsIn, GameData gamdatIn)
+	{
+		holder = holderIn;
+		cards = cardsIn;
+		gamdat = gamdatIn;
+		
+		setLayout(new BorderLayout());
+		
+		//Make question area (NORTH)
+		
+		JTextArea questionAsked = new JTextArea("Question placeholder");
+		//questionAsked.setText(getQuestion());
+		
+		add(questionAsked, BorderLayout.NORTH);
+		
+		
+	}
+}
+
+class LeaderboardPanel extends JPanel
+{
+	private GameHolder holder;
+	private CardLayout cards;
+	private GameData gamdat;
+	
+	public LeaderboardPanel(GameHolder holderIn, CardLayout cardsIn, GameData gamdatIn)
+	{
+		holder = holderIn;
+		cards = cardsIn;
+		gamdat = gamdatIn;
+		
+		setLayout(new BorderLayout());
+		
+		//Make JLabel with congrats message (NORTH)
+		JLabel congrats = new JLabel("Congrat");
+		
+		//add congrats label to north
+		add(congrats, BorderLayout.NORTH);
 	}
 }
 
