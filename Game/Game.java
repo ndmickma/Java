@@ -811,7 +811,8 @@ class BioBasePanel extends JPanel implements ActionListener
 				{			//...(the base can be interacted with) after 530 (outside of box -> user missed it or typed wrong)), the user loses points	
 					activebases[i] = true; //then make it inactive so it disappears
 					score = score - 4; //subtract from the score
-					cards.show(holder, "questions");
+					cards.show(holder, "questions"); //if...then user needs to answer a question
+					
 					if (score < 0) //if the score is less than 0 the score just stays 0
 						score = 0;
 					scorelabel.setText("Score: " + score); //update score label
@@ -856,7 +857,7 @@ class BioBasePanel extends JPanel implements ActionListener
 				else if (targetChar == 'G' && input.equals("C")) 
 					correct = true;
 				else
-					cards.show(holder, "questions");
+					cards.show(holder, "questions"); //if incorrect user needs to answer a question
 				
 				activebases[targetIndex] = true; //set the base at targetIndex to active
 				if (correct) //if correct add 4 to the score
@@ -947,12 +948,13 @@ class BioBasePanel extends JPanel implements ActionListener
 	}
 }
 
-class QuestionPanel extends JPanel
+class QuestionPanel extends JPanel implements ActionListener
 {
 	//make field variables
 	private GameHolder holder;
 	private CardLayout cards;
 	private GameData gamdat; 
+	private JButton submit;
 	
 	public QuestionPanel(GameHolder holderIn, CardLayout cardsIn, GameData gamdatIn)
 	{
@@ -970,6 +972,20 @@ class QuestionPanel extends JPanel
 		add(questionAsked, BorderLayout.NORTH);
 		
 		
+		//make SUBMIT button in SOUTH
+		submit = new JButton("SUBMIT");
+		submit.addActionListener(this);
+		
+		
+		
+	}
+	
+	public void actionPerformed(ActionEvent evt)
+	{
+		String command = evt.getActionCommand();
+		if(command.equals("SUBMIT")) //if command is submit then check answer
+		{
+		}
 	}
 }
 
@@ -988,7 +1004,7 @@ class LeaderboardPanel extends JPanel
 		setLayout(new BorderLayout());
 		
 		//Make JLabel with congrats message (NORTH)
-		JLabel congrats = new JLabel("Congrat");
+		JLabel congrats = new JLabel("Congrats");
 		
 		//add congrats label to north
 		add(congrats, BorderLayout.NORTH);
@@ -998,6 +1014,8 @@ class LeaderboardPanel extends JPanel
 class GameData
 {
 	private String name;
+	private boolean [] chosenQuestions;
+	private int questionCount;
 	
 	public GameData()
 	{
@@ -1012,5 +1030,26 @@ class GameData
 	public void setName(String nameIn)
 	{
 		name = nameIn;
+	}
+	
+	public void getQuestion()
+	{
+		//Scanner inFile = null;
+		String questionFileName = "geneticsquestions.txt";
+		File questionFile = new File(questionFileName);
+		
+		//try
+		//{
+			//inFile = new Scanner(questionFileName);
+		//}
+		
+		//catch(FileNotFoundException except)
+		{
+			System.err.printf("ERROR: Cannot open %s/n", questionFileName);
+			//System.out.println(except);
+			System.exit(1);
+		}
+		
+		int questionNumber = (int)(Math.random()*30);
 	}
 }
