@@ -448,6 +448,9 @@ class GameControlPanel extends JPanel implements ActionListener, ChangeListener
 	private CardLayout cards;
 	private GameData gamdat;
 	
+	//this is used in action performed to let the user know what they selected in the menu bar
+	private JLabel selectionlabel;
+	
 	public GameControlPanel(GameHolder holderIn, CardLayout cardsIn, GameData gamdatIn)
 	{
 		//set FV equal to the parameters
@@ -459,12 +462,12 @@ class GameControlPanel extends JPanel implements ActionListener, ChangeListener
 		setLayout(new BorderLayout());
 		
 		//make all fonts needed
-		Font playfont = new Font("Monospaced", Font.BOLD, 60);
 		Font controlfont = new Font("Monospaced", Font.BOLD, 70);
 		Font labelFont = new Font("Monospaced", Font.BOLD, 30);
 		Font itemfont = new Font("Monospaced", Font.BOLD, 32);
 		Font menufont = new Font("Monospaced", Font.BOLD, 45);
 		Font speedlabelfont = new Font("Monospaced", Font.BOLD, 50);
+		Font selectionfont = new Font("Monospaced", Font.BOLD, 20);
 		
 		//make all colors needed
 		Color slidercolor = new Color(67, 93, 222);
@@ -561,12 +564,8 @@ class GameControlPanel extends JPanel implements ActionListener, ChangeListener
 		//so that it takes up half the panel b/c there will automatically be a center spcae if no component
 		menu.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0)); //to center bar in panel
 		
-		//Make JPanel menpan so the extra JLabel can be added to south of this panel (CENTER of menu panel)
-		JPanel menpan = new JPanel(); 
-		menpan.setLayout(new BorderLayout());
-		menpan.setBackground(menucolor);
 		
-		//Menu Bar (CENTER of menpan)
+		//Menu Bar (CENTER)
 		JMenuItem dnadna, dnarna, rnadna, rnarna;
 		JMenu sequences;
 		JMenuBar menuBar;
@@ -595,6 +594,12 @@ class GameControlPanel extends JPanel implements ActionListener, ChangeListener
 		rnadna.setForeground(Color.WHITE);
 		rnarna.setForeground(Color.WHITE);
 		
+		//addActionListener to all of the JMenuBar so selected string can update
+		dnadna.addActionListener(this);
+		dnarna.addActionListener(this);
+		rnadna.addActionListener(this);	
+		rnarna.addActionListener(this);
+		
 		//make the JMenu and JMenuBar
 		sequences = new JMenu("Sequences");
 		sequences.setFont(menufont);
@@ -604,7 +609,7 @@ class GameControlPanel extends JPanel implements ActionListener, ChangeListener
 		menuBar.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0)); 
 						//makes the bar center it's own content
 						//no horizontal or vertical gap
-		//menuBar.setPreferredSize(menusize); //set preferred size of bar
+		menuBar.setPreferredSize(menusize); //set preferred size of bar
 		menuBar.setBackground(sequencescolor);
 		
 		//add all the items to the menu
@@ -615,17 +620,18 @@ class GameControlPanel extends JPanel implements ActionListener, ChangeListener
 		
 		//add the menu to the menubar
 		menuBar.add(sequences);
+	
+		//add the menu bar to the menu panel
+		menu.add(menuBar, BorderLayout.NORTH); 
 		
-		//add the menu bar to men pan (CENTER)
-		menpan.add(menuBar, BorderLayout.CENTER);
+		//JLabel for showing what is selected (CENTER)
+		selectionlabel = new JLabel("The sequence selected is: NONE");
+		selectionlabel.setFont(selectionfont);
+		selectionlabel.setForeground(Color.WHITE);
 		
+		//add the label to center
+		menu.add(selectionlabel, BorderLayout.CENTER);
 		
-		//add the menpan to the menu panel
-		menu.add(menpan, BorderLayout.CENTER); //this is in center for now because something will be added later
-
-		//Make label that says which sequence the user picked (SOUTH of menpan)
-		JLabel whatsequence = new JLabel("The Sequence Picked is: ");
-		menpan.add(whatsequence, BorderLayout.SOUTH); 
 		
 		//add the menu panel to WEST
 		add(menu, BorderLayout.WEST);
@@ -644,6 +650,10 @@ class GameControlPanel extends JPanel implements ActionListener, ChangeListener
 		String command = evt.getActionCommand();
 		if(command.equals("play"))
 			cards.show(holder, "biobase");
+		else if(command.equals("DNA -> DNA") || command.equals("DNA -> RNA") || command.equals("RNA -> DNA") || command.equals("RNA -> RNA"))
+		{
+			selectionlabel.setText("The sequence selected is: " + command);
+		}
 	}	
 	
 	
