@@ -116,7 +116,7 @@ class StartPanel extends JPanel implements ActionListener
 		lastNameField = new JTextField(16);
 		lastNameField.setMargin(new Insets(10,10,10,10));
 		lastNameField.setFont(myFont);
-		lastNamePanel.add(firstNameField);
+		lastNamePanel.add(lastNameField);
 
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setBackground(Color.LIGHT_GRAY);
@@ -133,8 +133,9 @@ class StartPanel extends JPanel implements ActionListener
 	{
 		String command = evt.getActionCommand();
 		
-		if(command.equals("NEXT PANEL"))
+		if(command.equals("NEXT PANEL") && !firstNameField.getText().equals("") && !lastNameField.getText().equals(""))
 		{
+			data.setName(firstNameField.getText(), lastNameField.getText());
 			listOfCards.next(primaryPanel);
 		}
 	}
@@ -183,10 +184,34 @@ class QuestionsPanel extends JPanel implements ActionListener
 		answers.setLayout(new GridLayout(2, 2, 20, 20));
 		add(answers, BorderLayout.CENTER);
 		
+		group = new ButtonGroup();
+		
+		for(int i = 0; i< answer.length; i++)
+		{
+			answer[i] = new JRadioButton(""+ (char)(65+i) + ". " + data.getAnswer(i));
+			group.add(answer[i]);
+			answer[i].setBackground(new Color(230,230,230));
+			answer[i].setFont(myFont);
+			answer[i].addActionListener(this);
+			answers.add(answer[i]);
+		}
+		
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setBackground(Color.WHITE);
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 30));
 		add(buttonPanel, BorderLayout.SOUTH);
+		
+		submit = new JButton("SUBMIT");
+		submit.setFont(myFont);
+		submit.addActionListener(this);
+		submit.setEnabled(false);
+		buttonPanel.add(submit);
+		
+		nextQuestion = new JButton("NEXT QUESTION");
+		nextQuestion.setFont(myFont);
+		nextQuestion.addActionListener(this);
+		nextQuestion.setEnabled(false);
+		buttonPanel.add(nextQuestion);
 		
 		nextPanel = new JButton("NEXT PANEL");
 		nextPanel.setFont(myFont);
@@ -393,6 +418,42 @@ class GameData
 
 	public void grabQuestionFromFile ( )
 	{
+		Scanner inFile = null;
+		String fileName = "computerQuestions.txt";
+		File inputFile = new File(fileName);
+		try
+		{
+			inFile = new Scanner(inputFile);
+		}
+		catch(FileNotFoundException e)
+		{
+			System.err.printf("ERROR: Cannot open %s/n", fileName);
+			System.out.println(e);
+			System.exit(1);
+		}
+		int questionNumber = (int)(Math.random()*30);
+		while(chosenQuestions[questionNumber] == true)
+		{
+			questionNumber = (int)(Math.random()*30);
+		}
+		chosenQuestions[questionNumber] = true;
+		questionCount++;
+		int counter = 0;
+		while(inFile.hasNext() && counter < 6*questionNumber)
+		{
+			String line = inFile.nextLine();
+			counter++;
+		}
+		question = inFile.nextLine();
+		
+		counter = 0;
+		while(inFile.hasNext() && counter <4)
+		{
+			answerSet[counter] = inFile.nextLine();
+			counter++;
+		}
+		correctAnswer = inFile.nextInt();
+		inFile.close();
 	}
 	
 	public void setName(String f, String l)
@@ -468,5 +529,52 @@ class GameData
 	
 	public void saveToHighScores ( )
 	{
+		if(lastGameCorrectCount >=3)
+		{
+			String result = "";
+			boolean hasBeenAdded = false;
+			String fileName = "highScores.txt";
+			Scanner inFile = null;
+			File inputFile = new File(fileName);
+			try 
+			{
+				inFile = new Scanner(inputFile);
+			} 
+			catch(FileNotFoundException e) 
+			{
+				System.err.printf("ERROR: Cannot open %s\n", fileName);
+				System.out.println(e);
+				System.exit(1);
+			}
+			while(inFile.hasNext()) 
+			{
+				String line = inFile.nextLine();
+				if(!hasBeenAdded && Integer.parseInt("" + line.charAt(line.indexOf("/")-1)) <= lastGameCorrectCount)
+				{
+					result += first + " " + last + " " + lastGameCorrectCount + "/4\n";
+					hasBeenAdded = true;
+				}
+				result += line + "\n";
+			}
+			if(!hasBeenAdded)
+			{
+				result += first + " " + last + " " + lastGameCorrectCount + "/4\n";
+			}
+			inFile.close();
+			
+			File ioFile = new File("highScores.txt");
+			PrintWriter outFile = null;
+			try
+			{
+				outFile = new PrintWriter(ioFile);
+			}
+			catch(IOException e)
+			{
+				e.printStackTrace();
+				System.exit(1);
+			}
+			outFile.print(result);
+			outFile.close();			
+		}
 	}
 }
