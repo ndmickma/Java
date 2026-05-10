@@ -4,6 +4,8 @@
 //Game.java
 //BioBase!
 
+import java.util.Scanner;
+
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.GridLayout;
@@ -23,6 +25,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+
 import javax.imageio.ImageIO;
 import java.io.IOException;
 
@@ -40,6 +44,10 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.Timer;
 import javax.swing.JSlider;
+import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
+import javax.swing.BorderFactory;
+
 
 
 public class Game
@@ -781,9 +789,9 @@ class BioBasePanel extends JPanel implements ActionListener
 		String command = evt.getActionCommand(); //get action command 
 		
 		//Countdown 
-		if (command.equals("countdown"))
+		if(command.equals("countdown"))
 		{
-			if (count > 0) //if time remaining, subtract 1 second and update time label
+			if(count > 0) //if time remaining, subtract 1 second and update time label
 			{
 				count--;
 				timerlabel.setText("Time Left: " + count);
@@ -797,23 +805,23 @@ class BioBasePanel extends JPanel implements ActionListener
 		}
 		
 		//Animation
-		else if (command.equals("animation"))
+		else if(command.equals("animation"))
 		{
 			strandPosX += 3; //moves the strand 3px to the right
 
-			for (int i = 0; i < 100; i++) //goes through 100 bases
+			for(int i = 0; i < 100; i++) //goes through 100 bases
 			{
 				int charX = strandPosX + (i * 140); //add the strand position to (i*140)
 					//since each base is 140px and i is the number of bases passed apart adding i*140 to strand position
 					//this gives us the x position of the current character (base)
 				
-				if (charX > 530 && activebases[i] == false) //if the base is "active"...
+				if(charX > 530 && activebases[i] == false) //if the base is "active"...
 				{			//...(the base can be interacted with) after 530 (outside of box -> user missed it or typed wrong)), the user loses points	
 					activebases[i] = true; //then make it inactive so it disappears
 					score = score - 4; //subtract from the score
 					cards.show(holder, "questions"); //if...then user needs to answer a question
 					
-					if (score < 0) //if the score is less than 0 the score just stays 0
+					if(score < 0) //if the score is less than 0 the score just stays 0
 						score = 0;
 					scorelabel.setText("Score: " + score); //update score label
 				}
@@ -831,41 +839,41 @@ class BioBasePanel extends JPanel implements ActionListener
 			for (int i = 0; i < 100; i++) //goes through all 100 bases searching for one that is in the target box and active
 			{
 				int charX = strandPosX + (i * 140);  //get the x position of the current base
-				if (charX >= 450 && charX <= 530 && activebases[i] == false) //if in the target box and the base can be interacted with
+				if(charX >= 450 && charX <= 530 && activebases[i] == false) //if in the target box and the base can be interacted with
 				{
 					targetIndex = i; //then the target index is whatever i is
 					i = 100; //since one base has been found stop the loop because only go one letter at a time
 				}
 			}
 			
-			if (targetIndex != -1) //if the targetIndex has a valid value 
+			if(targetIndex != -1) //if the targetIndex has a valid value 
 			{
 				//get the actual base at the targetIndex
 				char targetChar = currentStrand.charAt(targetIndex);
 				boolean correct = false; //start with correct as false
 				
 				//if base is A and input is T, correct is true
-				if (targetChar == 'A' && input.equals("T")) 
+				if(targetChar == 'A' && input.equals("T")) 
 					correct = true;
 				//if base is T and input is A, correct is true
-				else if (targetChar == 'T' && input.equals("A")) 
+				else if(targetChar == 'T' && input.equals("A")) 
 					correct = true;
 				//if base is C and input is G, correct is true
-				else if (targetChar == 'C' && input.equals("G")) 
+				else if(targetChar == 'C' && input.equals("G")) 
 					correct = true;
 				//if base is G and input is C, correct is true
-				else if (targetChar == 'G' && input.equals("C")) 
+				else if(targetChar == 'G' && input.equals("C")) 
 					correct = true;
 				else
 					cards.show(holder, "questions"); //if incorrect user needs to answer a question
 				
 				activebases[targetIndex] = true; //set the base at targetIndex to active
-				if (correct) //if correct add 4 to the score
+				if(correct) //if correct add 4 to the score
 					score = score + 4; 
 				else //if wrong subtract 4
 				{
 					score = score - 4;
-					if (score < 0) //if less than 0 score is just 0
+					if(score < 0) //if less than 0 score is just 0
 						score = 0;
 				}
 				
@@ -905,7 +913,7 @@ class BioBasePanel extends JPanel implements ActionListener
 		Font strandFont = new Font("Monospaced", Font.BOLD, 60);
 
 		//since paintComponent is triggered when the panel is visible start the animations and timer here
-		if (isRunning == false) //if game not started:
+		if(isRunning == false) //if game not started:
 		{
 			timer.start(); //start the game
 			animationTimer.start(); //start the animation
@@ -917,27 +925,27 @@ class BioBasePanel extends JPanel implements ActionListener
 		// Target Box
 		g.drawRect(465, 180, 70, 90); //draw the target box
 
-		if (currentStrand != null) //white currentStrand has something in it
+		if(currentStrand != null) //white currentStrand has something in it
 		{
 			g.setFont(strandFont); //set the font to strandFont
-			for (int i = 0; i < 100; i++) //go through 100 bases
+			for(int i = 0; i < 100; i++) //go through 100 bases
 			{
 				int charX = strandPosX + (i * 140); //get the x position of the current base
-				if (charX > -50 && charX < 1050 && activebases[i] == false) //if base is on screen (with extra padding) and base is active
+				if(charX > -50 && charX < 1050 && activebases[i] == false) //if base is on screen (with extra padding) and base is active
 				{
 					char b = currentStrand.charAt(i); //get the specific char at index i
 					
 					//if the base is A make the color blue
-					if (b == 'A') 
+					if(b == 'A') 
 						g.setColor(colorA); 
 					//if the base is T make the color green
-					else if (b == 'T') 
+					else if(b == 'T') 
 						g.setColor(colorT);  
 					//if the base is C make the color purple 
-					else if (b == 'C') 
+					else if(b == 'C') 
 						g.setColor(colorC); 
 					//if the base is G make the color pink
-					else if (b == 'G') 
+					else if(b == 'G') 
 						g.setColor(colorG); 
 					
 					//draw the base at the charX position and 250 as the baseline
@@ -948,46 +956,6 @@ class BioBasePanel extends JPanel implements ActionListener
 	}
 }
 
-class QuestionPanel extends JPanel implements ActionListener
-{
-	//make field variables
-	private GameHolder holder;
-	private CardLayout cards;
-	private GameData gamdat; 
-	private JButton submit;
-	
-	public QuestionPanel(GameHolder holderIn, CardLayout cardsIn, GameData gamdatIn)
-	{
-		holder = holderIn;
-		cards = cardsIn;
-		gamdat = gamdatIn;
-		
-		setLayout(new BorderLayout());
-		
-		//Make question area (NORTH)
-		
-		JTextArea questionAsked = new JTextArea("Question placeholder");
-		//questionAsked.setText(getQuestion());
-		
-		add(questionAsked, BorderLayout.NORTH);
-		
-		
-		//make SUBMIT button in SOUTH
-		submit = new JButton("SUBMIT");
-		submit.addActionListener(this);
-		
-		
-		
-	}
-	
-	public void actionPerformed(ActionEvent evt)
-	{
-		String command = evt.getActionCommand();
-		if(command.equals("SUBMIT")) //if command is submit then check answer
-		{
-		}
-	}
-}
 
 class LeaderboardPanel extends JPanel
 {
@@ -1011,45 +979,288 @@ class LeaderboardPanel extends JPanel
 	}
 }
 
-class GameData
+class QuestionPanel extends JPanel implements ActionListener
 {
-	private String name;
-	private boolean [] chosenQuestions;
-	private int questionCount;
+	//make field variables 
+	private GameHolder holder;
+	private CardLayout cards;
+	private GameData gamdat;
 	
-	public GameData()
+	private ButtonGroup group; //so that only one radio button can be selected
+	private JTextArea questionArea; //this is where the question will be displayed
+	private JRadioButton[] answer; //array of the answer radio buttons
+	private JButton submit, nextQuestion, backToGame; //buttons to control where to go next and submit
+	
+	public QuestionPanel(GameHolder holderIn, CardLayout cardsIn, GameData gamdatIn)
 	{
-		name = "";
+		holder = holderIn;
+		cards = cardsIn;
+		gamdat = gamdatIn;
+		
+		//loads the question so panel isn't blank when it first appears
+		gamdat.grabQuestionFromFile();
+		
+		//make all fonts needed
+		Font font = new Font("Monospaced", Font.BOLD, 22);
+		
+		//make all colors needed
+		Color backgroundcolor = new Color(181, 233, 245);
+		Color questioncolor = new Color(17, 44, 128);
+		Color answercolor = new Color(111, 167, 240);
+		Color buttonpanelcolor = new Color(181, 233, 245);
+		Color radiocolor = new Color(230, 230, 230);
+		
+		setBackground(backgroundcolor); //set the background color
+		setLayout(new BorderLayout(10, 10)); //make the layout border with 10 vgap and 10 hgap
+		
+		answer = new JRadioButton[4]; //array can hold the 4 answer buttons
+		
+		//make the question JPanel to hold question text (NORTH)
+		JPanel question = new JPanel();
+		question.setLayout(new BorderLayout()); //set layout
+		question.setBackground(questioncolor);
+		
+		//use border factory like in GameModuleFiles so that there is a border around the question text
+		question.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30)); 
+		add(question, BorderLayout.NORTH); //add to NORTH
+		
+		//make the actual text area for the question (CENTER(of the question panel))
+		questionArea = new JTextArea(gamdat.getQuestion(), 3, 30); //set text to whatever getQuestion will randomly return
+		questionArea.setFont(font);
+		questionArea.setForeground(Color.WHITE); //make text white
+		questionArea.setLineWrap(true); //makes text move to next line when needed
+		questionArea.setWrapStyleWord(true); //
+		questionArea.setOpaque(false); //make it transparent so that only text is visible
+		questionArea.setEditable(false); //so user can't edit it
+		question.add(questionArea, BorderLayout.CENTER); //add it to the center of question
+		
+		//make panel to hold the answer choices (CENTER) 
+		JPanel answers = new JPanel();
+		answers.setBackground(answercolor);
+		answers.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); //make the padding for the answers
+		answers.setLayout(new GridLayout(2, 2, 20, 20)); //make a 2rows x 2cols grid layout
+		add(answers, BorderLayout.CENTER); //add it to CENTER
+		
+		group = new ButtonGroup(); //initialize the button group
+		
+		for(int i = 0; i < answer.length; i++) //loop will run 4 times to 
+			//create each radio button, add it to the group, set its 
+			//color, add action listener, and add it to the answers panel
+		{
+			answer[i] = new JRadioButton(gamdat.getAnswer(i)); 
+			group.add(answer[i]);
+			answer[i].setBackground(radiocolor);
+			answer[i].setFont(font);
+			answer[i].addActionListener(this);
+			answers.add(answer[i]);
+		}
+		
+		//make panel that holds all the buttons (SOUTH)
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setBackground(buttonpanelcolor);
+		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 30));
+		add(buttonPanel, BorderLayout.SOUTH);
+		
+		//make the submit button
+		submit = new JButton("SUBMIT");
+		submit.setFont(font);
+		submit.addActionListener(this);
+		submit.setEnabled(false);
+		buttonPanel.add(submit);
+		
+		//make the next question button (used when user gets a question wrong)
+		nextQuestion = new JButton("NEXT QUESTION");
+		nextQuestion.setFont(font);
+		nextQuestion.addActionListener(this);
+		nextQuestion.setEnabled(false);
+		buttonPanel.add(nextQuestion);
+		
+		//make the back to game button (used when user gets question correct)
+		backToGame = new JButton("BACK TO GAME");
+		backToGame.setFont(font);
+		backToGame.addActionListener(this);
+		backToGame.setEnabled(false);
+		buttonPanel.add(backToGame);
 	}
 	
+	public void actionPerformed(ActionEvent evt) 
+	{
+		String command = evt.getActionCommand(); //get action command
+		
+		if(group.getSelection() != null) //makes sure a radio button is actually clicked
+			submit.setEnabled(true); //then submit can be clicked
+		
+		if(command.equals("SUBMIT")) //if submited then check if its right
+		{	
+			boolean isCorrect = false; //boolean to keep track of correct vs. incorrect
+			int correctIndex = gamdat.getCorrectAnswer(); //use getter method to check the answer
+			
+			answer[correctIndex].setBackground(Color.GREEN); //highlight the correct answer in green
+			
+			for(int i = 0; i < answer.length; i++)
+			{
+				if(answer[i].isSelected()) //if the button at i is selected
+				{
+					if(i != correctIndex) //if it's wrong set background to red
+						answer[i].setBackground(Color.RED);
+					else
+						isCorrect = true; //if it is not incorrect it is automatically correct
+				}
+			}
+			
+			group.clearSelection(); //"unclick" radio buttons
+			
+			for(int i = 0; i < answer.length; i++) //go through loop and make everything disabled
+			{
+				answer[i].setEnabled(false);
+			}
+			submit.setEnabled(false); //make submit disabled
+			
+			if(isCorrect) //if it is correct make the back to game button clickable
+				backToGame.setEnabled(true);
+			else
+				nextQuestion.setEnabled(true); //if incorrect the user has to answer another question
+								//so make next question button clickable
+		}
+		else if(command.equals("NEXT QUESTION")) //if next question is clicked
+		{
+			resetQuestion(); //reset everything
+			nextQuestion.setEnabled(false); //next question is no longer clickable
+		}
+		else if(command.equals("BACK TO GAME")) //if back to game is clicked
+		{
+			resetQuestion(); //still reset questions so that nexr time user gets something wrong everythign is reset
+			backToGame.setEnabled(false); //back to game is no longer clickable
+			cards.show(holder, "biobase"); //show the game panel 
+		}
+	}
+	
+	public void resetQuestion() //this method resets everything so that it is ready for another use
+	{
+		//make colors needed
+		Color radiocolor = new Color(230, 230, 230);
+		
+		gamdat.grabQuestionFromFile(); //pull a new random question from file
+		questionArea.setText(gamdat.getQuestion()); //update text area
+		
+		for(int i = 0; i < answer.length; i++)
+		{
+			answer[i].setText(gamdat.getAnswer(i)); //update radio buttons
+			answer[i].setEnabled(true); //make them clickable
+			answer[i].setBackground(radiocolor); //make the background back to normal
+		}
+	}
+}
+
+class GameData 
+{
+	private String name; //to store the name of the user
+	private String question; //holds the current question
+	private String[] answerSet; //holds 4 strings (multiple choice answers)
+	private int correctAnswer; //this is basically the secret code that will get the correct answer
+	private boolean[] chosenQuestions; //tracks which questions have already been used
+	private int questionCount; //this keeps track of how many questions the user has attempted in one "session"
+
+	public GameData() 
+	{
+		name = ""; 
+		answerSet = new String[4]; //it can hold the 4 answers
+		for(int i = 0; i < answerSet.length; i++) //go through each slot and initialize them
+		{
+			answerSet[i] = "";
+		}
+		chosenQuestions = new boolean[45]; //it can hold the 45 questions
+		resetAll(); //make sure everything starts at the baseline
+	}
+	
+	public void resetAll() 
+	{
+		questionCount = 0; //each new session the user has answered 0 questions, regardless of their previous attempts
+		for(int i = 0; i < chosenQuestions.length; i++) //go through to make every question not used
+		{
+			chosenQuestions[i] = false;
+		}
+	}
+
+	public void grabQuestionFromFile() 
+	{
+		Scanner inFile = null; //to read text file
+		String fileName = "geneticsquestions.txt"; //this is what the text file is called
+		File inputFile = new File(fileName); //makes the file
+
+		//use a try catch to make sure the program doesn't crash if file not found
+		try 
+		{
+			inFile = new Scanner(inputFile);
+		} 
+		catch (FileNotFoundException e) 
+		{
+			System.err.printf("ERROR: Cannot open %s\n", fileName);
+			System.exit(1);
+		}
+
+		int questionNumber = (int) (Math.random() * 45); //picks random number from 0 to 44
+		while (chosenQuestions[questionNumber] == true) //while the number has been used, pick another number
+		{
+			questionNumber = (int) (Math.random() * 45);
+		}
+
+		chosenQuestions[questionNumber] = true; //set the question chosen to true (used)
+		questionCount++; //add  one to the number of questions
+
+		// Standard skip logic matching GameModuleFiles
+		for(int i = 0; i < 6 * questionNumber; i++) //since each question has 6 lines, the loop skips 12 lines to land on the start of the third question
+		{
+			if(inFile.hasNextLine()) //if therer is a next line
+				inFile.nextLine(); //read the next line
+		}
+		
+		if(inFile.hasNextLine()) question = inFile.nextLine(); //reads the first line of the set of 6 and saves it as the question
+		
+		for(int i = 0; i < 4; i++) //reads the next 4 lines to get the answer choices and put them into the array
+		{
+			if(inFile.hasNextLine())
+				answerSet[i] = inFile.nextLine();
+		}
+		
+		if(inFile.hasNextLine()) //this is the 6th and final line which is a
+		{
+			String lastLine = inFile.nextLine().trim(); //read the last line and get the secret code number
+			//The secret number tells which answer is correct, starting at 0 being the 1st answer
+			correctAnswer = Integer.parseInt(lastLine); //make the string into an int
+		}
+		
+		inFile.close(); //close the file and save
+	}
+
+	//the following methods are getter and setter methods so that the other classes can use this info
 	public String getName()
 	{
-		return name;
+		return name; 
 	}
-	
-	public void setName(String nameIn)
-	{
+
+	public void setName(String nameIn) 
+	{ 
 		name = nameIn;
 	}
 	
-	public void getQuestion()
-	{
-		//Scanner inFile = null;
-		String questionFileName = "geneticsquestions.txt";
-		File questionFile = new File(questionFileName);
-		
-		//try
-		//{
-			//inFile = new Scanner(questionFileName);
-		//}
-		
-		//catch(FileNotFoundException except)
-		{
-			System.err.printf("ERROR: Cannot open %s/n", questionFileName);
-			//System.out.println(except);
-			System.exit(1);
-		}
-		
-		int questionNumber = (int)(Math.random()*30);
+	public String getQuestion() 
+	{ 
+		return question; 
+	}
+	
+	public String getAnswer(int index) 
+	{ 
+		return answerSet[index]; 
+	}
+	
+	public int getCorrectAnswer() 
+	{ 
+		return correctAnswer; 
+	}
+	
+	public int getQuestionCount() 
+	{ 
+		return questionCount; 
 	}
 }
