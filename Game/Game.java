@@ -881,6 +881,13 @@ class BioBasePanel extends JPanel implements ActionListener
 				scorelabel.setText("Score: " + score); //update scorelabel
 			}
 		}
+		
+		System.out.println(score);
+		if(score % 8 == 0 && score !=0)
+		{ //user needs to answer a question every 15 points
+			cards.show(holder, "questions");
+			System.out.println("THIS SHOWS QUESTIONSSS");
+		}
 		repaint(); //call repaint() so changes are seen
 	}
 
