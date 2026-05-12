@@ -31,6 +31,10 @@ import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -61,7 +65,7 @@ public class Game
 	{
 		Game gam = new Game();
 		gam.run();
-		//gam.startMusic();
+		gam.startMusic();
 	}
 	
 	public void run()
@@ -76,12 +80,28 @@ public class Game
 		frame.getContentPane().add(gh);		
 		frame.setVisible(true);	
 		frame.setResizable(false);	
+		frame.requestFocusInWindow(); //so that text field doesn't start with cursor in it
 
 	}
 	
 	public void startMusic()
 	{
-		//this is where the music will be put in
+		File soundFile;
+		
+		try
+		{
+			soundFile = new File("gamesound.wav");
+			AudioInputStream audio = AudioSystem.getAudioInputStream(soundFile);
+			Clip soundclip = AudioSystem.getClip();
+			soundclip.open(audio);
+			soundclip.start();
+			soundclip.loop(Clip.LOOP_CONTINUOUSLY);
+			Thread.sleep(5000);
+		}
+		catch(Exception except)
+		{
+			except.printStackTrace();
+		}
 	}
 }
 
@@ -157,7 +177,7 @@ class StartPanel extends JPanel implements ActionListener, MouseListener
 		//Name Text Field
 		tfName = new JTextField("enter name");
 		tfName.setFont(namefont);
-		tfName.setHorizontalAlignment(JTextField.CENTER);
+		tfName.setHorizontalAlignment(JTextField.CENTER); //so text is centered inside text field
 		tfName.setBounds(350, 250, 300, 50);
 		tfName.addMouseListener(this);
 		add(tfName);
@@ -361,7 +381,7 @@ class InstructionsPanel extends JPanel implements ActionListener
 		JTextArea instructions = new JTextArea("\n Match the moving \n genetic "
 		+ "sequences\n by typing in the\n correct base pair\n before they "
 		+ "leave\n the box to earn a\n high score! If you  miss one or get it\n wrong "
-		+ "you will have to answer a\n genetics question.");
+		+ "you will have to answer a\n genetics question.  Every 16 points you will answer a\n question!");
 		instructions.setBackground(medblue);
 		instructions.setLineWrap(true); //so text wraps
 		instructions.setEditable(false); //so user can't edit the text
@@ -401,7 +421,8 @@ class InstructionsPanel extends JPanel implements ActionListener
 		JTextArea rules = new JTextArea("\n Don't Break the\n Chain: Missing "
 		+ "a\n base or typing the  wrong one will\n lower your score. "
 		+ "\n\n High Score: Get as  many correct\n pairings as you can in 60 "
-		+ "seconds to\n climb up the\n leaderboard!");
+		+ "seconds to\n climb up the\n leaderboard!" 
+		+ "\n\nQuestions: Your time will keep running when you're answering a question so be fast!");
 		
 		rules.setFont(textareasfont); //set font
 		rules.setForeground(Color.WHITE); //so text is white
@@ -658,11 +679,29 @@ class GameControlPanel extends JPanel implements ActionListener, ChangeListener
 	{
 		String command = evt.getActionCommand();
 		if(command.equals("play"))
+		{
 			cards.show(holder, "biobase");
+			
+		}
 		else if(command.equals("DNA -> DNA") || command.equals("DNA -> RNA") || command.equals("RNA -> DNA") || command.equals("RNA -> RNA"))
 		{
 			selectionlabel.setText("The sequence selected is: " + command);
 		}
+		
+		if(command.equals("DNA -> DNA")) //if it is DNA to DNA then A pairs with T
+		{
+			
+		}
+		
+		else if(command.equals("DNA -> RNA") || command.equals("RNA -> DNA") || command.equals("RNA -> RNA")) //if it is any other sequence then A pairs with T
+		{
+			
+		}
+		else //if nothing is selected A pairs with T
+		{
+			
+		}
+		
 	}	
 	
 	
@@ -767,6 +806,7 @@ class BioBasePanel extends JPanel implements ActionListener
 		prompt.setFont(promptFont);
 		prompt.setForeground(Color.WHITE);
 		
+		//Input text Field
 		inputField = new JTextField(2); //text field that's 2 characters wide
 		inputField.setFont(inputFont);
 		inputField.addActionListener(this); //add action listener
@@ -882,12 +922,11 @@ class BioBasePanel extends JPanel implements ActionListener
 			}
 		}
 		
-		System.out.println(score);
-		if(score % 8 == 0 && score !=0)
-		{ //user needs to answer a question every 15 points
+		if(score % 16 == 0 && score !=0) //user needs to answer a question every 16 points
 			cards.show(holder, "questions");
-			System.out.println("THIS SHOWS QUESTIONSSS");
-		}
+			
+//		if(cards.show(holder, "question"))
+			//animationTimer.stop();
 		repaint(); //call repaint() so changes are seen
 	}
 
@@ -924,6 +963,7 @@ class BioBasePanel extends JPanel implements ActionListener
 		if(isRunning == false) //if game not started:
 		{
 			timer.start(); //start the game
+			inputField.requestFocusInWindow(); //so that text field starts with cursor in it
 			animationTimer.start(); //start the animation
 			isRunning = true; //set isRunning to true
 		}
@@ -986,6 +1026,14 @@ class LeaderboardPanel extends JPanel
 		
 		//add congrats label to north
 		add(congrats, BorderLayout.NORTH);
+		
+		//Make JTextArea with scroll bar for the actual leader board names (CENTER)
+		//It will write to leaderboard.txt and read from it
+		
+		//Make panel to hold JButtons "PLAY AGAIN" and "EXIT" (SOUTH)
+		//JPanel 
+		
+		
 	}
 }
 
