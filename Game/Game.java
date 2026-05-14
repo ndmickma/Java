@@ -197,7 +197,7 @@ class StartPanel extends JPanel implements ActionListener, MouseListener
 	{
 		String command = evt.getActionCommand();
 		String text = tfName.getText();
-		if(command.equals("start") && !(text.equals("")) && !(text.equals(" "))) //if the text field isn't empty or space...
+		if(command.equals("start") && !(text.equals("")) && !(text.equals(" ")) && !(text.equals("enter name"))) //if the text field isn't empty or space...
 		{
 			//...then call setName and pass in whatever the user entered and then show the next panel
 			gamdat.setName(text);
@@ -420,7 +420,7 @@ class InstructionsPanel extends JPanel implements ActionListener
 		//Rules TextArea (CENTER)
 		JTextArea rules = new JTextArea("\n Don't Break the\n Chain: Missing "
 		+ "a\n base or typing the  wrong one will\n lower your score. "
-		+ "\n\n High Score: Get as  many correct\n pairings as you can in 60 "
+		+ "\n\n High Score: Get as  many correct\n pairings as you can in 75 "
 		+ "seconds to\n climb up the\n leaderboard!" 
 		+ "\n\nQuestions: Your time will keep running when you're answering a question so be fast!");
 		
@@ -735,6 +735,7 @@ class BioBasePanel extends JPanel implements ActionListener
 	private String currentStrand; //string with the randomly generated bases
 	private boolean[] activebases; //boolean array that makes sure that base is active
 	private boolean isRunning; //boolean to make sure game is only played once
+	private boolean questionTriggered; //boolean to prevent every 16 points question from repeating
 
 	public BioBasePanel(GameHolder holderIn, CardLayout cardsIn, GameData gamdatIn)
 	{
@@ -742,6 +743,8 @@ class BioBasePanel extends JPanel implements ActionListener
 		holder = holderIn;
 		cards = cardsIn;
 		gamdat = gamdatIn;
+		
+		questionTriggered = false; 
 		
 		//make all colors needed
 		Color lightBlue = new Color(181, 233, 245);
@@ -761,7 +764,7 @@ class BioBasePanel extends JPanel implements ActionListener
 		setLayout(new BorderLayout());
 		setBackground(lightBlue); //set background to light blue
 
-		count = 60; //count starts at 60 
+		count = 75; //count starts at 75
 		score = 0; //score starts at 0
 		strandPosX = -14000; //so that strand doesn't just appear
 		isRunning = false; //so that game doesn't start when code is run
@@ -774,7 +777,7 @@ class BioBasePanel extends JPanel implements ActionListener
 		//make timer label
 		JPanel timerlabelpanel = new JPanel(); //so that label is centered
 		timerlabelpanel.setBackground(lightBlue); //set panel background
-		timerlabel = new JLabel("Time Left: 60"); //initial time is 60
+		timerlabel = new JLabel("Time Left: 75"); //initial time is 75
 		timerlabel.setFont(timerFont);
 		timerlabel.setBackground(lightBlue); //set label background
 		timerlabel.setOpaque(true); //so background is visible
@@ -923,10 +926,20 @@ class BioBasePanel extends JPanel implements ActionListener
 		}
 		
 		if(score % 16 == 0 && score !=0) //user needs to answer a question every 16 points
-			cards.show(holder, "questions");
+		{
+			if(questionTriggered == false) //if the question isn't "triggered" for this score
+			{
+				questionTriggered = true; //mark as triggered for this score so it doesn't loop
+				cards.show(holder, "questions");
+			}
+		}
+		else
+			questionTriggered = false; //if score isn't a multiple of 16 then the question is triggered
 			
-//		if(cards.show(holder, "question"))
-			//animationTimer.stop();
+		if(this.isShowing()) //if the game is actually seen, the bases should move
+			animationTimer.start();
+		else
+			animationTimer.stop(); //if the game isn't seen (question panel is shown) the animations should stop
 		repaint(); //call repaint() so changes are seen
 	}
 
@@ -1005,7 +1018,7 @@ class BioBasePanel extends JPanel implements ActionListener
 }
 
 
-class LeaderboardPanel extends JPanel
+class LeaderboardPanel extends JPanel implements ActionListener
 {
 	private GameHolder holder;
 	private CardLayout cards;
@@ -1021,6 +1034,8 @@ class LeaderboardPanel extends JPanel
 		
 		setLayout(new BorderLayout());
 		
+		Font congratslabelfont = new Font();
+		
 		//Make JLabel with congrats message (NORTH)
 		JLabel congrats = new JLabel("Time's Up! Congrats on finishing the game! Try a different sequence or speed to challenge yourself! Below you'll see a leaderboard, try and find your name!");
 		
@@ -1031,7 +1046,8 @@ class LeaderboardPanel extends JPanel
 		//It will write to leaderboard.txt and read from it
 		
 		//Make panel to hold JButtons "PLAY AGAIN" and "EXIT" (SOUTH)
-		//JPanel 
+		JPanel buttons = new JPanel();
+		
 		
 		
 	}
@@ -1063,10 +1079,10 @@ class QuestionPanel extends JPanel implements ActionListener
 		
 		//make all colors needed
 		Color backgroundcolor = new Color(181, 233, 245);
-		Color questioncolor = new Color(17, 44, 128);
+		Color questionbuttoncolor = new Color(17, 44, 128);
 		Color answercolor = new Color(111, 167, 240);
 		Color buttonpanelcolor = new Color(181, 233, 245);
-		Color radiocolor = new Color(230, 230, 230);
+		Color radiocolor = new Color(16, 22, 82);
 		
 		setBackground(backgroundcolor); //set the background color
 		setLayout(new BorderLayout(10, 10)); //make the layout border with 10 vgap and 10 hgap
@@ -1076,7 +1092,7 @@ class QuestionPanel extends JPanel implements ActionListener
 		//make the question JPanel to hold question text (NORTH)
 		JPanel question = new JPanel();
 		question.setLayout(new BorderLayout()); //set layout
-		question.setBackground(questioncolor);
+		question.setBackground(questionbuttoncolor);
 		
 		//use border factory like in GameModuleFiles so that there is a border around the question text
 		question.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30)); 
@@ -1110,6 +1126,7 @@ class QuestionPanel extends JPanel implements ActionListener
 			answer[i].setBackground(radiocolor);
 			answer[i].setFont(font);
 			answer[i].addActionListener(this);
+			answer[i].setForeground(Color.WHITE);
 			answers.add(answer[i]);
 		}
 		
@@ -1123,26 +1140,35 @@ class QuestionPanel extends JPanel implements ActionListener
 		submit = new JButton("SUBMIT");
 		submit.setFont(font);
 		submit.addActionListener(this);
-		submit.setEnabled(false);
-		buttonPanel.add(submit);
+		submit.setEnabled(false); //button starts disabled
+		submit.setForeground(Color.WHITE);
+		submit.setBackground(questionbuttoncolor);
+		buttonPanel.add(submit); //add to button panel
 		
 		//make the next question button (used when user gets a question wrong)
 		nextQuestion = new JButton("NEXT QUESTION");
 		nextQuestion.setFont(font);
 		nextQuestion.addActionListener(this);
-		nextQuestion.setEnabled(false);
-		buttonPanel.add(nextQuestion);
+		nextQuestion.setEnabled(false); //button starts disabled
+		nextQuestion.setForeground(Color.WHITE);
+		nextQuestion.setBackground(questionbuttoncolor);
+		buttonPanel.add(nextQuestion); //add to button panel
 		
 		//make the back to game button (used when user gets question correct)
 		backToGame = new JButton("BACK TO GAME");
 		backToGame.setFont(font);
 		backToGame.addActionListener(this);
-		backToGame.setEnabled(false);
-		buttonPanel.add(backToGame);
+		backToGame.setEnabled(false); //button starts disabled 
+		backToGame.setForeground(Color.WHITE);
+		backToGame.setBackground(questionbuttoncolor);
+		buttonPanel.add(backToGame); //add to button panel
 	}
 	
 	public void actionPerformed(ActionEvent evt) 
 	{
+		Color correctcolor = new Color(56, 196, 95);
+		Color wrongcolor = new Color(196, 0 ,3);
+		
 		String command = evt.getActionCommand(); //get action command
 		
 		if(group.getSelection() != null) //makes sure a radio button is actually clicked
@@ -1153,14 +1179,14 @@ class QuestionPanel extends JPanel implements ActionListener
 			boolean isCorrect = false; //boolean to keep track of correct vs. incorrect
 			int correctIndex = gamdat.getCorrectAnswer(); //use getter method to check the answer
 			
-			answer[correctIndex].setBackground(Color.GREEN); //highlight the correct answer in green
+			answer[correctIndex].setBackground(correctcolor); //highlight the correct answer in green no matter what
 			
 			for(int i = 0; i < answer.length; i++)
 			{
 				if(answer[i].isSelected()) //if the button at i is selected
 				{
 					if(i != correctIndex) //if it's wrong set background to red
-						answer[i].setBackground(Color.RED);
+						answer[i].setBackground(wrongcolor);
 					else
 						isCorrect = true; //if it is not incorrect it is automatically correct
 				}
@@ -1196,7 +1222,7 @@ class QuestionPanel extends JPanel implements ActionListener
 	public void resetQuestion() //this method resets everything so that it is ready for another use
 	{
 		//make colors needed
-		Color radiocolor = new Color(230, 230, 230);
+		Color radiocolor = new Color(16, 22, 82);
 		
 		gamdat.grabQuestionFromFile(); //pull a new random question from file
 		questionArea.setText(gamdat.getQuestion()); //update text area
