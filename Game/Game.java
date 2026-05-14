@@ -378,10 +378,10 @@ class InstructionsPanel extends JPanel implements ActionListener
 		
 		//Instructions TextArea (CENTER)
 		JPanel instructionspanel = new JPanel();
-		JTextArea instructions = new JTextArea("\n Match the moving \n genetic "
+		JTextArea instructions = new JTextArea(" -Match the moving \n genetic "
 		+ "sequences\n by typing in the\n correct base pair\n before they "
-		+ "leave\n the box to earn a\n high score! If you  miss one or get it\n wrong "
-		+ "you will have to answer a\n genetics question.  Every 16 points you will answer a\n question!");
+		+ "leave\n the box to earn a\n high score!\n -Every 16 points\n or if you miss a\n base/get it wrong "
+		+ "\n you will have to\n answer a genetics\n question but your\n timer won't stop so be fast!!");
 		instructions.setBackground(medblue);
 		instructions.setLineWrap(true); //so text wraps
 		instructions.setEditable(false); //so user can't edit the text
@@ -421,8 +421,7 @@ class InstructionsPanel extends JPanel implements ActionListener
 		JTextArea rules = new JTextArea("\n Don't Break the\n Chain: Missing "
 		+ "a\n base or typing the  wrong one will\n lower your score. "
 		+ "\n\n High Score: Get as  many correct\n pairings as you can in 75 "
-		+ "seconds to\n climb up the\n leaderboard!" 
-		+ "\n\nQuestions: Your time will keep running when you're answering a question so be fast!");
+		+ "seconds to\n climb up the\n leaderboard!");
 		
 		rules.setFont(textareasfont); //set font
 		rules.setForeground(Color.WHITE); //so text is white
@@ -688,12 +687,13 @@ class GameControlPanel extends JPanel implements ActionListener, ChangeListener
 			selectionlabel.setText("The sequence selected is: " + command);
 		}
 		
+		
 		if(command.equals("DNA -> DNA")) //if it is DNA to DNA then A pairs with T
 		{
 			
 		}
 		
-		else if(command.equals("DNA -> RNA") || command.equals("RNA -> DNA") || command.equals("RNA -> RNA")) //if it is any other sequence then A pairs with T
+		else if(command.equals("DNA -> RNA") || command.equals("RNA -> DNA") || command.equals("RNA -> RNA")) //if it is any other sequence then A pairs with U
 		{
 			
 		}
@@ -1017,42 +1017,6 @@ class BioBasePanel extends JPanel implements ActionListener
 	}
 }
 
-
-class LeaderboardPanel extends JPanel implements ActionListener
-{
-	private GameHolder holder;
-	private CardLayout cards;
-	private GameData gamdat;
-	
-	private PrintWriter writer; //this is so we can write to the leaderboard text file
-	
-	public LeaderboardPanel(GameHolder holderIn, CardLayout cardsIn, GameData gamdatIn)
-	{
-		holder = holderIn;
-		cards = cardsIn;
-		gamdat = gamdatIn;
-		
-		setLayout(new BorderLayout());
-		
-		Font congratslabelfont = new Font();
-		
-		//Make JLabel with congrats message (NORTH)
-		JLabel congrats = new JLabel("Time's Up! Congrats on finishing the game! Try a different sequence or speed to challenge yourself! Below you'll see a leaderboard, try and find your name!");
-		
-		//add congrats label to north
-		add(congrats, BorderLayout.NORTH);
-		
-		//Make JTextArea with scroll bar for the actual leader board names (CENTER)
-		//It will write to leaderboard.txt and read from it
-		
-		//Make panel to hold JButtons "PLAY AGAIN" and "EXIT" (SOUTH)
-		JPanel buttons = new JPanel();
-		
-		
-		
-	}
-}
-
 class QuestionPanel extends JPanel implements ActionListener
 {
 	//make field variables 
@@ -1236,6 +1200,55 @@ class QuestionPanel extends JPanel implements ActionListener
 	}
 }
 
+class LeaderboardPanel extends JPanel //implements ActionListener
+{
+	private GameHolder holder;
+	private CardLayout cards;
+	private GameData gamdat;
+	
+	private PrintWriter writer; //this is so we can write to the leaderboard text file
+	
+	public LeaderboardPanel(GameHolder holderIn, CardLayout cardsIn, GameData gamdatIn)
+	{
+		holder = holderIn;
+		cards = cardsIn;
+		gamdat = gamdatIn;
+		
+		setLayout(new BorderLayout());
+		
+		//Font congratslabelfont = new Font();
+		//Font buttonsfont = new Font();
+		
+		//Color buttonscolor = new Color();
+		
+		//Make JLabel with congrats message (NORTH)
+		JLabel congrats = new JLabel("Time's Up! Congrats on finishing the game! Try a different sequence or speed to challenge yourself! Below you'll see a leaderboard, try and find your name!");
+		
+		//add congrats label to north
+		add(congrats, BorderLayout.NORTH);
+		
+		//Make JTextArea with scroll bar for the actual leader board names (CENTER)
+		//It will write to leaderboard.txt and read from it
+		
+		//Make panel to hold JButtons "PLAY AGAIN", "EXIT", and "INSTRUCTIONS" (SOUTH)
+		JPanel buttonspanel = new JPanel();
+		buttonspanel.setLayout(new FlowLayout(FlowLayout.CENTER,10,10));
+		
+		JButton playagain = new JButton("PLAY AGAIN");
+		//playagain.setFont(buttonsfont);
+		playagain.setForeground(Color.WHITE);
+		//playagain.setBackground(buttonscolor);
+		
+		buttonspanel.add(playagain);
+		
+		add(buttonspanel, BorderLayout.SOUTH);
+		
+		
+		
+		
+	}
+}
+
 class GameData 
 {
 	private String name; //to store the name of the user for the leaderboard and TCPanel
@@ -1296,19 +1309,19 @@ class GameData
 		// Standard skip logic matching GameModuleFiles
 		for(int i = 0; i < 6 * questionNumber; i++) //since each question has 6 lines, the loop skips 12 lines to land on the start of the third question
 		{
-			if(inFile.hasNextLine()) //if therer is a next line
+			if(inFile.hasNext()) //if therer is a next line
 				inFile.nextLine(); //read the next line
 		}
 		
-		if(inFile.hasNextLine()) question = inFile.nextLine(); //reads the first line of the set of 6 and saves it as the question
+		if(inFile.hasNext()) question = inFile.nextLine(); //reads the first line of the set of 6 and saves it as the question
 		
 		for(int i = 0; i < 4; i++) //reads the next 4 lines to get the answer choices and put them into the array
 		{
-			if(inFile.hasNextLine())
+			if(inFile.hasNext())
 				answerSet[i] = inFile.nextLine();
 		}
 		
-		if(inFile.hasNextLine()) //this is the 6th and final line which is a
+		if(inFile.hasNext()) //this is the 6th and final line which is a
 		{
 			String lastLine = inFile.nextLine().trim(); //read the last line and get the secret code number
 			//The secret number tells which answer is correct, starting at 0 being the 1st answer
