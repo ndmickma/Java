@@ -16,6 +16,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Dimension;
+import java.awt.Component;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -117,10 +118,10 @@ class GameHolder extends JPanel
 		StartPanel startpanel = new StartPanel(this, cards, gamdat);
 		TCPanel termspanel = new TCPanel(this, cards, gamdat);
 		InstructionsPanel rulespanel = new InstructionsPanel(this, cards, gamdat);
-		GameControlPanel controlspanel = new GameControlPanel(this, cards, gamdat);
 		BioBasePanel bbpanel = new BioBasePanel(this, cards, gamdat);
+		GameControlPanel controlspanel = new GameControlPanel(this, cards, gamdat, bbpanel);
 		QuestionPanel qpanel = new QuestionPanel(this, cards, gamdat);
-		LeaderboardPanel leadpanel = new LeaderboardPanel(this, cards, gamdat);
+		LeaderboardPanel leadpanel = new LeaderboardPanel(this, cards, gamdat, bbpanel);
 		
 		//add all the panels with their string identifiers
 		add(startpanel, "start");
@@ -476,16 +477,18 @@ class GameControlPanel extends JPanel implements ActionListener, ChangeListener
 	private GameHolder holder;
 	private CardLayout cards;
 	private GameData gamdat;
+	private BioBasePanel bbPanel;
 	
 	//this is used in action performed to let the user know what they selected in the menu bar
 	private JLabel selectionlabel;
 	
-	public GameControlPanel(GameHolder holderIn, CardLayout cardsIn, GameData gamdatIn)
+	public GameControlPanel(GameHolder holderIn, CardLayout cardsIn, GameData gamdatIn, BioBasePanel bbPanelIn)
 	{
 		//set FV equal to the parameters
 		holder = holderIn;
 		cards = cardsIn;
 		gamdat = gamdatIn;
+		bbPanel = bbPanelIn;
 		
 		//set layout to BorderLayout
 		setLayout(new BorderLayout());
@@ -679,35 +682,23 @@ class GameControlPanel extends JPanel implements ActionListener, ChangeListener
 		String command = evt.getActionCommand();
 		if(command.equals("play"))
 		{
+			bbPanel.generateStrand(); //so that strand is updated to what user picked
+			
 			cards.show(holder, "biobase");
 			
 		}
 		else if(command.equals("DNA -> DNA") || command.equals("DNA -> RNA") || command.equals("RNA -> DNA") || command.equals("RNA -> RNA"))
 		{
 			selectionlabel.setText("The sequence selected is: " + command);
+			gamdat.setSequenceType(command); //to save the selected sequence
 		}
-		
-		
-		if(command.equals("DNA -> DNA")) //if it is DNA to DNA then A pairs with T
-		{
-			
-		}
-		
-		else if(command.equals("DNA -> RNA") || command.equals("RNA -> DNA") || command.equals("RNA -> RNA")) //if it is any other sequence then A pairs with U
-		{
-			
-		}
-		else //if nothing is selected A pairs with T
-		{
-			
-		}
-		
 	}	
 	
 	
 	public void stateChanged(ChangeEvent changevt)
 	{
-		//this is where what the user picked on the slider will affect the speed of the game
+		JSlider source = (JSlider)changevt.getSource(); //gets what the user selected 
+		gamdat.setSpeed(source.getValue()); //saves the speed the user selected
 	}
 	
 	public void paintComponent(Graphics g)
@@ -764,7 +755,7 @@ class BioBasePanel extends JPanel implements ActionListener
 		setLayout(new BorderLayout());
 		setBackground(lightBlue); //set background to light blue
 
-		count = 75; //count starts at 75
+		count = 10; //count starts at 75
 		score = 0; //score starts at 0
 		strandPosX = -14000; //so that strand doesn't just appear
 		isRunning = false; //so that game doesn't start when code is run
@@ -844,6 +835,7 @@ class BioBasePanel extends JPanel implements ActionListener
 			{
 				timer.stop();
 				animationTimer.stop();
+				gamdat.setScore(score);
 				cards.show(holder, "leaderboard");
 			}
 		}
@@ -851,7 +843,14 @@ class BioBasePanel extends JPanel implements ActionListener
 		//Animation
 		else if(command.equals("animation"))
 		{
-			strandPosX += 3; //moves the strand 3px to the right
+			int currentSpeed = gamdat.getSpeed();
+			
+			if(currentSpeed == 1) //if 1 is selected speed
+				strandPosX += 3; //move the strand 3px to the right
+			else if(currentSpeed == 2) //if 2 is selected speed
+				strandPosX += 5; //move the strand 5px to the right
+			else if(currentSpeed == 3) //if 3 is selected speed
+				strandPosX += 7; //move the strand 7px to the right
 
 			for(int i = 0; i < 100; i++) //goes through 100 bases
 			{
@@ -895,22 +894,74 @@ class BioBasePanel extends JPanel implements ActionListener
 				//get the actual base at the targetIndex
 				char targetChar = currentStrand.charAt(targetIndex);
 				boolean correct = false; //start with correct as false
+				String seqType = gamdat.getSequenceType();
 				
-				//if base is A and input is T, correct is true
-				if(targetChar == 'A' && input.equals("T")) 
-					correct = true;
-				//if base is T and input is A, correct is true
-				else if(targetChar == 'T' && input.equals("A")) 
-					correct = true;
-				//if base is C and input is G, correct is true
-				else if(targetChar == 'C' && input.equals("G")) 
-					correct = true;
-				//if base is G and input is C, correct is true
-				else if(targetChar == 'G' && input.equals("C")) 
-					correct = true;
-				else
+				//check the user input with nested if statements
+				if (seqType.equals("DNA -> DNA"))
+				{
+					//if base is A and input is T, correct is true
+					if(targetChar == 'A' && input.equals("T")) 
+						correct = true;
+					//if base is T and input is A, correct is true
+					else if(targetChar == 'T' && input.equals("A")) 
+						correct = true;
+					//if base is C and input is G, correct is true
+					else if(targetChar == 'C' && input.equals("G")) 
+						correct = true;
+					//if base is G and input is C, correct is true
+					else if(targetChar == 'G' && input.equals("C")) 
+						correct = true;
+				}
+				else if (seqType.equals("DNA -> RNA"))
+				{
+					//if base is A and input is U, correct is true
+					if(targetChar == 'A' && input.equals("U")) 
+						correct = true;
+					//if base is T and input is A, correct is true
+					else if(targetChar == 'T' && input.equals("A")) 
+						correct = true;
+					//if base is C and input is G, correct is true
+					else if(targetChar == 'C' && input.equals("G")) 
+						correct = true;
+					//if base is G and input is C, correct is true
+					else if(targetChar == 'G' && input.equals("C")) 
+						correct = true;
+				}
+				else if (seqType.equals("RNA -> DNA"))
+				{
+					//if base is A and input is T, correct is true
+					if(targetChar == 'A' && input.equals("T")) 
+						correct = true;
+					//if base is U and input is A, correct is true
+					else if(targetChar == 'U' && input.equals("A")) 
+						correct = true;
+					//if base is C and input is G, correct is true
+					else if(targetChar == 'C' && input.equals("G")) 
+						correct = true;
+					//if base is G and input is C, correct is true
+					else if(targetChar == 'G' && input.equals("C")) 
+						correct = true;
+				}
+				else if (seqType.equals("RNA -> RNA"))
+				{
+					//if base is A and input is U, correct is true
+					if(targetChar == 'A' && input.equals("U")) 
+						correct = true;
+					//if base is U and input is A, correct is true
+					else if(targetChar == 'U' && input.equals("A")) 
+						correct = true;
+					//if base is C and input is G, correct is true
+					else if(targetChar == 'C' && input.equals("G")) 
+						correct = true;
+					//if base is G and input is C, correct is true
+					else if(targetChar == 'G' && input.equals("C")) 
+						correct = true;
+				}
+				
+				if(correct == false)
 					cards.show(holder, "questions"); //if incorrect user needs to answer a question
-				
+					
+					
 				activebases[targetIndex] = true; //set the base at targetIndex to active
 				if(correct) //if correct add 4 to the score
 					score = score + 4; 
@@ -943,9 +994,15 @@ class BioBasePanel extends JPanel implements ActionListener
 		repaint(); //call repaint() so changes are seen
 	}
 
-	private void generateStrand()
+	public void generateStrand()
 	{
+		String type = gamdat.getSequenceType();
 		String bases = "ATCG";
+		
+		//if the starting sequence is RNA use AUCG instead
+		if(type.equals("RNA -> DNA") || type.equals("RNA -> RNA"))
+			bases = "AUCG";
+		
 		currentStrand = "";
 		activebases = new boolean[100]; //it is 100 long because 100 bases in a strand
 		for(int i = 0; i < 100; i++) //goes through all 100 bases 
@@ -968,6 +1025,7 @@ class BioBasePanel extends JPanel implements ActionListener
 		Color colorT = new Color(0, 100, 0);
 		Color colorC = new Color(128, 0, 128);
 		Color colorG = new Color(255, 105, 180);
+		Color colorU = new Color(255, 140, 0);
 		
 		//make strand font
 		Font strandFont = new Font("Monospaced", Font.BOLD, 60);
@@ -994,23 +1052,26 @@ class BioBasePanel extends JPanel implements ActionListener
 				int charX = strandPosX + (i * 140); //get the x position of the current base
 				if(charX > -50 && charX < 1050 && activebases[i] == false) //if base is on screen (with extra padding) and base is active
 				{
-					char b = currentStrand.charAt(i); //get the specific char at index i
+					char base = currentStrand.charAt(i); //get the specific char at index i
 					
 					//if the base is A make the color blue
-					if(b == 'A') 
+					if(base == 'A') 
 						g.setColor(colorA); 
 					//if the base is T make the color green
-					else if(b == 'T') 
+					else if(base == 'T') 
 						g.setColor(colorT);  
 					//if the base is C make the color purple 
-					else if(b == 'C') 
+					else if(base == 'C') 
 						g.setColor(colorC); 
 					//if the base is G make the color pink
-					else if(b == 'G') 
-						g.setColor(colorG); 
+					else if(base == 'G') 
+						g.setColor(colorG);
+					//if the base is U make the color orange 
+					else if(base == 'U')
+						g.setColor(colorU);
 					
 					//draw the base at the charX position and 250 as the baseline
-					g.drawString("" + b, charX, 250); 
+					g.drawString("" + base, charX, 250); 
 				}
 			}
 		}
@@ -1138,9 +1199,9 @@ class QuestionPanel extends JPanel implements ActionListener
 		if(group.getSelection() != null) //makes sure a radio button is actually clicked
 			submit.setEnabled(true); //then submit can be clicked
 		
-		if(command.equals("SUBMIT")) //if submited then check if its right
+		if(command.equals("SUBMIT")) //if submitted then check if its right
 		{	
-			boolean isCorrect = false; //boolean to keep track of correct vs. incorrect
+			boolean isCorrect = false; //boolean to keep track of correct vs. incorrect 
 			int correctIndex = gamdat.getCorrectAnswer(); //use getter method to check the answer
 			
 			answer[correctIndex].setBackground(correctcolor); //highlight the correct answer in green no matter what
@@ -1200,52 +1261,150 @@ class QuestionPanel extends JPanel implements ActionListener
 	}
 }
 
-class LeaderboardPanel extends JPanel //implements ActionListener
+class LeaderboardPanel extends JPanel implements ActionListener
 {
+	//make field variables
 	private GameHolder holder;
 	private CardLayout cards;
 	private GameData gamdat;
+	private BioBasePanel gamepanel;
 	
-	private PrintWriter writer; //this is so we can write to the leaderboard text file
+	private JTextArea leaderboardArea; //the text area where the actual names are
+	private boolean scoreSaved; //boolean to check if score is saved or not to prevent multiple saves due to repaint()
 	
-	public LeaderboardPanel(GameHolder holderIn, CardLayout cardsIn, GameData gamdatIn)
+	public LeaderboardPanel(GameHolder holderIn, CardLayout cardsIn, GameData gamdatIn, BioBasePanel gamepanelIn)
 	{
 		holder = holderIn;
 		cards = cardsIn;
 		gamdat = gamdatIn;
+		gamepanel = gamepanelIn;
 		
-		setLayout(new BorderLayout());
+		scoreSaved = false; //score is intially not saved
 		
-		//Font congratslabelfont = new Font();
-		//Font buttonsfont = new Font();
+		//make all fonts needed
+		Font titleFont = new Font("Monospaced", Font.BOLD, 42);
+		Font congratsFont = new Font("Monospaced", Font.BOLD, 24);
+		Font boardFont = new Font("Monospaced", Font.PLAIN, 20);
+		Font buttonsFont = new Font("Monospaced", Font.BOLD, 22);
 		
-		//Color buttonscolor = new Color();
+		//make all colors needed
+		Color titleBgColor = new Color(17, 44, 128);
+		Color sideBgColor = new Color(24, 61, 179);
+		Color areaBgColor = new Color(181, 233, 245);
+		Color buttonColor = new Color(111, 167, 240);
 		
-		//Make JLabel with congrats message (NORTH)
-		JLabel congrats = new JLabel("Time's Up! Congrats on finishing the game! Try a different sequence or speed to challenge yourself! Below you'll see a leaderboard, try and find your name!");
+		//make all sizes needed
+		Dimension titleSize = new Dimension(1000, 80);
+		Dimension sideSize = new Dimension(500, 510);
 		
-		//add congrats label to north
-		add(congrats, BorderLayout.NORTH);
+		setLayout(new BorderLayout()); //set layout to border
 		
-		//Make JTextArea with scroll bar for the actual leader board names (CENTER)
-		//It will write to leaderboard.txt and read from it
+		//Make "Time's Up!" label (NORTH)
+		JLabel titleLabel = new JLabel("Time's Up!");
+		titleLabel.setFont(titleFont); //set the font 
+		titleLabel.setOpaque(true); //so that background is visible
+		titleLabel.setBackground(titleBgColor); //set the background
+		titleLabel.setForeground(Color.WHITE); //so the text is white
+		titleLabel.setPreferredSize(titleSize); //set the size so it is the right size
+		add(titleLabel, BorderLayout.NORTH);//add the label to NORTH
 		
-		//Make panel to hold JButtons "PLAY AGAIN", "EXIT", and "INSTRUCTIONS" (SOUTH)
+		//Make congrats label (WEST)
+		//use HTML to add breaks in the text
+		JLabel congratsLabel = new JLabel("<html><center><br><br>Congrats on finishing<br>the game!<br><br>Try a different sequence<br>or speed to challenge<br>yourself!<br><br>Below you'll see the<br>leaderboard, try and<br>find your name!</center></html>");
+		congratsLabel.setFont(congratsFont); //set font
+		congratsLabel.setOpaque(true); //so the background is visible
+		congratsLabel.setBackground(sideBgColor); //set color
+		congratsLabel.setForeground(Color.WHITE); //so text os white
+		congratsLabel.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30)); //so there is space on the sides of the text
+		congratsLabel.setPreferredSize(sideSize); //set size so it takes half the screen
+		add(congratsLabel, BorderLayout.WEST); //add panel to WEST
+		
+		//Make the text area where the names will be displayed (CENTER)
+		leaderboardArea = new JTextArea(); //initialize the text area
+		leaderboardArea.setFont(boardFont); //set font
+		leaderboardArea.setEditable(false); //make it uneditable so that player can't change the text
+		leaderboardArea.setBackground(areaBgColor); //set background
+		leaderboardArea.setForeground(Color.WHITE); //set the text to white
+		//leaderboardArea.setBorder(BorderFactory.createEmptyBorder(15, 40, 15, 40)); //create space between the text
+		
+		JScrollPane scrollPane = new JScrollPane(leaderboardArea); //make a scroll pane for the text area so that if there are too many names player can scroll down
+		add(scrollPane, BorderLayout.CENTER); //add the scroll pane to CENTER
+		
+		//make the panel where the 3 buttons will be (SOUTH)
 		JPanel buttonspanel = new JPanel();
-		buttonspanel.setLayout(new FlowLayout(FlowLayout.CENTER,10,10));
+		buttonspanel.setLayout(new FlowLayout(FlowLayout.CENTER)); //set layout to flow with hgap 40, vgap 15
+		buttonspanel.setBackground(areaBgColor); //set background
 		
+		//Make PLAY AGAIN button (it will take user back to BioBasePanel to play the game with the same controls as the previous round)
 		JButton playagain = new JButton("PLAY AGAIN");
-		//playagain.setFont(buttonsfont);
-		playagain.setForeground(Color.WHITE);
-		//playagain.setBackground(buttonscolor);
+		playagain.setFont(buttonsFont); //set font
+		playagain.setForeground(Color.WHITE); //so text is white
+		playagain.setBackground(buttonColor); //set background
+		playagain.addActionListener(this); //add action listener 
+		buttonspanel.add(playagain); //add playagain button to the buttons panel
 		
-		buttonspanel.add(playagain);
+		//Make INSTRUCTIONS button (it will take the user back to InstructionPanel to review the rules, change the settings, and play again)
+		JButton instructionsBtn = new JButton("INSTRUCTIONS");
+		instructionsBtn.setFont(buttonsFont); //set font
+		instructionsBtn.setForeground(Color.WHITE); //so the text is white
+		instructionsBtn.setBackground(buttonColor); //set background
+		instructionsBtn.addActionListener(this); //add action listener
+		buttonspanel.add(instructionsBtn); //add instructions button to the button panel
 		
+		//Make EXIT button (closes everything)
+		JButton exitBtn = new JButton("EXIT");
+		exitBtn.setFont(buttonsFont); //set font
+		exitBtn.setForeground(Color.WHITE); //so text is white
+		exitBtn.setBackground(buttonColor); //set background
+		exitBtn.addActionListener(this); //add action listener
+		buttonspanel.add(exitBtn); //add exit button to the buttons panel
+		
+		//add buttonspanel to SOUTH
 		add(buttonspanel, BorderLayout.SOUTH);
+	}
+
+	public void actionPerformed(ActionEvent evt)
+	{
+		String command = evt.getActionCommand(); //get the action command to see what was pressed
 		
+		if (command.equals("EXIT"))
+		{
+			System.exit(0); //if exit is pressed exit with code '0'
+		}
 		
+		else if (command.equals("PLAY AGAIN") || command.equals("INSTRUCTIONS"))
+		{ //if play again or instructions pressed
+			gamdat.resetAll();  //reset everything
+			scoreSaved = false; //the score is no longer saved
+			
+			BioBasePanel freshGamePanel = new BioBasePanel(holder, cards, gamdat); //make a new instance of the game panel
+			holder.remove(gamepanel); //remove the old game panel
+			gamepanel = freshGamePanel; //set the original gamepanel variable equal to the new one
+			
+			holder.add(gamepanel, "biobase"); //add the new panel back into the card layout
+			holder.repaint(); //refresh so changes are visible
+						
+			if (command.equals("PLAY AGAIN")) //if play again is clicked
+			{
+				cards.show(holder, "biobase"); //go directly to game panel
+			}
+			else //if instructions was clicked
+			{
+				cards.show(holder, "rules"); //go to instructions panel
+			}
+		}
+	}
+	
+	public void paintComponent(Graphics g)
+	{
+		super.paintComponent(g);
 		
-		
+		if (!scoreSaved) //if the score isn't saved
+		{
+			String scoreboardText = gamdat.updateAndGetLeaderboard(); //make a string variable to hold whatever updateAndGetLeaderboard() returns (fresh leaderboard)
+			leaderboardArea.setText(scoreboardText); //set the text of the textarea to that variable
+			scoreSaved = true; //now the score is saved
+		}
 	}
 }
 
@@ -1258,22 +1417,28 @@ class GameData
 	private boolean[] chosenQuestions; //tracks which questions have already been used
 	private int questionCount; //this keeps track of how many questions the user has attempted in one "session"
 	private int scoretrack; //keeps track of user's score for the leaderboard
+	private int speed; //tracks the speed that the user selected
+	private String sequenceType; //tracks the seuqence the user selected
 
 	public GameData() 
 	{
 		name = ""; 
 		answerSet = new String[4]; //it can hold the 4 answers
+		sequenceType = "DNA -> DNA";
+		speed = 1; 
+		
 		for(int i = 0; i < answerSet.length; i++) //go through each slot and initialize them
 		{
 			answerSet[i] = "";
 		}
-		chosenQuestions = new boolean[45]; //it can hold the 45 questions
+		chosenQuestions = new boolean[200]; //it can hold the 200 questions
 		resetAll(); //make sure everything starts at the baseline
 	}
 	
 	public void resetAll() 
 	{
 		questionCount = 0; //each new session the user has answered 0 questions, regardless of their previous attempts
+		scoretrack = 0; //each new game the user's score resets
 		for(int i = 0; i < chosenQuestions.length; i++) //go through to make every question not used
 		{
 			chosenQuestions[i] = false;
@@ -1297,23 +1462,23 @@ class GameData
 			System.exit(1);
 		}
 
-		int questionNumber = (int) (Math.random() * 45); //picks random number from 0 to 44
+		int questionNumber = (int) (Math.random() * 200); //picks random number from 0 to 199
 		while (chosenQuestions[questionNumber] == true) //while the number has been used, pick another number
 		{
-			questionNumber = (int) (Math.random() * 45);
+			questionNumber = (int) (Math.random() * 200);
 		}
 
 		chosenQuestions[questionNumber] = true; //set the question chosen to true (used)
-		questionCount++; //add  one to the number of questions
+		questionCount++; //add one to the number of questions
 
-		// Standard skip logic matching GameModuleFiles
 		for(int i = 0; i < 6 * questionNumber; i++) //since each question has 6 lines, the loop skips 12 lines to land on the start of the third question
 		{
 			if(inFile.hasNext()) //if therer is a next line
 				inFile.nextLine(); //read the next line
 		}
 		
-		if(inFile.hasNext()) question = inFile.nextLine(); //reads the first line of the set of 6 and saves it as the question
+		if(inFile.hasNext()) 
+			question = inFile.nextLine(); //reads the first line of the set of 6 and saves it as the question
 		
 		for(int i = 0; i < 4; i++) //reads the next 4 lines to get the answer choices and put them into the array
 		{
@@ -1329,6 +1494,109 @@ class GameData
 		}
 		
 		inFile.close(); //close the file and save
+	}
+	
+	// This updates leaderboard.txt with the current player performance, sorts it, and returns the full formatted leaderboard string
+	public String updateAndGetLeaderboard()
+	{
+		String fileName = "leaderboard.txt";
+		File file = new File(fileName); //the file
+		Scanner inFile = null; //to read from text file
+		PrintWriter outFile = null; //to write to text file
+		
+		//make the two parallel arrays
+		String[] names = new String[1000]; //array to store the names
+		int[] scores = new int[1000]; //array to store the corresponding scores
+		
+		int count = 0; //tracks how many places are succesfully loaded
+		
+		//use try catch to make sure file exists
+		try
+		{
+			inFile = new Scanner(file); //initialize the reader
+			
+			// Read lines if file is not empty
+			while (inFile.hasNext()) //while there is a next line
+			{
+				String line = inFile.nextLine().trim(); //line is the variable that will hold the text from the line without extra spaces
+				
+				//ignore header or empty rows
+				if (!line.equals("Leaderboard:") && !line.equals(""))
+				{
+					int colonIdx = line.indexOf(":"); //searches through the entire current line to find the index of the colon
+					if (colonIdx != -1) //if the colon is found
+								//in leaderboard.txt the format is name : score, so the colon acts as an easy marker
+								//to indicate where the name ends and score starts
+					{
+						String oldName = line.substring(0, colonIdx).trim(); //"cuts" the name out of the line and removes extra spaces
+						String scoreStr = line.substring(colonIdx + 1).trim(); //"cuts" the score out of the line and removes extra spaces
+						int oldScore = Integer.parseInt(scoreStr); //turns the string score into a integer so it can be numerically sorted 
+						
+						names[count] = oldName; //set the index count to the name
+						scores[count] = oldScore; //set the index count to the score
+						count++; //add one to count to move to the space
+					}
+				}
+			}
+			inFile.close(); //saves the work
+		}
+		
+		catch (FileNotFoundException e) //if file not found
+		{
+			System.err.printf("ERROR: Cannot open %s\n", fileName);
+		}
+		
+		//add the cuurent name and score to the next slot
+		names[count] = name;
+		scores[count] = scoretrack;
+		count++; //add one to the count
+		
+		//nested for loop
+		for (int i = 0; i < count - 1; i++) //this loop tells how many passes are made through the list
+		{
+			for (int j = 0; j < count - (i + 1); j++) //this loop goes through the rows one by one to compare values
+			{
+				if (scores[j] < scores[j + 1]) //if the score at the current index is less than the score one below it
+				{
+					//swap scores
+					int tempScore = scores[j]; //temporary variable so the value of scores[i] isn't lost
+					scores[j] = scores[j + 1]; //the new value of scores[j] is scores[j+1]
+					scores[j + 1] = tempScore; //the new value of scores[j+1] is the temp variable (old scores[j] value)
+					
+					//swap matching names
+					String tempName = names[j]; //make temp variable to hold value of names[j] so it is not lost
+					names[j] = names[j + 1]; //new value of names[j] is names[j+1]
+					names[j + 1] = tempName; //new value of names[j+1] is the temp variable (old names[j])
+				}
+			}
+		}
+		
+		//try catch to make sure file is there
+		try
+		{
+			outFile = new PrintWriter(file); //opens leaderboard.txt for writing
+			outFile.println("Leaderboard:"); //writes header
+			
+			for (int i = 0; i < count; i++) //loops through the length of the two parallel arrays
+			{
+				outFile.printf("%s: %d\n", names[i], scores[i]); //write each place in the name : score format and add a new line after each index
+			}
+			outFile.close(); //saves written work
+		}
+		catch (IOException e) //if file not found
+		{
+			System.err.printf("ERROR: Cannot write to %s\n", fileName);
+		}
+		
+		//make the string that holds the text for the actual leaderboard being displayed
+		String displayedLeaderboard = "";
+		for (int i = 0; i < count; i++) //goes through the length of the parallel arrays
+		{
+			//set the string variable equal to the #place name - score and then a new line
+			displayedLeaderboard += "#" + (i + 1) + " " + names[i] + " - " + scores[i] + "\n"; 
+		}
+		
+		return displayedLeaderboard; //return the leaderboard that needs to be displayed
 	}
 
 	//the following methods are getter and setter methods so that the other classes can use this info
@@ -1371,4 +1639,24 @@ class GameData
 	{
 		scoretrack = scoreTrackIn;
 	}
+	
+	public int getSpeed() 
+	{
+		return speed;
+	}
+	
+	public void setSpeed(int speedIn)
+	{
+		speed = speedIn;
+	}
+	
+	public String getSequenceType()
+	{
+		return sequenceType;
+	}
+	
+	public void setSequenceType(String typeIn)
+	{
+		sequenceType = typeIn;
+	}	
 }
