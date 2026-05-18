@@ -754,7 +754,7 @@ class BioBasePanel extends JPanel implements ActionListener
 		setLayout(new BorderLayout());
 		setBackground(lightBlue); //set background to light blue
 
-		count = 10; //count starts at 75
+		count = 75; //count starts at 75
 		score = 0; //score starts at 0
 		strandPosX = -14000; //so that strand doesn't just appear
 		isRunning = false; //so that game doesn't start when code is run
@@ -1283,7 +1283,7 @@ class LeaderboardPanel extends JPanel implements ActionListener
 		//make all fonts needed
 		Font titleFont = new Font("Monospaced", Font.BOLD, 42);
 		Font congratsFont = new Font("Monospaced", Font.BOLD, 24);
-		Font boardFont = new Font("Monospaced", Font.PLAIN, 20);
+		Font boardFont = new Font("Monospaced", Font.BOLD, 20);
 		Font buttonsFont = new Font("Monospaced", Font.BOLD, 22);
 		
 		//make all colors needed
@@ -1297,9 +1297,10 @@ class LeaderboardPanel extends JPanel implements ActionListener
 		Dimension sideSize = new Dimension(500, 510);
 		
 		setLayout(new BorderLayout()); //set layout to border
+		setBackground(sideBgColor);
 		
 		//Make "Time's Up!" label (NORTH)
-		JLabel titleLabel = new JLabel("Time's Up!");
+		JLabel titleLabel = new JLabel("Time's Up!", SwingConstants.CENTER);
 		titleLabel.setFont(titleFont); //set the font 
 		titleLabel.setOpaque(true); //so that background is visible
 		titleLabel.setBackground(titleBgColor); //set the background
@@ -1309,7 +1310,7 @@ class LeaderboardPanel extends JPanel implements ActionListener
 		
 		//Make congrats label (WEST)
 		//use HTML to add breaks in the text
-		JLabel congratsLabel = new JLabel("<html><center><br><br>Congrats on finishing<br>the game!<br><br>Try a different sequence<br>or speed to challenge<br>yourself!<br><br>Below you'll see the<br>leaderboard, try and<br>find your name!</center></html>");
+		JLabel congratsLabel = new JLabel("<html><center>Congrats on finishing<br>the game!<br><br>Below you'll see the<br>leaderboard, try and<br>find your name!<br><br>Play another round and try a different sequence or speed to challenge yourself!</center></html>", SwingConstants.CENTER);
 		congratsLabel.setFont(congratsFont); //set font
 		congratsLabel.setOpaque(true); //so the background is visible
 		congratsLabel.setBackground(sideBgColor); //set color
@@ -1322,9 +1323,9 @@ class LeaderboardPanel extends JPanel implements ActionListener
 		leaderboardArea = new JTextArea(); //initialize the text area
 		leaderboardArea.setFont(boardFont); //set font
 		leaderboardArea.setEditable(false); //make it uneditable so that player can't change the text
-		leaderboardArea.setBackground(areaBgColor); //set background
+		leaderboardArea.setBackground(sideBgColor); //set background
 		leaderboardArea.setForeground(Color.WHITE); //set the text to white
-		//leaderboardArea.setBorder(BorderFactory.createEmptyBorder(15, 40, 15, 40)); //create space between the text
+		leaderboardArea.setBorder(BorderFactory.createEmptyBorder(15, 40, 15, 40)); //create space between the text
 		
 		JScrollPane scrollPane = new JScrollPane(leaderboardArea); //make a scroll pane for the text area so that if there are too many names player can scroll down
 		add(scrollPane, BorderLayout.CENTER); //add the scroll pane to CENTER
@@ -1368,7 +1369,7 @@ class LeaderboardPanel extends JPanel implements ActionListener
 		
 		if (command.equals("EXIT"))
 		{
-			System.exit(0); //if exit is pressed exit with code '0'
+			System.exit(7); //if exit is pressed exit program with code '7'
 		}
 		
 		else if (command.equals("PLAY AGAIN") || command.equals("INSTRUCTIONS"))
