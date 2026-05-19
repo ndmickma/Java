@@ -754,7 +754,7 @@ class BioBasePanel extends JPanel implements ActionListener
 		setLayout(new BorderLayout());
 		setBackground(lightBlue); //set background to light blue
 
-		count = 75; //count starts at 75
+		count = 10; //count starts at 75
 		score = 0; //score starts at 0
 		strandPosX = -14000; //so that strand doesn't just appear
 		isRunning = false; //so that game doesn't start when code is run
@@ -1282,7 +1282,7 @@ class LeaderboardPanel extends JPanel implements ActionListener
 		
 		//make all fonts needed
 		Font titleFont = new Font("Monospaced", Font.BOLD, 42);
-		Font congratsFont = new Font("Monospaced", Font.BOLD, 24);
+		Font congratsFont = new Font("Monospaced", Font.BOLD, 22);
 		Font boardFont = new Font("Monospaced", Font.BOLD, 20);
 		Font buttonsFont = new Font("Monospaced", Font.BOLD, 22);
 		
@@ -1310,7 +1310,13 @@ class LeaderboardPanel extends JPanel implements ActionListener
 		
 		//Make congrats label (WEST)
 		//use HTML to add breaks in the text
-		JLabel congratsLabel = new JLabel("<html><center>Congrats on finishing<br>the game!<br><br>Below you'll see the<br>leaderboard, try and<br>find your name!<br><br>Play another round and try a different sequence or speed to challenge yourself!</center></html>", SwingConstants.CENTER);
+		int finalScore = gamdat.getScore(); //stores final score
+		System.out.println(finalScore);
+		//temp string to hold text for congrats label
+		String congratsHolder = new String("<html><center>Congrats on finishing<br>the game!<br><br>Below " 
+		+"you'll see the<br>leaderboard, try and<br>find your name!<br><br>Play another round and " 
+		+"try a different sequence or speed to challenge yourself!<br><br>Your current score is: " + finalScore + "</center></html>" );
+		JLabel congratsLabel = new JLabel(congratsHolder, SwingConstants.CENTER);
 		congratsLabel.setFont(congratsFont); //set font
 		congratsLabel.setOpaque(true); //so the background is visible
 		congratsLabel.setBackground(sideBgColor); //set color
@@ -1361,6 +1367,8 @@ class LeaderboardPanel extends JPanel implements ActionListener
 		
 		//add buttonspanel to SOUTH
 		add(buttonspanel, BorderLayout.SOUTH);
+		
+		//System.out.println(gamdat.getScore()); 
 	}
 
 	public void actionPerformed(ActionEvent evt)
@@ -1496,7 +1504,7 @@ class GameData
 		inFile.close(); //close the file and save
 	}
 	
-	// This updates leaderboard.txt with the current player performance, sorts it, and returns the full formatted leaderboard string
+	//This updates leaderboard.txt with the current player performance, sorts it, and returns final leaderboard string
 	public String updateAndGetLeaderboard()
 	{
 		String fileName = "leaderboard.txt";
@@ -1523,7 +1531,7 @@ class GameData
 				//ignore header or empty rows
 				if (!line.equals("Leaderboard:") && !line.equals(""))
 				{
-					int colonIdx = line.indexOf(":"); //searches through the entire current line to find the index of the colon
+					int colonIdx = line.lastIndexOf(":"); //searches through the entire current line to find the index of the colon
 					if (colonIdx != -1) //if the colon is found
 								//in leaderboard.txt the format is name : score, so the colon acts as an easy marker
 								//to indicate where the name ends and score starts
@@ -1551,7 +1559,7 @@ class GameData
 		scores[count] = scoretrack;
 		count++; //add one to the count
 		
-		//nested for loop
+		//nested for loop to sort the scores
 		for (int i = 0; i < count - 1; i++) //this loop tells how many passes are made through the list
 		{
 			for (int j = 0; j < count - (i + 1); j++) //this loop goes through the rows one by one to compare values
