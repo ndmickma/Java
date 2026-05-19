@@ -144,7 +144,7 @@ Half RR, half rr
 2
 Codominance means:
 One trait is hidden
-Both traits are expressed equally
+Both traits expressed equally
 Traits blend together
 No traits are expressed
 1
@@ -199,7 +199,7 @@ Keratin
 Incomplete dominance results in:
 A hidden trait
 A blending of traits
-Both traits showing separately
+Traits shown seperately
 Death of the organism
 1
 The process of making mRNA from DNA is called:
@@ -234,7 +234,7 @@ Mutation
 1
 Human blood types (A, B, AB, and O) are an example of:
 Incomplete dominance
-Multiple alleles and codominance
+Multiple alleles/codominance
 Single genes only
 Recessive mutations only
 1
@@ -267,4 +267,916 @@ An extra chromosome
 A missing gene
 A virus
 Poor nutrition
+0
+Which enzyme unzips the DNA double helix during replication?
+DNA Polymerase
+Helicase
+Ligase
+RNA Primase
+1
+What are the components of a nucleotide?
+Sugar, phosphate, base
+Protein, sugar, lipid
+Amino acid, base, sugar
+Phosphate, lipid, base
+0
+Which nitrogen base pairs with Guanine in DNA?
+Adenine
+Thymine
+Cytosine
+Uracil
+2
+What type of bond holds nitrogen base pairs together?
+Ionic bond
+Covalent bond
+Hydrogen bond
+Metallic bond
+2
+The point where a chromosome's two chromatids are attached is the:
+Centriole
+Centromere
+Centrosome
+Chromatin
+1
+Cells that contain two complete sets of chromosomes are:
+Haploid
+Diploid
+Gametes
+Zygotes
+1
+Human gametes (sperm and egg cells) contain how many chromosomes?
+23
+46
+12
+92
+0
+The cell division process that produces four gametes is:
+Mitosis
+Binary fission
+Meiosis
+Budding
+2
+During which phase of meiosis does crossing over occur?
+Prophase I
+Metaphase II
+Anaphase I
+Telophase II
+0
+What is the term for a permanent change in a DNA sequence?
+Replication
+Translation
+Transcription
+Mutation
+3
+A mutation where one base is swapped out for another is a:
+Deletion
+Insertion
+Substitution
+Duplication
+2
+Mutations that shift the entire reading frame of mRNA are called:
+Frameshift mutations
+Point mutations
+Silent mutations
+Missense mutations
+0
+An organism's genetic makeup is referred to as its:
+Phenotype
+Genotype
+Karyotype
+Haplotype
+1
+If a plant is true-breeding for a trait, it is:
+Heterozygous
+Homozygous
+A hybrid
+A mutant
+1
+A cross that tracks the inheritance of a single trait is a:
+Dihybrid cross
+Monohybrid cross
+Test cross
+Back cross
+1
+The father of modern genetics studied inheritance using what organism?
+Fruit flies
+Mice
+Pea plants
+Bacteria
+2
+Which law states that alleles separate during gamete formation?
+Law of Segregation
+Law of Dominance
+Law of Assortment
+Law of Linkage
+0
+A pattern where both alleles are fully expressed simultaneously is:
+Incomplete dominance
+Codominance
+Polygenic
+Multiple alleles
+1
+When a heterozygous individual shows a blend of two traits, it is:
+Incomplete dominance
+Codominance
+Epistasis
+Pleiotropy
+0
+Traits controlled by genes located on the X or Y chromosomes are:
+Autosomal
+Polygenic
+Sex-linked
+Epistatic
+2
+Which chromosome determines biological male sex in humans?
+X chromosome
+Y chromosome
+Chromosome 21
+Chromosome 11
+1
+A diagram showing a family's history of a genetic trait is a:
+Punnett square
+Pedigree chart
+Karyotype
+Cladogram
+1
+In a standard pedigree chart, what shape represents a male?
+Circle
+Square
+Triangle
+Diamond
+1
+In a standard pedigree chart, a fully shaded shape means the individual:
+Is a carrier
+Does not have the trait
+Is deceased
+Expresses the trait
+3
+The total genetic material found inside a cell is called its:
+Proteome
+Transcriptome
+Genome
+Exome
+2
+What tool is used to visualize a person's set of chromosomes?
+Micrograph
+Karyotype
+Gel electrophoresis
+Spectrometer
+1
+Down syndrome is caused by an extra copy of which chromosome?
+Chromosome 13
+Chromosome 18
+Chromosome 21
+X chromosome
+2
+The condition of having an abnormal number of chromosomes is:
+Aneuploidy
+Polyploidy
+Euploidy
+Haploidy
+0
+Which enzyme pieces together short fragments of DNA during replication?
+Helicase
+DNA Polymerase
+Ligase
+RNA Polymerase
+2
+The short segments produced on the lagging strand of DNA are:
+Introns
+Exons
+Okazaki fragments
+Codons
+2
+What type of sugar is found inside an RNA molecule?
+Deoxyribose
+Ribose
+Glucose
+Sucrose
+1
+Which nitrogen base is unique to RNA molecules?
+Thymine
+Uracil
+Adenine
+Cytosine
+1
+Where does transcription take place in a eukaryotic cell?
+Cytoplasm
+Ribosome
+Nucleus
+Golgi body
+2
+A sequence of three nucleotides on an mRNA strand is called a:
+Anticodon
+Codon
+Intron
+Exon
+1
+What molecule brings amino acids directly to the ribosome?
+mRNA
+tRNA
+rRNA
+DNA
+1
+A sequence of three bases on a tRNA molecule is called a:
+Codon
+Anticodon
+Exon
+Intron
+1
+Non-coding sequences removed from an mRNA transcript are:
+Exons
+Introns
+Promoters
+Codons
+1
+What are the building blocks of proteins?
+Nucleotides
+Fatty acids
+Amino acids
+Monosaccharides
+2
+What type of bond links amino acids together into a chain?
+Hydrogen bond
+Peptide bond
+Ionic bond
+Phosphodiester bond
+1
+The special codon (AUG) that signals the start of translation is the:
+Stop codon
+Start codon
+Promoter
+Intron
+1
+How many stop codons exist within the genetic code?
+1
+2
+3
+4
+2
+Proteins that regulate chemical reactions in the body are:
+Lipids
+Enzymes
+Carbohydrates
+Steroids
+1
+Which technique separates DNA fragments based on their size?
+PCR
+Gel electrophoresis
+DNA sequencing
+Cloning
+1
+What tool can produce millions of copies of a DNA sequence quickly?
+Gel box
+Microarray
+PCR machine
+Centrifuge
+2
+Organisms that contain foreign DNA inserted by scientists are:
+Mutants
+Purebreds
+Transgenic
+Hybrids
+2
+Who discovered the structure of the DNA double helix?
+Mendel and Morgan
+Watson and Crick
+Hershey and Chase
+Avery and MacLeod
+1
+Who captured the X-ray photo used to find DNA's structure?
+Rosalind Franklin
+Martha Chase
+Barbara McClintock
+Rachel Carson
+0
+What is the structural shape of a DNA molecule?
+Single strand
+Triple helix
+Double helix
+Ring structure
+2
+The two strands of a DNA molecule run in opposite directions, meaning they are:
+Parallel
+Antiparallel
+Perpendicular
+Complementary
+1
+DNA replication is called semi-conservative because each new molecule has:
+Two new strands
+Two old strands
+One old, one new strand
+Fragmented old strands
+2
+Which molecule acts as a temporary primer during DNA replication?
+DNA primer
+RNA primer
+Protein primer
+Lipid primer
+1
+The point where a DNA double helix splits open during replication is a:
+Termination zone
+Replication fork
+Promoter site
+Intron loop
+1
+Which enzyme adds complementary nucleotides during replication?
+Helicase
+DNA Polymerase
+RNA Polymerase
+Ligase
+1
+In what direction does DNA Polymerase build a new strand?
+3' to 5'
+5' to 3'
+North to South
+Bi-directionally
+1
+What is the name of the DNA strand built continuously?
+Lagging strand
+Leading strand
+Coding strand
+Template strand
+1
+What is the name of the DNA strand built in short segments?
+Leading strand
+Lagging strand
+Non-template strand
+Sense strand
+1
+Which organelle reads mRNA to assemble proteins?
+Mitochondria
+Ribosome
+Nucleus
+Lysosome
+2
+What are the functional sections of mRNA kept after splicing?
+Introns
+Exons
+Codons
+Promoters
+1
+How many total possible codon combinations exist in the genetic code?
+16
+20
+46
+64
+3
+How many different amino acids are used to build human proteins?
+4
+20
+64
+46
+1
+The genetic code is called universal because it is shared by:
+Only humans
+Only animals
+Almost all organisms
+Only plants
+2
+A mutation that alters a codon but codes for the same amino acid is a:
+Missense mutation
+Nonsense mutation
+Silent mutation
+Frameshift mutation
+2
+A mutation that prematurely introduces a stop codon is a:
+Silent mutation
+Missense mutation
+Nonsense mutation
+Frameshift mutation
+2
+A mutation that changes a codon to specify a different amino acid is a:
+Silent mutation
+Missense mutation
+Nonsense mutation
+Frameshift mutation
+1
+What form of radiation can directly cause DNA mutations?
+Infrared
+Radio waves
+Ultraviolet light
+Visible light
+2
+Chemical or physical agents that cause genetic mutations are:
+Carcinogens
+Mutagens
+Pathogens
+Antigens
+1
+What type of gene mutation involves adding extra nucleotides?
+Deletion
+Substitution
+Inversion
+Insertion
+3
+What type of gene mutation involves losing nucleotides?
+Insertion
+Deletion
+Substitution
+Inversion
+1
+The exchange of genetic material between homologous chromosomes is:
+Inversion
+Translocation
+Crossing over
+Nondisjunction
+2
+The failure of chromosomes to separate properly during meiosis is:
+Nondisjunction
+Crossing over
+Translocation
+Inversion
+0
+Having exactly three copies of a specific chromosome is called a:
+Monosomy
+Trisomy
+Triploidy
+Haploidy
+1
+Having only one copy of a specific chromosome is called a:
+Monosomy
+Trisomy
+Haploidy
+Polyploidy
+0
+Which genetic disorder features a single X chromosome (XO)?
+Klinefelter syndrome
+Down syndrome
+Turner syndrome
+Edwards syndrome
+2
+Which genetic disorder features an XXY chromosome configuration?
+Turner syndrome
+Klinefelter syndrome
+Down syndrome
+Patau syndrome
+1
+A chromosomal mutation where a segment breaks off and flips backward is:
+Deletion
+Duplication
+Inversion
+Translocation
+2
+A chromosomal mutation where a segment moves to a non-homologous chromosome is:
+Inversion
+Duplication
+Translocation
+Deletion
+2
+Sections of DNA that can move to different locations in a genome are:
+Plasmids
+Introns
+Transposons
+Exons
+2
+What type of organisms have circular DNA molecules?
+Eukaryotes
+Prokaryotes
+Viruses
+Fungi
+1
+What are the small, circular DNA rings found inside bacteria cells?
+Chromosomes
+Plasmids
+Ribosomes
+Centrioles
+1
+Eukaryotic DNA wraps around core proteins called:
+Histones
+Enzymes
+Antibodies
+Hemoglobins
+0
+The loose, uncoiled form of DNA found during interphase is:
+Chromatid
+Chromosome
+Centromere
+Chromatin
+3
+Tightly coiled structures of DNA visible during cell division are:
+Chromatin
+Chromosomes
+Plasmids
+Nucleosomes
+1
+What structures protect the caps at the ends of linear chromosomes?
+Centromeres
+Telomeres
+Kinetochores
+Introns
+1
+Which enzyme extends the protective caps at the ends of chromosomes?
+DNA Polymerase
+Helicase
+Telomerase
+Ligase
+2
+The process of activating a gene to produce an operational protein is:
+Replication
+Gene expression
+Mutation
+Splicing
+1
+A cluster of bacterial genes regulated by a single promoter is a:
+Operon
+Exon
+Intron
+Plasmid
+0
+What protein binds to an operator site to block transcription?
+Activator
+Repressor
+Inducer
+Polymerase
+1
+What DNA region binds RNA Polymerase to kick off transcription?
+Operator
+Promoter
+Intron
+Enhancer
+1
+What molecule binds to a repressor protein to turn an operon on?
+Co-repressor
+Inducer
+Enzyme
+Amino acid
+1
+Eukaryotic gene expression is mainly controlled at what stage?
+Translation
+Transcription
+Splicing
+Protein folding
+1
+Proteins that assist RNA Polymerase in binding to eukaryotic promoters are:
+Repressors
+Transcription factors
+Histones
+Chaperones
+1
+Regulatory DNA sequences that accelerate eukaryotic transcription are:
+Silencers
+Enhancers
+Promoters
+Operators
+1
+The study of inheritable changes in gene function without changing the DNA sequence is:
+Genomics
+Epigenetics
+Proteomics
+Transcriptomics
+1
+Adding methyl groups to DNA molecules typically has what effect on genes?
+Turns them on
+Turns them off
+Mutates them
+Duplicates them
+1
+Adding acetyl groups to histone proteins generally has what effect on genes?
+Suppresses them
+Activates them
+Destroys them
+Mutates them
+1
+What molecule type can bind to mRNA transcripts to block translation?
+rRNA
+miRNA
+tRNA
+DNA
+1
+An individual carrying two different alleles for a specific gene is:
+Homozygous
+Heterozygous
+Hemizygous
+Purebred
+1
+An allele that masks the presence of another allele is a:
+Recessive allele
+Dominant allele
+Codominant allele
+Mutant allele
+1
+An allele whose expression is masked by a dominant partner is a:
+Wild-type allele
+Recessive allele
+Codominant allele
+Lethal allele
+1
+A cross that monitors the inheritance of two unique traits is a:
+Monohyrbid cross
+Dihybrid cross
+Test cross
+Back cross
+1
+The phenotypic ratio expected from a standard heterozygous dihybrid cross is:
+3:1
+1:2:1
+9:3:3:1
+1:1:1:1
+2
+What cross breeds an unknown genotype with a homozygous recessive individual?
+Dihybrid cross
+Test cross
+Back cross
+Self-cross
+1
+Mendel's law stating that traits inherit independently of each other is:
+Law of Segregation
+Law of Independent Assortment
+Law of Dominance
+Law of Linkage
+1
+Genes located close together on the same chromosome are:
+Independent
+Linked
+Epistatic
+Allelic
+1
+What map units describe the distance between linked genes?
+Centimeters
+Nanometers
+Centimorgans
+Base pairs
+2
+Traits governed by the combined effects of multiple genes are:
+Monogenic
+Polygenic
+Codominant
+Epistatic
+1
+When one gene completely masks or alters the expression of a separate gene:
+Pleiotropy
+Codominance
+Epistasis
+Incomplete dominance
+2
+When a single gene influences multiple distinct phenotypic traits:
+Epistasis
+Polygenic
+Pleiotropy
+Codominance
+2
+Which human blood type displays a true homozygous recessive genotype?
+Type A
+Type B
+Type AB
+Type O
+3
+Which human blood type displays an example of codominance?
+Type A
+Type B
+Type AB
+Type O
+2
+A person with blood type AB can safely receive blood from:
+Only AB
+Only O
+Only A and B
+Any blood type
+3
+A person with blood type O negative is widely called the:
+Universal recipient
+Universal donor
+Universal carrier
+Universal mutant
+1
+Most sex-linked disorders are located on which chromosome?
+Y chromosome
+X chromosome
+Chromosome 21
+Chromosome 1
+1
+Why do males show sex-linked recessive traits more often than females?
+They have two X chromosomes
+They lack an X chromosome
+They have only one X chromosome
+Their hormones activate them
+2
+A female who possesses one recessive allele for a sex-linked trait is a:
+Carrier
+Mutant
+Homozygote
+Non-carrier
+0
+Can a father pass an X-linked recessive trait directly to his son?
+Yes, always
+No, never
+Only in rare cases
+Yes, if the mother is a carrier
+1
+Which human genetic disorder is characterized by a lack of blood clotting?
+Sickle cell anemia
+Hemophilia
+Cystic fibrosis
+Huntington's disease
+1
+Which genetic condition results in misshapen red blood cells?
+Cystic fibrosis
+Hemophilia
+Sickle cell anemia
+Tay-Sachs disease
+2
+Which autosomal dominant disorder causes progressive brain cell breakdown?
+Huntington's disease
+Cystic fibrosis
+Sickle cell anemia
+Phenylketonuria
+0
+Which genetic disorder causes thick, sticky mucus buildup in the lungs?
+Hemophilia
+Down syndrome
+Cystic fibrosis
+Tay-Sachs disease
+2
+The full set of proteins expressed by a cell or organism is its:
+Genome
+Proteome
+Transcriptome
+Exome
+1
+The process of choosing parents with specific traits to breed is:
+Natural selection
+Artificial selection
+Genetic engineering
+Cloning
+1
+Enzymes that slice DNA molecules at specific base sequences are:
+Polymerases
+Ligases
+Restriction enzymes
+Helicases
+2
+The staggered cuts made by restriction enzymes produce uneven ends called:
+Blunt ends
+Sticky ends
+Tail ends
+Loop ends
+1
+Small rings of DNA used to move foreign genes into bacterial hosts are:
+Vectors
+Promoters
+Introns
+Exons
+0
+An enzyme used to produce DNA using an RNA template molecule is:
+DNA Polymerase
+RNA Polymerase
+Reverse Transcriptase
+Ligase
+2
+DNA molecules assembled in labs from multiple original sources are:
+Recombinant DNA
+Mutant DNA
+Cloned DNA
+Native DNA
+0
+What methodology generates identical copies of a gene or organism?
+Mutation
+Sequencing
+Cloning
+Electrophoresis
+2
+What animal was the first mammal successfully cloned from an adult cell?
+Dolly the sheep
+Snuppy the dog
+CC the cat
+Polly the sheep
+0
+A pattern of DNA fragments unique to an individual person is a:
+Karyotype
+DNA fingerprint
+Genome map
+Pedigree
+1
+What project mapped out the entire sequence of human chemical base pairs?
+Human Genome Project
+Manhattan Project
+ENCODE Project
+HapMap Project
+0
+What modern gene-editing system uses a guide RNA to target specific DNA?
+TALENs
+Zinc finger nucleases
+CRISPR-Cas9
+PCR cloning
+2
+What structural group binds to a nitrogen base to build a nucleoside?
+Phosphate group
+Sugar group
+Amino group
+Lipid group
+1
+The chemical bonds holding the sugar-phosphate backbone together are:
+Hydrogen bonds
+Peptide bonds
+Phosphodiester bonds
+Ionic bonds
+2
+What functional chemical group is found at the 5' end of a DNA strand?
+Hydroxyl group
+Phosphate group
+Carboxyl group
+Methyl group
+1
+What functional chemical group is found at the 3' end of a DNA strand?
+Phosphate group
+Hydroxyl group
+Amino group
+Ketone group
+1
+Purines are nitrogen bases characterized by how many carbon rings?
+One ring
+Two rings
+Three rings
+No rings
+1
+Pyrimidines are nitrogen bases characterized by how many carbon rings?
+One ring
+Two rings
+Three rings
+No rings
+0
+Which of the following nitrogen bases is classified as a purine?
+Adenine
+Cytosine
+Thymine
+Uracil
+0
+Which of the following nitrogen bases is classified as a pyrimidine?
+Adenine
+Guanine
+Cytosine
+None of these
+2
+Chargaff's rules state that inside a double-stranded DNA molecule:
+A = C and T = G
+A = G and T = C
+A = T and C = G
+A = U and C = G
+2
+How many hydrogen bonds form between an Adenine and Thymine pair?
+One bond
+Two bonds
+Three bonds
+Four bonds
+1
+How many hydrogen bonds form between a Cytosine and Guanine pair?
+One bond
+Two bonds
+Three bonds
+Four bonds
+2
+The twisting structure of DNA creates alternating physical gaps known as:
+Major and minor grooves
+Left and right turns
+Alpha and beta loops
+High and low ridges
+0
+What is the name of the most common structural form of DNA found in cells?
+A-DNA
+B-DNA
+Z-DNA
+Triple-DNA
+1
+Which enzyme relaxes supercoiled DNA ahead of a replication fork?
+Helicase
+Ligase
+Topoisomerase
+Primase
+2
+What proteins stabilize single DNA strands after they are split apart?
+Histones
+SSB proteins
+Transcription factors
+Chaperones
+1
+What core subunit of DNA Polymerase III validates and proofreads new DNA?
+Alpha subunit
+Beta clamp
+Epsilon subunit
+Theta subunit
+2
+Which DNA polymerase replaces temporary RNA primers with functional DNA?
+DNA Polymerase I
+DNA Polymerase II
+DNA Polymerase III
+DNA Ligase
+0
+The mechanism used to fix base mismatches missed during replication is:
+Mismatch repair
+Base excision repair
+Nucleotide excision repair
+SOS repair
+0
+What complex repairs DNA damage caused by ultraviolet sun rays?
+Mismatch repair
+Nucleotide excision repair
+Base excision repair
+Photolyase only
+1
+What model describes how an assembly of core proteins coordinates DNA replication?
+Replisome model
+Spliceosome model
+Ribosome model
+Transcription complex
 0
