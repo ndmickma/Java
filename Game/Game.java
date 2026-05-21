@@ -754,7 +754,7 @@ class BioBasePanel extends JPanel implements ActionListener
 		setLayout(new BorderLayout());
 		setBackground(lightBlue); //set background to light blue
 
-		count = 10; //count starts at 75
+		count = 75; //count starts at 75
 		score = 0; //score starts at 0
 		strandPosX = -14000; //so that strand doesn't just appear
 		isRunning = false; //so that game doesn't start when code is run
@@ -1367,8 +1367,7 @@ class LeaderboardPanel extends JPanel implements ActionListener
 		
 		//add buttonspanel to SOUTH
 		add(buttonspanel, BorderLayout.SOUTH);
-		
-		//System.out.println(gamdat.getScore()); 
+
 	}
 
 	public void actionPerformed(ActionEvent evt)
@@ -1504,7 +1503,7 @@ class GameData
 		inFile.close(); //close the file and save
 	}
 	
-	//This updates leaderboard.txt with the current player performance, sorts it, and returns final leaderboard string
+	//updates leaderboard.txt with the current player performance, sorts it, and returns final leaderboard string
 	public String updateAndGetLeaderboard()
 	{
 		String fileName = "leaderboard.txt";
@@ -1558,6 +1557,9 @@ class GameData
 		names[count] = name;
 		scores[count] = scoretrack;
 		count++; //add one to the count
+		setScore(scoretrack);
+		System.out.println(scoretrack);
+		System.out.println(getScore());
 		
 		//nested for loop to sort the scores
 		for (int i = 0; i < count - 1; i++) //this loop tells how many passes are made through the list
@@ -1603,10 +1605,12 @@ class GameData
 			//set the string variable equal to the #place name - score and then a new line
 			displayedLeaderboard += "#" + (i + 1) + " " + names[i] + " - " + scores[i] + "\n"; 
 		}
-		
+		//int currentScoreIndex = scores[findArrayIndex(names, getName())]; //find the value of the index of the name entered to get the current score
+		//setScore(scores[currentScoreIndex]);
 		return displayedLeaderboard; //return the leaderboard that needs to be displayed
 	}
-
+	
+	
 	//the following methods are getter and setter methods so that the other classes can use this info
 	public String getName()
 	{
