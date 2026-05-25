@@ -114,22 +114,22 @@ class GameHolder extends JPanel
 		
 		//make all the panels in this CardLayout and pass in the parameters needed (holder instance, cardlayout instance, game data instance)
 		GameData gamdat = new GameData(); //GameData holds information like name
-		StartPanel startpanel = new StartPanel(this, cards, gamdat);
-		TCPanel termspanel = new TCPanel(this, cards, gamdat);
-		InstructionsPanel rulespanel = new InstructionsPanel(this, cards, gamdat);
-		BioBasePanel bbpanel = new BioBasePanel(this, cards, gamdat);
-		GameControlPanel controlspanel = new GameControlPanel(this, cards, gamdat, bbpanel);
-		QuestionPanel qpanel = new QuestionPanel(this, cards, gamdat);
-		LeaderboardPanel leadpanel = new LeaderboardPanel(this, cards, gamdat, bbpanel);
+		StartPanel startPanel = new StartPanel(this, cards, gamdat);
+		TCPanel termsPanel = new TCPanel(this, cards, gamdat);
+		InstructionsPanel rulesPanel = new InstructionsPanel(this, cards, gamdat);
+		BioBasePanel bbPanel = new BioBasePanel(this, cards, gamdat);
+		GameControlPanel controlsPanel = new GameControlPanel(this, cards, gamdat, bbPanel);
+		QuestionPanel qPanel = new QuestionPanel(this, cards, gamdat);
+		LeaderboardPanel leadPanel = new LeaderboardPanel(this, cards, gamdat, bbPanel);
 		
 		//add all the panels with their string identifiers
-		add(startpanel, "start");
-		add(termspanel, "terms");
-		add(rulespanel, "rules");
-		add(controlspanel, "controls");
-		add(bbpanel, "biobase");
-		add(qpanel, "questions");
-		add(leadpanel, "leaderboard");
+		add(startPanel, "start");
+		add(termsPanel, "terms");
+		add(rulesPanel, "rules");
+		add(controlsPanel, "controls");
+		add(bbPanel, "biobase");
+		add(qPanel, "questions");
+		add(leadPanel, "leaderboard");
 		
 	}
 }
@@ -153,8 +153,8 @@ class StartPanel extends JPanel implements ActionListener, MouseListener
 		setLayout(null); //this panel has a null layout
 		
 		//make fonts needed
-		Font namefont = new Font("Monospaced", Font.PLAIN, 24);
-		Font titlefont = new Font("Monospaced", Font.BOLD, 90);
+		Font nameFont = new Font("Monospaced", Font.PLAIN, 24);
+		Font titleFont = new Font("Monospaced", Font.BOLD, 90);
 		
 		//load background image with try-catch
 		try 
@@ -169,14 +169,14 @@ class StartPanel extends JPanel implements ActionListener, MouseListener
 		
 		//make JLabel title
 		JLabel titleLabel = new JLabel("<html><center> BioBase </center> </html>" );
-		titleLabel.setFont(titlefont);
+		titleLabel.setFont(titleFont);
 		titleLabel.setForeground(Color.WHITE); //so text is white
 		titleLabel.setBounds(300, 80, 400, 100);
 		add(titleLabel); //add title label
 		
 		//Name Text Field
 		tfName = new JTextField("enter name");
-		tfName.setFont(namefont);
+		tfName.setFont(nameFont);
 		tfName.setHorizontalAlignment(JTextField.CENTER); //so text is centered inside text field
 		tfName.setBounds(350, 250, 300, 50);
 		tfName.addMouseListener(this);
@@ -185,7 +185,7 @@ class StartPanel extends JPanel implements ActionListener, MouseListener
 		// Start Button
 		JButton startBtn = new JButton(""); //no text because it is an image
 		startBtn.setActionCommand("start"); //set action command so we can use it in actionPerformed
-		startBtn.setFont(namefont);
+		startBtn.setFont(nameFont);
 		startBtn.setBounds(350, 380, 300, 80);
 		startBtn.addActionListener(this);
 		startBtn.setIcon(new ImageIcon("startbutton.jpg")); //use imageIcon library to put an image on the button
@@ -239,7 +239,7 @@ class TCPanel extends JPanel implements ActionListener
 	private GameHolder holder;
 	private CardLayout cards;
 	private GameData gamdat;
-	private JLabel welcomelabel; //so it can be used in paintComponent()
+	private JLabel welcomeLabel; //so it can be used in paintComponent()
 	
 	public TCPanel(GameHolder holderIn, CardLayout cardsIn, GameData gamdatIn)
 	{
@@ -249,71 +249,70 @@ class TCPanel extends JPanel implements ActionListener
 		gamdat = gamdatIn;
 		
 		//make string variable for terms and conditions
-		String termsandconditions = new String(" Welcome to BioBase. Before you continue "
-		+ "please read through these terms and \n click the agree button to move on.\n\n"
-        + " 1. OWNERSHIP OF INTELLECTUAL PROPERTY\n"
-        + " The Software, including all original source code and designs, "
-        + "is the property\n of the Developer (Sanvitti Shah). This Software is protected by copyright laws.\n\n"
-        + " 2. GRANT OF LICENSE\n"
-        + " The Developer grants you personal, non-exclusive, non-transferable license to\n use the "
-        + "Software for educational purposes. Commercial use is prohibited.\n\n"
-        + " 3. THIRD-PARTY CONTENT & ATTRIBUTIONS\n"
-        + " BioBase contains mechanics inspired by Google Doodle Champion Island. All\n "
-        + "rights to third-party IP belong to their respective owners. This "
-        + "project uses\n standard Java libraries.\n\n"
-        + " 4. RESTRICTIONS ON USE\n"
-        + " The User agrees not to reverse engineer the Software or use automated "
-        + "scripts\n to interfere with the gameplay experience.\n\n"
-        + " 5. LIMITATION OF LIABILITY\n"
-        + " The Developer is not responsible for any damages or data loss "
-        + "resulting from\n the use of this Software.\n\n"
-        + " By clicking 'I AGREE', you acknowledge these terms as well as "
-        + "the contributions of original creators.");
+		String termsAndConditions = "";
+		
+		try
+		{
+			File termsFile = new File("terms.txt");
+			Scanner reader = new Scanner(termsFile);
+			
+			while(reader.hasNext())
+			{
+				termsAndConditions += reader.nextLine() + "\n";
+			}
+			reader.close();
+		}
+		catch(FileNotFoundException except)
+		{
+			System.err.println("terms.txt file not found");
+		}
 		
 		//make all fonts needed
-		Font agreefont = new Font("Monospaced", Font.BOLD, 36);
-		Font termsfont = new Font("Monospaced", Font.BOLD, 20);
-		Font welcomefont = new Font("Monospaced", Font.BOLD, 48);
+		Font agreeFont = new Font("Monospaced", Font.BOLD, 36);
+		Font termsFont = new Font("Monospaced", Font.BOLD, 20);
+		Font welcomeFont = new Font("Monospaced", Font.BOLD, 48);
 		
 		//make all colors needed
 		Color turquoise = new Color(51, 187, 222);
-		Color skyblue = new Color(151, 223, 249);
-		Color brightblue = new Color(56, 174, 220);
+		Color skyBlue = new Color(151, 223, 249);
+		Color brightBlue = new Color(56, 174, 220);
 		
 		setLayout(new BorderLayout()); //set layout to border
 		
 		//Welcome label (NORTH)
 		JPanel welcome = new JPanel();
-		welcome.setBackground(skyblue);
-		welcomelabel = new JLabel("<html> <center> Welcome! </center> </html>");
-		welcomelabel.setFont(welcomefont);
-		welcomelabel.setForeground(Color.WHITE); 
-		welcome.add(welcomelabel);
+		welcome.setBackground(skyBlue);
+		welcomeLabel = new JLabel("<html> <center> Welcome! </center> </html>");
+		welcomeLabel.setFont(welcomeFont);
+		welcomeLabel.setForeground(Color.WHITE); 
+		welcome.add(welcomeLabel);
 		add(welcome, BorderLayout.NORTH);
 		
 		
 		//Terms TextArea (CENTER)
-		JTextArea terms = new JTextArea(termsandconditions);
-		terms.setFont(termsfont);
+		JTextArea terms = new JTextArea(termsAndConditions);
+		terms.setFont(termsFont);
 		terms.setForeground(Color.WHITE);
-		terms.setBackground(brightblue);
-		terms.setEditable(false);
-		terms.setLineWrap(true);
+		terms.setBackground(brightBlue);
+		terms.setEditable(false); //so that user can't edit the text area
+		terms.setLineWrap(true); //this is so that when the text is too long it changes lines
+		terms.setWrapStyleWord(true); //this makes it so that a word isn't cut in two
+		terms.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); //so that spacing between the edge of the text area and text is better
 		
-		JScrollPane scrollterms = new JScrollPane(terms); //make scroll pane and pass in text area terms
-		add(scrollterms, BorderLayout.CENTER); //add scroll pane to center
+		JScrollPane scrollTerms = new JScrollPane(terms); //make scroll pane and pass in text area terms
+		add(scrollTerms, BorderLayout.CENTER); //add scroll pane to center
 
 		//Agree button (SOUTH)
-		JPanel iagreesouth = new JPanel();
-		iagreesouth.setBackground(skyblue);
+		JPanel iAgreeSouth = new JPanel();
+		iAgreeSouth.setBackground(skyBlue);
 		
 		JButton agreeBtn = new JButton("I AGREE");
-		agreeBtn.setFont(agreefont);
+		agreeBtn.setFont(agreeFont);
 		agreeBtn.setForeground(Color.WHITE);
 		agreeBtn.setBackground(turquoise);
 		agreeBtn.addActionListener(this);
-		iagreesouth.add(agreeBtn); //add button to panel
-		add(iagreesouth, BorderLayout.SOUTH); //add agree panel to south
+		iAgreeSouth.add(agreeBtn); //add button to panel
+		add(iAgreeSouth, BorderLayout.SOUTH); //add agree panel to south
 		
 	}
 	
@@ -327,7 +326,7 @@ class TCPanel extends JPanel implements ActionListener
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
-		welcomelabel.setText("Welcome " + gamdat.getName() + "!"); 
+		welcomeLabel.setText("Welcome " + gamdat.getName() + "!"); 
 		//so welcome label says Welcome WHATEVER USER ENTERED !
 	}
 }
@@ -349,43 +348,43 @@ class InstructionsPanel extends JPanel implements ActionListener
 		gamdat = gamdatIn;
 		
 		//make all fonts needed
-		Font textareasfont = new Font("Monospaced", Font.BOLD, 25);
-		Font nextfont = new Font("Monospaced", Font.BOLD, 36);
-		Font labelfont = new Font("Monospaced", Font.BOLD, 28);
+		Font textAreasFont = new Font("Monospaced", Font.BOLD, 25);
+		Font nextFont = new Font("Monospaced", Font.BOLD, 36);
+		Font labelFont = new Font("Monospaced", Font.BOLD, 28);
 		
 		//make all colors needed
-		Color lightblue = new Color(181, 233, 245);
-		Color medblue = new Color(111, 167, 240);
-		Color darkblue = new Color(17, 44, 128);
+		Color lightBlue = new Color(181, 233, 245);
+		Color medBlue = new Color(111, 167, 240);
+		Color darkBlue = new Color(17, 44, 128);
 		
 		//Grid layout 1 row 3 cols
 		setLayout(new GridLayout(1, 3, 20, 20));
-		setBackground(lightblue);
+		setBackground(lightBlue);
 		
 		JPanel col1 = new JPanel(); //this the panel in the first column 
 		col1.setLayout(new BorderLayout());
 		
 		//Instructions label (NORTH)
 		JPanel how = new JPanel();
-		how.setBackground(darkblue);
-		JLabel howtoplay = new JLabel("<html> <center> How to Play: </center> </html>");
-		howtoplay.setFont(labelfont);
-		howtoplay.setBackground(darkblue);
-		howtoplay.setForeground(Color.WHITE);
-		howtoplay.setOpaque(true); //so label background is visible
-		how.add(howtoplay); //add label to panel
+		how.setBackground(darkBlue);
+		JLabel howToPlay = new JLabel("<html> <center> How to Play: </center> </html>");
+		howToPlay.setFont(labelFont);
+		howToPlay.setBackground(darkBlue);
+		howToPlay.setForeground(Color.WHITE);
+		howToPlay.setOpaque(true); //so label background is visible
+		how.add(howToPlay); //add label to panel
 		col1.add(how, BorderLayout.NORTH); //add how to play panel to col1 north
 		
 		//Instructions TextArea (CENTER)
-		JPanel instructionspanel = new JPanel();
+		JPanel instructionsPanel = new JPanel();
 		JTextArea instructions = new JTextArea(" -Match the moving \n genetic "
 		+ "sequences\n by typing in the\n correct base pair\n before they "
 		+ "leave\n the box to earn a\n high score!\n -Every 16 points\n or if you miss a\n base/get it wrong "
 		+ "\n you will have to\n answer a genetics\n question but your\n timer won't stop so be fast!!");
-		instructions.setBackground(medblue);
+		instructions.setBackground(medBlue);
 		instructions.setLineWrap(true); //so text wraps
 		instructions.setEditable(false); //so user can't edit the text
-		instructions.setFont(textareasfont);
+		instructions.setFont(textAreasFont);
 		instructions.setForeground(Color.WHITE); //make text white
 		col1.add(instructions, BorderLayout.CENTER);
 		add(col1);
@@ -407,15 +406,15 @@ class InstructionsPanel extends JPanel implements ActionListener
 		col3.setLayout(new BorderLayout());
 		
 		//Rules Label (NORTH)
-		JPanel rulespan = new JPanel();
-		rulespan.setBackground(darkblue);
-		JLabel ruleslabel = new JLabel("<html> <center> Rules: </center> </html>");
-		ruleslabel.setFont(labelfont);
-		ruleslabel.setBackground(darkblue);
-		ruleslabel.setForeground(Color.WHITE);
-		ruleslabel.setOpaque(true); //so label background is visible
-		rulespan.add(ruleslabel); //add label to panel
-		col3.add(rulespan, BorderLayout.NORTH); //add rules panel to col3 north
+		JPanel rulesPan = new JPanel();
+		rulesPan.setBackground(darkBlue);
+		JLabel rulesLabel = new JLabel("<html> <center> Rules: </center> </html>");
+		rulesLabel.setFont(labelFont);
+		rulesLabel.setBackground(darkBlue);
+		rulesLabel.setForeground(Color.WHITE);
+		rulesLabel.setOpaque(true); //so label background is visible
+		rulesPan.add(rulesLabel); //add label to panel
+		col3.add(rulesPan, BorderLayout.NORTH); //add rules panel to col3 north
 		
 		//Rules TextArea (CENTER)
 		JTextArea rules = new JTextArea("\n Don't Break the\n Chain: Missing "
@@ -423,20 +422,20 @@ class InstructionsPanel extends JPanel implements ActionListener
 		+ "\n\n High Score: Get as  many correct\n pairings as you can in 75 "
 		+ "seconds to\n climb up the\n leaderboard!");
 		
-		rules.setFont(textareasfont); //set font
+		rules.setFont(textAreasFont); //set font
 		rules.setForeground(Color.WHITE); //so text is white
-		rules.setBackground(medblue); //make bakcground blue
+		rules.setBackground(medBlue); //make bakcground blue
 		rules.setLineWrap(true);
 		rules.setEditable(false); //so user can't edit the text
 		col3.add(rules, BorderLayout.CENTER);
 		
 		//Next button (SOUTH)
 		JButton next = new JButton("NEXT");
-		next.setBackground(darkblue);
+		next.setBackground(darkBlue);
 		next.setForeground(Color.WHITE); //so that text is white
-		next.setFont(nextfont);
+		next.setFont(nextFont);
 		next.addActionListener(this);
-		col3.add(next, BorderLayout.SOUTH);
+		col3.add(next, BorderLayout.SOUTH); //add the next button to south of col3
 		add(col3); //this will add the col3 panel to the third column
 		
 		
@@ -479,7 +478,7 @@ class GameControlPanel extends JPanel implements ActionListener, ChangeListener
 	private BioBasePanel bbPanel;
 	
 	//this is used in action performed to let the user know what they selected in the menu bar
-	private JLabel selectionlabel;
+	private JLabel selectionLabel;
 	
 	public GameControlPanel(GameHolder holderIn, CardLayout cardsIn, GameData gamdatIn, BioBasePanel bbPanelIn)
 	{
@@ -493,75 +492,75 @@ class GameControlPanel extends JPanel implements ActionListener, ChangeListener
 		setLayout(new BorderLayout());
 		
 		//make all fonts needed
-		Font controlfont = new Font("Monospaced", Font.BOLD, 70);
+		Font controlFont = new Font("Monospaced", Font.BOLD, 70);
 		Font labelFont = new Font("Monospaced", Font.BOLD, 30);
-		Font itemfont = new Font("Monospaced", Font.BOLD, 32);
-		Font menufont = new Font("Monospaced", Font.BOLD, 45);
-		Font speedlabelfont = new Font("Monospaced", Font.BOLD, 50);
-		Font selectionfont = new Font("Monospaced", Font.BOLD, 20);
+		Font itemFont = new Font("Monospaced", Font.BOLD, 32);
+		Font menuFont = new Font("Monospaced", Font.BOLD, 45);
+		Font speedLabelFont = new Font("Monospaced", Font.BOLD, 50);
+		Font selectionFont = new Font("Monospaced", Font.BOLD, 20);
 		
 		//make all colors needed
-		Color slidercolor = new Color(67, 93, 222);
-		Color controllabelcolor = new Color(25, 0, 110);
-		Color row3color = new Color(103, 115, 224);
-		Color menucolor = new Color(83, 57, 196);
-		Color menuitemcolor = new Color(53, 33, 133);
-		Color sequencescolor = new Color(91, 70, 170);
-		Color speedlabelcolor = new Color(47, 62, 186);
+		Color sliderColor = new Color(67, 93, 222);
+		Color controlLabelColor = new Color(25, 0, 110);
+		Color row3Color = new Color(103, 115, 224);
+		Color menuColor = new Color(83, 57, 196);
+		Color menuItemColor = new Color(53, 33, 133);
+		Color sequencesColor = new Color(91, 70, 170);
+		Color speedLabelColor = new Color(47, 62, 186);
 		
 		//Make all the dimensions needed for setPreferredSize
-		Dimension speedsize = new Dimension(500, 0);
-		Dimension slidersize = new Dimension(400, 100);
-		Dimension menupanelsize = new Dimension(500, 80);
-		Dimension menusize = new Dimension(500, 80);
+		Dimension speedSize = new Dimension(500, 0);
+		Dimension sliderSize = new Dimension(400, 100);
+		Dimension menuPanelSize = new Dimension(500, 80);
+		Dimension menuSize = new Dimension(500, 80);
 		
 		
 		//Controls label (NORTH)
 		JPanel controls = new JPanel();
-		controls.setBackground(controllabelcolor);
-		JLabel controlslabel = new JLabel("<html> <center> Controls </center> </html>");
-		controlslabel.setFont(controlfont);
-		controlslabel.setForeground(Color.WHITE);
-		controls.add(controlslabel);
+		controls.setBackground(controlLabelColor);
+		JLabel controlsLabel = new JLabel("<html> <center> Controls </center> </html>");
+		controlsLabel.setFont(controlFont);
+		controlsLabel.setForeground(Color.WHITE);
+		controls.add(controlsLabel);
 		add(controls, BorderLayout.NORTH);
 		
 		//Speed panel (EAST);
-		JPanel speedpanel = new JPanel(); //panel with grid layout for all the speed changing
-		speedpanel.setLayout(new GridLayout(3,1));
-		speedpanel.setBackground(speedlabelcolor);
-		speedpanel.setPreferredSize(speedsize); //setPreferredSize so that is takes up half the panel
+		JPanel speedPanel = new JPanel(); //panel with grid layout for all the speed changing
+		speedPanel.setLayout(new GridLayout(3,1));
+		speedPanel.setBackground(speedLabelColor);
+		speedPanel.setPreferredSize(speedSize); //setPreferredSize so that is takes up half the panel
 		
 		//The first row has the JLabel "Speed"
 		JPanel row1 = new JPanel();
-		row1.setBackground(speedlabelcolor);
+		row1.setBackground(speedLabelColor);
 		
 		//make the speed label
 		JLabel speedLabel = new JLabel("Speed");
-		speedLabel.setFont(speedlabelfont);
+		speedLabel.setFont(speedLabelFont);
 		speedLabel.setForeground(Color.WHITE); //make the text white
-		speedLabel.setBackground(speedlabelcolor);
+		speedLabel.setBackground(speedLabelColor);
 		speedLabel.setOpaque(true); //so background is visible
 		row1.add(speedLabel); //add the label to row1
-		speedpanel.add(row1); //add row1 to the speed panel
+		speedPanel.add(row1); //add row1 to the speed panel
 		
 		//The second row has the JSlider to change the speed
 		JPanel row2 = new JPanel();
-		row2.setBackground(slidercolor);
-		JSlider speedslider = new JSlider( 1, 3, 1); //min is 1, max is 3, starting point is 1
-		speedslider.setPreferredSize(slidersize); //set size so that it fills the width of the panel
-		speedslider.setMajorTickSpacing(1);
-		speedslider.setPaintTicks(true);
-		speedslider.setPaintLabels(true);
-		speedslider.setFont(labelFont);
-		speedslider.setForeground(Color.WHITE); //so that the numbers are white
-		speedslider.setBackground(slidercolor);
-		speedslider.addChangeListener(this);
-		row2.add(speedslider);
-		speedpanel.add(row2); //add row2 to the speed panel
+		row2.setBackground(sliderColor);
+		JSlider speedSlider = new JSlider( 1, 3, 1); //min is 1, max is 3, starting point is 1
+		speedSlider.setPreferredSize(sliderSize); //set size so that it fills the width of the panel
+		speedSlider.setMajorTickSpacing(1);
+		speedSlider.setPaintTicks(true);
+		speedSlider.setPaintLabels(true);
+		speedSlider.setFont(labelFont);
+		speedSlider.setForeground(Color.WHITE); //so that the numbers are white
+		speedSlider.setBackground(sliderColor);
+		speedSlider.addChangeListener(this);
+		row2.add(speedSlider);
+		speedPanel.add(row2); //add row2 to the speed panel
 		
 		//The third row has the JLabels that indicate what 1, 2, and 3 mean
 		JPanel row3 = new JPanel();
-		row3.setBackground(row3color); 
+		row3.setBackground(row3Color); 
 		row3.setLayout(new GridLayout(1,3)); //row3 has a grid layout of 1 row and 3 cols
 		
 		//make the three labels
@@ -584,19 +583,19 @@ class GameControlPanel extends JPanel implements ActionListener, ChangeListener
 		row3.add(two);
 		row3.add(three);
 		
-		speedpanel.add(row3); //add row3 to speed panel
-		add(speedpanel, BorderLayout.EAST); //add speed panel to east
+		speedPanel.add(row3); //add row3 to speed panel
+		add(speedPanel, BorderLayout.EAST); //add speed panel to east
 
 		//Menu panel (WEST)
 		JPanel menu = new JPanel();
 		menu.setLayout(new BorderLayout());
-		menu.setBackground(menucolor);
-		menu.setPreferredSize(menupanelsize); //use setPreferred size to make it 
+		menu.setBackground(menuColor);
+		menu.setPreferredSize(menuPanelSize); //use setPreferred size to make it 
 		//so that it takes up half the panel b/c there will automatically be a center spcae if no component
 		menu.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0)); //to center bar in panel
 		
 		
-		//Menu Bar (CENTER)
+		//Menu Bar (CENTER of menu panel)
 		JMenuItem dnadna, dnarna, rnadna, rnarna;
 		JMenu sequences;
 		JMenuBar menuBar;
@@ -608,16 +607,16 @@ class GameControlPanel extends JPanel implements ActionListener, ChangeListener
 		rnarna = new JMenuItem("RNA -> RNA");
 		
 		//set the background of all the menuitems to the menucolor
-		dnadna.setBackground(menuitemcolor);
-		dnarna.setBackground(menuitemcolor);
-		rnadna.setBackground(menuitemcolor);
-		rnarna.setBackground(menuitemcolor);
+		dnadna.setBackground(menuItemColor);
+		dnarna.setBackground(menuItemColor);
+		rnadna.setBackground(menuItemColor);
+		rnarna.setBackground(menuItemColor);
 		
 		//set the font of all the JMenuItems
-		dnadna.setFont(itemfont);
-		dnarna.setFont(itemfont);
-		rnadna.setFont(itemfont);
-		rnarna.setFont(itemfont);
+		dnadna.setFont(itemFont);
+		dnarna.setFont(itemFont);
+		rnadna.setFont(itemFont);
+		rnarna.setFont(itemFont);
 		
 		//set the foreground of all the JMenuItems to white
 		dnadna.setForeground(Color.WHITE);
@@ -633,15 +632,15 @@ class GameControlPanel extends JPanel implements ActionListener, ChangeListener
 		
 		//make the JMenu and JMenuBar
 		sequences = new JMenu("Sequences");
-		sequences.setFont(menufont);
+		sequences.setFont(menuFont);
 		sequences.setForeground(Color.WHITE); //make text white
 		
 		menuBar = new JMenuBar(); 
 		menuBar.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0)); 
 						//makes the bar center it's own content
 						//no horizontal or vertical gap
-		menuBar.setPreferredSize(menusize); //set preferred size of bar
-		menuBar.setBackground(sequencescolor);
+		menuBar.setPreferredSize(menuSize); //set preferred size of bar
+		menuBar.setBackground(sequencesColor);												
 		
 		//add all the items to the menu
 		sequences.add(dnadna);
@@ -656,12 +655,12 @@ class GameControlPanel extends JPanel implements ActionListener, ChangeListener
 		menu.add(menuBar, BorderLayout.NORTH); 
 		
 		//JLabel for showing what is selected (CENTER)
-		selectionlabel = new JLabel("The sequence selected is: NONE");
-		selectionlabel.setFont(selectionfont);
-		selectionlabel.setForeground(Color.WHITE);
+		selectionLabel = new JLabel("The sequence selected is: DNA -> DNA"); //default sequence is DNA to DNA
+		selectionLabel.setFont(selectionFont);
+		selectionLabel.setForeground(Color.WHITE);
 		
 		//add the label to center
-		menu.add(selectionlabel, BorderLayout.CENTER);
+		menu.add(selectionLabel, BorderLayout.CENTER);
 		
 		
 		//add the menu panel to WEST
@@ -688,7 +687,7 @@ class GameControlPanel extends JPanel implements ActionListener, ChangeListener
 		}
 		else if(command.equals("DNA -> DNA") || command.equals("DNA -> RNA") || command.equals("RNA -> DNA") || command.equals("RNA -> RNA"))
 		{
-			selectionlabel.setText("The sequence selected is: " + command);
+			selectionLabel.setText("The sequence selected is: " + command);
 			gamdat.setSequenceType(command); //to save the selected sequence
 		}
 	}	
@@ -715,15 +714,15 @@ class BioBasePanel extends JPanel implements ActionListener
 	
 	private Timer timer; //for the visible countdown (goes down every second)
 	private Timer animationTimer; //updates the screen for smooth animation
-	private JLabel timerlabel; //shows time left used in action performed
-	private JLabel scorelabel; //shows score used in action performed
+	private JLabel timerLabel; //shows time left used in action performed
+	private JLabel scoreLabel; //shows score used in action performed
 	private JTextField inputField; //this is where user can enter the base
 	
 	private int count; //keeps track of seconds remaining
 	private int score; //keeps track of score
 	private int strandPosX; //the x coordinate of the entire DNA/RNA strand
 	private String currentStrand; //string with the randomly generated bases
-	private boolean[] activebases; //boolean array that makes sure that base is active
+	private boolean[] activeBases; //boolean array that makes sure that base is active
 	private boolean isRunning; //boolean to make sure game is only played once
 	private boolean questionTriggered; //boolean to prevent every 16 points question from repeating
 
@@ -748,51 +747,51 @@ class BioBasePanel extends JPanel implements ActionListener
 		Font inputFont = new Font("Monospaced", Font.BOLD, 50);
 		
 		//make all dimensions needed for setPreferredSize
-		Dimension inputareasize = new Dimension(1000, 120);
+		Dimension inputAreaSize = new Dimension(1000, 120);
 		
 		//set layout to border
 		setLayout(new BorderLayout());
 		setBackground(lightBlue); //set background to light blue
 
-		count = 75; //count starts at 75
+		count = 20; //count starts at 75
 		score = 0; //score starts at 0
 		strandPosX = -14000; //so that strand doesn't just appear
 		isRunning = false; //so that game doesn't start when code is run
 
 
 		//Timer and Score Labels (NORTH)
-		JPanel toppanel = new JPanel();
-		toppanel.setLayout(new GridLayout(1,2)); //so that the label panels are centered
+		JPanel topPanel = new JPanel();
+		topPanel.setLayout(new GridLayout(1,2)); //so that the label panels are centered
 		
 		//make timer label
-		JPanel timerlabelpanel = new JPanel(); //so that label is centered
-		timerlabelpanel.setBackground(lightBlue); //set panel background
-		timerlabel = new JLabel("Time Left: 75"); //initial time is 75
-		timerlabel.setFont(timerFont);
-		timerlabel.setBackground(lightBlue); //set label background
-		timerlabel.setOpaque(true); //so background is visible
-		timerlabel.setForeground(darkBlue); //so text is dark blue
-		timerlabelpanel.add(timerlabel);
+		JPanel timerLabelPanel = new JPanel(); //so that label is centered
+		timerLabelPanel.setBackground(lightBlue); //set panel background
+		timerLabel = new JLabel("Time Left: 75"); //initial time is 75
+		timerLabel.setFont(timerFont);
+		timerLabel.setBackground(lightBlue); //set label background
+		timerLabel.setOpaque(true); //so background is visible
+		timerLabel.setForeground(darkBlue); //so text is dark blue
+		timerLabelPanel.add(timerLabel);
 		
 		//make score label
-		JPanel scorelabelpanel = new JPanel();
-		scorelabelpanel.setBackground(lightBlue); //set panel background
-		scorelabel = new JLabel("Score: 0"); //initial score is 0
-		scorelabel.setFont(scoreFont);
-		scorelabel.setBackground(lightBlue); //set label background
-		scorelabel.setOpaque(true); //so background is visible
-		scorelabel.setForeground(darkBlue);  //so text is dark blue
-		scorelabelpanel.add(scorelabel);
+		JPanel scoreLabelPanel = new JPanel();
+		scoreLabelPanel.setBackground(lightBlue); //set panel background
+		scoreLabel = new JLabel("Score: 0"); //initial score is 0
+		scoreLabel.setFont(scoreFont);
+		scoreLabel.setBackground(lightBlue); //set label background
+		scoreLabel.setOpaque(true); //so background is visible
+		scoreLabel.setForeground(darkBlue);  //so text is dark blue
+		scoreLabelPanel.add(scoreLabel);
 		
 		
-		toppanel.add(timerlabelpanel); //add timer label panel to top panel
-		toppanel.add(scorelabelpanel); //add score label panel to top panel
-		add(toppanel, BorderLayout.NORTH); //add top panel to NORTH
+		topPanel.add(timerLabelPanel); //add timer label panel to top panel
+		topPanel.add(scoreLabelPanel); //add score label panel to top panel
+		add(topPanel, BorderLayout.NORTH); //add top panel to NORTH
 
 		//inputArea (SOUTH)
 		JPanel inputArea = new JPanel();
 		inputArea.setBackground(medBlue); 
-		inputArea.setPreferredSize(inputareasize);
+		inputArea.setPreferredSize(inputAreaSize);
 		inputArea.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 30));
 		
 		JLabel prompt = new JLabel("Match the Base:");
@@ -828,7 +827,7 @@ class BioBasePanel extends JPanel implements ActionListener
 			if(count > 0) //if time remaining, subtract 1 second and update time label
 			{
 				count--;
-				timerlabel.setText("Time Left: " + count);
+				timerLabel.setText("Time Left: " + count);
 			} 
 			else //if no time left stop the countdown and animations
 			{
@@ -847,9 +846,9 @@ class BioBasePanel extends JPanel implements ActionListener
 			if(currentSpeed == 1) //if 1 is selected speed
 				strandPosX += 3; //move the strand 3px to the right
 			else if(currentSpeed == 2) //if 2 is selected speed
-				strandPosX += 5; //move the strand 5px to the right
+				strandPosX += 4; //move the strand 4px to the right (speed 2)
 			else if(currentSpeed == 3) //if 3 is selected speed
-				strandPosX += 7; //move the strand 7px to the right
+				strandPosX += 6; //move the strand 6px to the right (speed 3)
 
 			for(int i = 0; i < 100; i++) //goes through 100 bases
 			{
@@ -857,15 +856,15 @@ class BioBasePanel extends JPanel implements ActionListener
 					//since each base is 140px and i is the number of bases passed apart adding i*140 to strand position
 					//this gives us the x position of the current character (base)
 				
-				if(charX > 530 && activebases[i] == false) //if the base is "active"...
+				if(charX > 530 && activeBases[i] == false) //if the base is "active"...
 				{			//...(the base can be interacted with) after 530 (outside of box -> user missed it or typed wrong)), the user loses points	
-					activebases[i] = true; //then make it inactive so it disappears
-					score = score - 4; //subtract from the score
+					activeBases[i] = true; //then make it inactive so it disappears
+					score -= 4; //subtract from the score
 					cards.show(holder, "questions"); //if...then user needs to answer a question
 					
 					if(score < 0) //if the score is less than 0 the score just stays 0
 						score = 0;
-					scorelabel.setText("Score: " + score); //update score label
+					scoreLabel.setText("Score: " + score); //update score label
 				}
 			}
 		}
@@ -881,7 +880,7 @@ class BioBasePanel extends JPanel implements ActionListener
 			for (int i = 0; i < 100; i++) //goes through all 100 bases searching for one that is in the target box and active
 			{
 				int charX = strandPosX + (i * 140);  //get the x position of the current base
-				if(charX >= 450 && charX <= 530 && activebases[i] == false) //if in the target box and the base can be interacted with
+				if(charX >= 450 && charX <= 530 && activeBases[i] == false) //if in the target box and the base can be interacted with
 				{
 					targetIndex = i; //then the target index is whatever i is
 					i = 100; //since one base has been found stop the loop because only go one letter at a time
@@ -961,17 +960,17 @@ class BioBasePanel extends JPanel implements ActionListener
 					cards.show(holder, "questions"); //if incorrect user needs to answer a question
 					
 					
-				activebases[targetIndex] = true; //set the base at targetIndex to active
+				activeBases[targetIndex] = true; //set the base at targetIndex to active
 				if(correct) //if correct add 4 to the score
-					score = score + 4; 
+					score += 4; 
 				else //if wrong subtract 4
 				{
-					score = score - 4;
+					score -= 4;
 					if(score < 0) //if less than 0 score is just 0
 						score = 0;
 				}
 				
-				scorelabel.setText("Score: " + score); //update scorelabel
+				scoreLabel.setText("Score: " + score); //update scorelabel
 			}
 		}
 		
@@ -1003,14 +1002,14 @@ class BioBasePanel extends JPanel implements ActionListener
 			bases = "AUCG";
 		
 		currentStrand = "";
-		activebases = new boolean[100]; //it is 100 long because 100 bases in a strand
+		activeBases = new boolean[100]; //it is 100 long because 100 bases in a strand
 		for(int i = 0; i < 100; i++) //goes through all 100 bases 
 		{
 			int index = (int)(Math.random() * 4); //random number from 0 to 3
 			
 			//add the base at the random index generated (use charAt()) onto current strand
 			currentStrand = currentStrand + bases.charAt(index); 
-			activebases[i] = false; //every base is active because game hasn't started
+			activeBases[i] = false; //every base is active because game hasn't started
 		}
 	}
 	
@@ -1049,7 +1048,7 @@ class BioBasePanel extends JPanel implements ActionListener
 			for(int i = 0; i < 100; i++) //go through 100 bases
 			{
 				int charX = strandPosX + (i * 140); //get the x position of the current base
-				if(charX > -50 && charX < 1050 && activebases[i] == false) //if base is on screen (with extra padding) and base is active
+				if(charX > -50 && charX < 1050 && activeBases[i] == false) //if base is on screen (with extra padding) and base is active
 				{
 					char base = currentStrand.charAt(i); //get the specific char at index i
 					
@@ -1102,13 +1101,13 @@ class QuestionPanel extends JPanel implements ActionListener
 		Font font = new Font("Monospaced", Font.BOLD, 22);
 		
 		//make all colors needed
-		Color backgroundcolor = new Color(181, 233, 245);
-		Color questionbuttoncolor = new Color(17, 44, 128);
-		Color answercolor = new Color(111, 167, 240);
-		Color buttonpanelcolor = new Color(181, 233, 245);
-		Color radiocolor = new Color(16, 22, 82);
+		Color backgroundColor = new Color(181, 233, 245);
+		Color questionButtonColor = new Color(17, 44, 128);
+		Color answerColor = new Color(111, 167, 240);
+		Color buttonPanelColor = new Color(181, 233, 245);
+		Color radioColor = new Color(16, 22, 82);
 		
-		setBackground(backgroundcolor); //set the background color
+		setBackground(backgroundColor); //set the background color
 		setLayout(new BorderLayout(10, 10)); //make the layout border with 10 vgap and 10 hgap
 		
 		answer = new JRadioButton[4]; //array can hold the 4 answer buttons
@@ -1116,7 +1115,7 @@ class QuestionPanel extends JPanel implements ActionListener
 		//make the question JPanel to hold question text (NORTH)
 		JPanel question = new JPanel();
 		question.setLayout(new BorderLayout()); //set layout
-		question.setBackground(questionbuttoncolor);
+		question.setBackground(questionButtonColor);
 		
 		//use border factory like in GameModuleFiles so that there is a border around the question text
 		question.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30)); 
@@ -1134,7 +1133,7 @@ class QuestionPanel extends JPanel implements ActionListener
 		
 		//make panel to hold the answer choices (CENTER) 
 		JPanel answers = new JPanel();
-		answers.setBackground(answercolor);
+		answers.setBackground(answerColor);
 		answers.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); //make the padding for the answers
 		answers.setLayout(new GridLayout(2, 2, 20, 20)); //make a 2rows x 2cols grid layout
 		add(answers, BorderLayout.CENTER); //add it to CENTER
@@ -1146,17 +1145,17 @@ class QuestionPanel extends JPanel implements ActionListener
 			//color, add action listener, and add it to the answers panel
 		{
 			answer[i] = new JRadioButton(gamdat.getAnswer(i)); 
-			group.add(answer[i]);
-			answer[i].setBackground(radiocolor);
-			answer[i].setFont(font);
-			answer[i].addActionListener(this);
-			answer[i].setForeground(Color.WHITE);
-			answers.add(answer[i]);
+			group.add(answer[i]); //add radio button to button group
+			answer[i].setBackground(radioColor); //set the background 
+			answer[i].setFont(font); //set font
+			answer[i].addActionListener(this); //add action listener
+			answer[i].setForeground(Color.WHITE); //set the text to white
+			answers.add(answer[i]); //add it to the answers panel
 		}
 		
 		//make panel that holds all the buttons (SOUTH)
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.setBackground(buttonpanelcolor);
+		buttonPanel.setBackground(buttonPanelColor);
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 30));
 		add(buttonPanel, BorderLayout.SOUTH);
 		
@@ -1166,7 +1165,7 @@ class QuestionPanel extends JPanel implements ActionListener
 		submit.addActionListener(this);
 		submit.setEnabled(false); //button starts disabled
 		submit.setForeground(Color.WHITE);
-		submit.setBackground(questionbuttoncolor);
+		submit.setBackground(questionButtonColor);
 		buttonPanel.add(submit); //add to button panel
 		
 		//make the next question button (used when user gets a question wrong)
@@ -1175,7 +1174,7 @@ class QuestionPanel extends JPanel implements ActionListener
 		nextQuestion.addActionListener(this);
 		nextQuestion.setEnabled(false); //button starts disabled
 		nextQuestion.setForeground(Color.WHITE);
-		nextQuestion.setBackground(questionbuttoncolor);
+		nextQuestion.setBackground(questionButtonColor);
 		buttonPanel.add(nextQuestion); //add to button panel
 		
 		//make the back to game button (used when user gets question correct)
@@ -1184,14 +1183,14 @@ class QuestionPanel extends JPanel implements ActionListener
 		backToGame.addActionListener(this);
 		backToGame.setEnabled(false); //button starts disabled 
 		backToGame.setForeground(Color.WHITE);
-		backToGame.setBackground(questionbuttoncolor);
+		backToGame.setBackground(questionButtonColor);
 		buttonPanel.add(backToGame); //add to button panel
 	}
 	
 	public void actionPerformed(ActionEvent evt) 
 	{
-		Color correctcolor = new Color(56, 196, 95);
-		Color wrongcolor = new Color(196, 0 ,3);
+		Color correctColor = new Color(56, 196, 95);
+		Color wrongColor = new Color(196, 0 ,3);
 		
 		String command = evt.getActionCommand(); //get action command
 		
@@ -1203,14 +1202,14 @@ class QuestionPanel extends JPanel implements ActionListener
 			boolean isCorrect = false; //boolean to keep track of correct vs. incorrect 
 			int correctIndex = gamdat.getCorrectAnswer(); //use getter method to check the answer
 			
-			answer[correctIndex].setBackground(correctcolor); //highlight the correct answer in green no matter what
+			answer[correctIndex].setBackground(correctColor); //highlight the correct answer in green no matter what
 			
 			for(int i = 0; i < answer.length; i++)
 			{
 				if(answer[i].isSelected()) //if the button at i is selected
 				{
 					if(i != correctIndex) //if it's wrong set background to red
-						answer[i].setBackground(wrongcolor);
+						answer[i].setBackground(wrongColor);
 					else
 						isCorrect = true; //if it is not incorrect it is automatically correct
 				}
@@ -1246,7 +1245,7 @@ class QuestionPanel extends JPanel implements ActionListener
 	public void resetQuestion() //this method resets everything so that it is ready for another use
 	{
 		//make colors needed
-		Color radiocolor = new Color(16, 22, 82);
+		Color radioColor = new Color(16, 22, 82);
 		
 		gamdat.grabQuestionFromFile(); //pull a new random question from file
 		questionArea.setText(gamdat.getQuestion()); //update text area
@@ -1255,7 +1254,7 @@ class QuestionPanel extends JPanel implements ActionListener
 		{
 			answer[i].setText(gamdat.getAnswer(i)); //update radio buttons
 			answer[i].setEnabled(true); //make them clickable
-			answer[i].setBackground(radiocolor); //make the background back to normal
+			answer[i].setBackground(radioColor); //make the background back to normal
 		}
 	}
 }
@@ -1266,17 +1265,18 @@ class LeaderboardPanel extends JPanel implements ActionListener
 	private GameHolder holder;
 	private CardLayout cards;
 	private GameData gamdat;
-	private BioBasePanel gamepanel;
+	private BioBasePanel gamePanel;
 	
 	private JTextArea leaderboardArea; //the text area where the actual names are
 	private boolean scoreSaved; //boolean to check if score is saved or not to prevent multiple saves due to repaint()
+	private JLabel congratsLabel; //congrats message with current score
 	
-	public LeaderboardPanel(GameHolder holderIn, CardLayout cardsIn, GameData gamdatIn, BioBasePanel gamepanelIn)
+	public LeaderboardPanel(GameHolder holderIn, CardLayout cardsIn, GameData gamdatIn, BioBasePanel gamePanelIn)
 	{
 		holder = holderIn;
 		cards = cardsIn;
 		gamdat = gamdatIn;
-		gamepanel = gamepanelIn;
+		gamePanel = gamePanelIn;
 		
 		scoreSaved = false; //score is intially not saved
 		
@@ -1310,13 +1310,11 @@ class LeaderboardPanel extends JPanel implements ActionListener
 		
 		//Make congrats label (WEST)
 		//use HTML to add breaks in the text
-		int finalScore = gamdat.getScore(); //stores final score
-		System.out.println(finalScore);
 		//temp string to hold text for congrats label
-		String congratsHolder = new String("<html><center>Congrats on finishing<br>the game!<br><br>Below " 
+		String congratsHolder = new String("<html><center>Congrats on finishing<br>the game!<br><br>To the right " 
 		+"you'll see the<br>leaderboard, try and<br>find your name!<br><br>Play another round and " 
-		+"try a different sequence or speed to challenge yourself!<br><br>Your current score is: " + finalScore + "</center></html>" );
-		JLabel congratsLabel = new JLabel(congratsHolder, SwingConstants.CENTER);
+		+"try a different sequence or speed to challenge yourself!</center></html>" );
+		congratsLabel = new JLabel(congratsHolder, SwingConstants.CENTER); //set JLabel text to the temp string and use swing constants to center it
 		congratsLabel.setFont(congratsFont); //set font
 		congratsLabel.setOpaque(true); //so the background is visible
 		congratsLabel.setBackground(sideBgColor); //set color
@@ -1331,23 +1329,25 @@ class LeaderboardPanel extends JPanel implements ActionListener
 		leaderboardArea.setEditable(false); //make it uneditable so that player can't change the text
 		leaderboardArea.setBackground(sideBgColor); //set background
 		leaderboardArea.setForeground(Color.WHITE); //set the text to white
-		leaderboardArea.setBorder(BorderFactory.createEmptyBorder(15, 40, 15, 40)); //create space between the text
+		//create space between the text
+		leaderboardArea.setBorder(BorderFactory.createEmptyBorder(15, 40, 15, 40));
 		
-		JScrollPane scrollPane = new JScrollPane(leaderboardArea); //make a scroll pane for the text area so that if there are too many names player can scroll down
+		JScrollPane scrollPane = new JScrollPane(leaderboardArea); //make a scroll pane for the 
+			//text area so that if there are too many names player can scroll down
 		add(scrollPane, BorderLayout.CENTER); //add the scroll pane to CENTER
 		
 		//make the panel where the 3 buttons will be (SOUTH)
-		JPanel buttonspanel = new JPanel();
-		buttonspanel.setLayout(new FlowLayout(FlowLayout.CENTER)); //set layout to flow with hgap 40, vgap 15
-		buttonspanel.setBackground(areaBgColor); //set background
+		JPanel buttonsPanel = new JPanel();
+		buttonsPanel.setLayout(new FlowLayout(FlowLayout.CENTER)); //set layout to flow with hgap 40, vgap 15
+		buttonsPanel.setBackground(areaBgColor); //set background
 		
 		//Make PLAY AGAIN button (it will take user back to BioBasePanel to play the game with the same controls as the previous round)
-		JButton playagain = new JButton("PLAY AGAIN");
-		playagain.setFont(buttonsFont); //set font
-		playagain.setForeground(Color.WHITE); //so text is white
-		playagain.setBackground(buttonColor); //set background
-		playagain.addActionListener(this); //add action listener 
-		buttonspanel.add(playagain); //add playagain button to the buttons panel
+		JButton playAgain = new JButton("PLAY AGAIN");
+		playAgain.setFont(buttonsFont); //set font
+		playAgain.setForeground(Color.WHITE); //so text is white
+		playAgain.setBackground(buttonColor); //set background
+		playAgain.addActionListener(this); //add action listener 
+		buttonsPanel.add(playAgain); //add playagain button to the buttons panel
 		
 		//Make INSTRUCTIONS button (it will take the user back to InstructionPanel to review the rules, change the settings, and play again)
 		JButton instructionsBtn = new JButton("INSTRUCTIONS");
@@ -1355,7 +1355,7 @@ class LeaderboardPanel extends JPanel implements ActionListener
 		instructionsBtn.setForeground(Color.WHITE); //so the text is white
 		instructionsBtn.setBackground(buttonColor); //set background
 		instructionsBtn.addActionListener(this); //add action listener
-		buttonspanel.add(instructionsBtn); //add instructions button to the button panel
+		buttonsPanel.add(instructionsBtn); //add instructions button to the button panel
 		
 		//Make EXIT button (closes everything)
 		JButton exitBtn = new JButton("EXIT");
@@ -1363,10 +1363,10 @@ class LeaderboardPanel extends JPanel implements ActionListener
 		exitBtn.setForeground(Color.WHITE); //so text is white
 		exitBtn.setBackground(buttonColor); //set background
 		exitBtn.addActionListener(this); //add action listener
-		buttonspanel.add(exitBtn); //add exit button to the buttons panel
+		buttonsPanel.add(exitBtn); //add exit button to the buttons panel
 		
 		//add buttonspanel to SOUTH
-		add(buttonspanel, BorderLayout.SOUTH);
+		add(buttonsPanel, BorderLayout.SOUTH);
 
 	}
 
@@ -1385,10 +1385,10 @@ class LeaderboardPanel extends JPanel implements ActionListener
 			scoreSaved = false; //the score is no longer saved
 			
 			BioBasePanel freshGamePanel = new BioBasePanel(holder, cards, gamdat); //make a new instance of the game panel
-			holder.remove(gamepanel); //remove the old game panel
-			gamepanel = freshGamePanel; //set the original gamepanel variable equal to the new one
+			holder.remove(gamePanel); //remove the old game panel
+			gamePanel = freshGamePanel; //set the original gamepanel variable equal to the new one
 			
-			holder.add(gamepanel, "biobase"); //add the new panel back into the card layout
+			holder.add(gamePanel, "biobase"); //add the new panel back into the card layout
 			holder.repaint(); //refresh so changes are visible
 						
 			if (command.equals("PLAY AGAIN")) //if play again is clicked
@@ -1408,8 +1408,19 @@ class LeaderboardPanel extends JPanel implements ActionListener
 		
 		if (!scoreSaved) //if the score isn't saved
 		{
-			String scoreboardText = gamdat.updateAndGetLeaderboard(); //make a string variable to hold whatever updateAndGetLeaderboard() returns (fresh leaderboard)
+			//make a string variable to hold whatever updateAndGetLeaderboard() returns (fresh leaderboard)
+			String scoreboardText = gamdat.updateAndGetLeaderboard(); 
 			leaderboardArea.setText(scoreboardText); //set the text of the textarea to that variable
+			leaderboardArea.setCaretPosition(0); //so that the scroll bar starts at the top of the leaderboard
+			
+			int finalScore = gamdat.getScore(); //user's score for the round they just played 
+				//this is done here so that the most updated score (from this round) is shown
+			String updatedCongrats = "<html><center>Congrats on finishing<br>the game!<br><br>To the right " 
+				+ "you'll see the<br>leaderboard, try and<br>find your name!<br><br>Play another round and " 
+				+ "try a different sequence or speed to challenge yourself!<br><br>"
+				+ "<font color='yellow'>Your score for this round is: " + finalScore + "</font></center></html>";
+			
+			congratsLabel.setText(updatedCongrats); //set the text to the updated score
 			scoreSaved = true; //now the score is saved
 		}
 	}
@@ -1423,7 +1434,7 @@ class GameData
 	private int correctAnswer; //this is basically the secret code that will get the correct answer
 	private boolean[] chosenQuestions; //tracks which questions have already been used
 	private int questionCount; //this keeps track of how many questions the user has attempted in one "session"
-	private int scoretrack; //keeps track of user's score for the leaderboard
+	private int scoreTrack; //keeps track of user's score for the leaderboard
 	private int speed; //tracks the speed that the user selected
 	private String sequenceType; //tracks the seuqence the user selected
 
@@ -1445,7 +1456,7 @@ class GameData
 	public void resetAll() 
 	{
 		questionCount = 0; //each new session the user has answered 0 questions, regardless of their previous attempts
-		scoretrack = 0; //each new game the user's score resets
+		scoreTrack = 0; //each new game the user's score resets
 		for(int i = 0; i < chosenQuestions.length; i++) //go through to make every question not used
 		{
 			chosenQuestions[i] = false;
@@ -1555,10 +1566,10 @@ class GameData
 		
 		//add the cuurent name and score to the next slot
 		names[count] = name;
-		scores[count] = scoretrack;
+		scores[count] = scoreTrack;
 		count++; //add one to the count
-		setScore(scoretrack);
-		System.out.println(scoretrack);
+		setScore(scoreTrack);
+		System.out.println(scoreTrack);
 		System.out.println(getScore());
 		
 		//nested for loop to sort the scores
@@ -1605,8 +1616,6 @@ class GameData
 			//set the string variable equal to the #place name - score and then a new line
 			displayedLeaderboard += "#" + (i + 1) + " " + names[i] + " - " + scores[i] + "\n"; 
 		}
-		//int currentScoreIndex = scores[findArrayIndex(names, getName())]; //find the value of the index of the name entered to get the current score
-		//setScore(scores[currentScoreIndex]);
 		return displayedLeaderboard; //return the leaderboard that needs to be displayed
 	}
 	
@@ -1644,12 +1653,12 @@ class GameData
 	
 	public int getScore()
 	{
-		return scoretrack; 
+		return scoreTrack; 
 	}
 	
 	public void setScore(int scoreTrackIn)
 	{
-		scoretrack = scoreTrackIn;
+		scoreTrack = scoreTrackIn;
 	}
 	
 	public int getSpeed() 
