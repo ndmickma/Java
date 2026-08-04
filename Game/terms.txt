@@ -1,0 +1,18 @@
+Welcome to BioBase. Before you continue please read through these terms and click the agree button to move on.
+
+1. OWNERSHIP OF INTELLECTUAL PROPERTY
+The Software, including all original source code and designs, is the property of the Developer (Sanvitti Shah). This Software is protected by copyright laws.
+
+2. GRANT OF LICENSE
+The Developer grants you personal, non-exclusive, non-transferable license to use the Software for educational purposes. Commercial use is prohibited.
+
+3. THIRD-PARTY CONTENT & ATTRIBUTIONS
+BioBase contains mechanics inspired by Google Doodle Champion Island. All rights to third-party IP belong to their respective owners. This project uses standard Java libraries.
+
+4. RESTRICTIONS ON USE
+The User agrees not to reverse engineer the Software or use automated scripts to interfere with the gameplay experience.
+
+5. LIMITATION OF LIABILITY
+The Developer is not responsible for any damages or data loss resulting from the use of this Software.
+
+By clicking 'I AGREE', you acknowledge these terms as well as the contributions of original creators.
